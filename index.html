@@ -759,6 +759,119 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
     </div>
   </div>
 
+  <!-- ==================== MODAL: PRE-EXAM SETTINGS ==================== -->
+  <div id="modal-exam-setup" class="fixed inset-0 z-50 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#111915] border border-slate-200 dark:border-[#24342b] rounded-3xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-fade-up">
+      <!-- Header -->
+      <div class="px-6 py-4 border-b border-slate-200 dark:border-[#1f2c25] flex items-center justify-between">
+        <div>
+          <h3 id="setup-exam-title" class="text-lg font-extrabold text-slate-900 dark:text-white">Thiết lập bài thi</h3>
+          <p id="setup-exam-subtitle" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Tùy chỉnh thời gian &amp; chế độ trước khi bắt đầu</p>
+        </div>
+        <button id="close-exam-setup-modal" class="p-2 rounded-xl bg-slate-100 dark:bg-[#18231d] hover:bg-slate-200 dark:hover:bg-[#223129] text-slate-500">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="p-6 space-y-5 overflow-y-auto">
+        <!-- 1. Thời gian làm bài -->
+        <div class="space-y-2.5">
+          <label class="text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+            <i data-lucide="clock" class="w-3.5 h-3.5 text-brand-600"></i>
+            <span>Thời gian làm bài</span>
+          </label>
+          <div class="grid grid-cols-2 gap-2 bg-slate-100 dark:bg-[#0b100d] p-1 rounded-xl border border-slate-200 dark:border-[#1f2c25]">
+            <button type="button" id="setup-mode-timed" class="py-2 px-3 rounded-lg text-xs font-extrabold transition-all bg-brand-600 text-white shadow-sm">
+              ⏱️ Giới hạn thời gian
+            </button>
+            <button type="button" id="setup-mode-unlimited" class="py-2 px-3 rounded-lg text-xs font-bold transition-all text-slate-600 dark:text-slate-400">
+              ∞ Không giới hạn
+            </button>
+          </div>
+          <div id="setup-timed-box" class="space-y-2 pt-1">
+            <div class="flex items-center gap-2">
+              <input id="setup-minutes" type="number" min="1" max="300" value="50" class="w-24 bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dark:border-[#24342b] rounded-xl px-3 py-2 text-sm font-extrabold text-center focus:outline-none focus:ring-2 focus:ring-brand-500" />
+              <span class="text-xs font-bold text-slate-500">phút</span>
+              <div class="flex flex-wrap gap-1.5 ml-auto">
+                <button type="button" data-min="15" class="setup-min-preset px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-[#18231d] hover:bg-brand-100 dark:hover:bg-brand-900/40 text-xs font-bold text-slate-700 dark:text-slate-300">15p</button>
+                <button type="button" data-min="30" class="setup-min-preset px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-[#18231d] hover:bg-brand-100 dark:hover:bg-brand-900/40 text-xs font-bold text-slate-700 dark:text-slate-300">30p</button>
+                <button type="button" data-min="45" class="setup-min-preset px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-[#18231d] hover:bg-brand-100 dark:hover:bg-brand-900/40 text-xs font-bold text-slate-700 dark:text-slate-300">45p</button>
+                <button type="button" data-min="60" class="setup-min-preset px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-[#18231d] hover:bg-brand-100 dark:hover:bg-brand-900/40 text-xs font-bold text-slate-700 dark:text-slate-300">60p</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Số lượng & Phạm vi câu hỏi -->
+        <div class="space-y-2.5">
+          <div class="flex items-center justify-between">
+            <label class="text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+              <i data-lucide="list-checks" class="w-3.5 h-3.5 text-brand-600"></i>
+              <span>Số lượng &amp; Phạm vi câu hỏi</span>
+            </label>
+            <span id="setup-available-lbl" class="text-[11px] font-bold text-brand-600 dark:text-brand-400">60 câu khả dụng</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" id="setup-scope-all" class="py-2 px-3 rounded-xl border-2 border-brand-600 bg-brand-50 dark:bg-brand-900/30 text-xs font-extrabold text-brand-700 dark:text-brand-300 text-center transition-all">
+              📚 Tất cả câu trong đề
+            </button>
+            <button type="button" id="setup-scope-weak" class="py-2 px-3 rounded-xl border-2 border-slate-200 dark:border-[#24342b] bg-slate-50 dark:bg-[#16201b] text-xs font-bold text-slate-600 dark:text-slate-300 text-center transition-all">
+              🎯 Chỉ câu chưa thuộc / sai
+            </button>
+          </div>
+
+          <div class="flex items-center gap-2 pt-1">
+            <input id="setup-q-count" type="number" min="1" max="500" value="60" class="w-24 bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dark:border-[#24342b] rounded-xl px-3 py-2 text-sm font-extrabold text-center focus:outline-none focus:ring-2 focus:ring-brand-500" />
+            <span class="text-xs font-bold text-slate-500">câu</span>
+            <div class="flex flex-wrap gap-1.5 ml-auto">
+              <button type="button" data-cnt="10" class="setup-cnt-preset px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-[#18231d] hover:bg-brand-100 dark:hover:bg-brand-900/40 text-xs font-bold text-slate-700 dark:text-slate-300">10</button>
+              <button type="button" data-cnt="20" class="setup-cnt-preset px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-[#18231d] hover:bg-brand-100 dark:hover:bg-brand-900/40 text-xs font-bold text-slate-700 dark:text-slate-300">20</button>
+              <button type="button" data-cnt="30" class="setup-cnt-preset px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-[#18231d] hover:bg-brand-100 dark:hover:bg-brand-900/40 text-xs font-bold text-slate-700 dark:text-slate-300">30</button>
+              <button type="button" data-cnt="max" class="setup-cnt-preset px-2.5 py-1 rounded-lg bg-brand-100 dark:bg-brand-900/40 text-xs font-extrabold text-brand-700 dark:text-brand-300">Tối đa</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Tính năng hỗ trợ làm bài -->
+        <div class="space-y-2.5">
+          <label class="text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+            <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5 text-brand-600"></i>
+            <span>Tùy chọn thông minh</span>
+          </label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <label class="flex items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 dark:bg-[#16201b] border border-slate-200 dark:border-[#24342b] cursor-pointer">
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-200">🔀 Trộn thứ tự câu hỏi</span>
+              <input id="setup-shuffle-q" type="checkbox" class="w-4 h-4 accent-brand-600 rounded" />
+            </label>
+            <label class="flex items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 dark:bg-[#16201b] border border-slate-200 dark:border-[#24342b] cursor-pointer">
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-200">🎲 Trộn đáp án A, B, C, D</span>
+              <input id="setup-shuffle-opt" type="checkbox" class="w-4 h-4 accent-brand-600 rounded" />
+            </label>
+            <label class="flex items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 dark:bg-[#16201b] border border-slate-200 dark:border-[#24342b] cursor-pointer">
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-200">⚡ Tự qua câu khi chọn</span>
+              <input id="setup-auto-next" type="checkbox" class="w-4 h-4 accent-brand-600 rounded" />
+            </label>
+            <div class="flex items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 dark:bg-[#16201b] border border-slate-200 dark:border-[#24342b]">
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-200">🎯 Mục tiêu đạt (%)</span>
+              <input id="setup-pass-pct" type="number" min="10" max="100" value="70" class="w-16 bg-white dark:bg-[#0b100d] border border-slate-200 dark:border-[#24342b] rounded-lg px-2 py-1 text-xs font-extrabold text-center focus:outline-none" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="px-6 py-4 border-t border-slate-200 dark:border-[#1f2c25] bg-slate-50/70 dark:bg-[#0f1612] flex items-center justify-end gap-2.5">
+        <button id="cancel-exam-setup-modal" class="px-4 py-2.5 rounded-xl bg-slate-200/80 dark:bg-[#18231d] hover:bg-slate-300/80 text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200">Hủy</button>
+        <button id="btn-start-configured-exam" class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-xs sm:text-sm font-extrabold text-white shadow-md shadow-brand-600/20 flex items-center gap-2 transition-all">
+          <i data-lucide="play" class="w-4 h-4"></i>
+          <span>Bắt đầu làm bài</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- SAMPLE & FLASHCARDS DATA -->
   <script>
     window.SAMPLE_QUESTIONS = [
@@ -853,6 +966,9 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
       let studioEditingExamId = null; // null = create new, string = editing existing custom exam
       let studioDraftQuestions = [];
 
+      // Pre-Exam Setup State
+      let pendingExamSetup = null; // { paper, subjName, timed: true, scope: 'all' }
+
       // Active Exam State
       let examState = {
         active: false,
@@ -862,6 +978,8 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         subject: '',
         passPct: 70,
         shuffleOpt: true,
+        autoNext: false,
+        autoNextTimer: null,
         rawPool: [],
         questions: [],
         answers: {},
@@ -1500,8 +1618,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
             }
 
             card.querySelector('.btn-start-paper').addEventListener('click', () => {
-              const poolToRun = paper.shuffleQ ? shuffleArray(paper.questions) : [...paper.questions];
-              startExamPaper(poolToRun, paper.minutes * 60, paper.title, paper.key, subjName, paper.passPct, paper.shuffleOpt);
+              openExamSetupModal(paper, subjName);
             });
 
             grid.appendChild(card);
@@ -1509,6 +1626,87 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         }
 
         lucide.createIcons();
+      }
+
+      // --- PRE-EXAM SETTINGS MODAL ---
+      function getSetupScopedPool() {
+        if (!pendingExamSetup) return [];
+        const all = pendingExamSetup.paper.questions || [];
+        if (pendingExamSetup.scope === 'weak') {
+          const weak = all.filter(q => getQuestionRecord(q.id).status !== 'green');
+          return weak.length > 0 ? weak : all;
+        }
+        return all;
+      }
+
+      function refreshExamSetupModalUI() {
+        if (!pendingExamSetup) return;
+        const { timed, scope, paper } = pendingExamSetup;
+        const timedBtn = document.getElementById('setup-mode-timed');
+        const unlimBtn = document.getElementById('setup-mode-unlimited');
+        const timedBox = document.getElementById('setup-timed-box');
+        if (timed) {
+          timedBtn.className = 'py-2 px-3 rounded-lg text-xs font-extrabold transition-all bg-brand-600 text-white shadow-sm';
+          unlimBtn.className = 'py-2 px-3 rounded-lg text-xs font-bold transition-all text-slate-600 dark:text-slate-400';
+          timedBox.classList.remove('hidden');
+        } else {
+          unlimBtn.className = 'py-2 px-3 rounded-lg text-xs font-extrabold transition-all bg-brand-600 text-white shadow-sm';
+          timedBtn.className = 'py-2 px-3 rounded-lg text-xs font-bold transition-all text-slate-600 dark:text-slate-400';
+          timedBox.classList.add('hidden');
+        }
+
+        const weakCount = (paper.questions || []).filter(q => getQuestionRecord(q.id).status !== 'green').length;
+        const scopeAllBtn = document.getElementById('setup-scope-all');
+        const scopeWeakBtn = document.getElementById('setup-scope-weak');
+        scopeWeakBtn.disabled = weakCount === 0;
+        scopeWeakBtn.classList.toggle('opacity-50', weakCount === 0);
+        scopeWeakBtn.classList.toggle('cursor-not-allowed', weakCount === 0);
+        scopeWeakBtn.textContent = `🎯 Chưa thuộc / sai (${weakCount})`;
+
+        if (scope === 'weak' && weakCount > 0) {
+          scopeWeakBtn.className = 'py-2 px-3 rounded-xl border-2 border-brand-600 bg-brand-50 dark:bg-brand-900/30 text-xs font-extrabold text-brand-700 dark:text-brand-300 text-center transition-all';
+          scopeAllBtn.className = 'py-2 px-3 rounded-xl border-2 border-slate-200 dark:border-[#24342b] bg-slate-50 dark:bg-[#16201b] text-xs font-bold text-slate-600 dark:text-slate-300 text-center transition-all';
+        } else {
+          pendingExamSetup.scope = 'all';
+          scopeAllBtn.className = 'py-2 px-3 rounded-xl border-2 border-brand-600 bg-brand-50 dark:bg-brand-900/30 text-xs font-extrabold text-brand-700 dark:text-brand-300 text-center transition-all';
+          scopeWeakBtn.className = `py-2 px-3 rounded-xl border-2 border-slate-200 dark:border-[#24342b] bg-slate-50 dark:bg-[#16201b] text-xs font-bold text-slate-600 dark:text-slate-300 text-center transition-all ${weakCount === 0 ? 'opacity-50 cursor-not-allowed' : ''}`;
+        }
+
+        const scopedLen = getSetupScopedPool().length;
+        document.getElementById('setup-available-lbl').textContent = `${scopedLen} câu khả dụng`;
+        const countInp = document.getElementById('setup-q-count');
+        countInp.max = Math.max(1, scopedLen);
+        if (Number(countInp.value) > scopedLen || Number(countInp.value) < 1) {
+          countInp.value = scopedLen;
+        }
+      }
+
+      function openExamSetupModal(paper, subjName) {
+        if (!paper || !paper.questions || paper.questions.length === 0) return;
+        const defaultTimed = Number(paper.minutes || 0) > 0;
+        pendingExamSetup = { paper, subjName, timed: defaultTimed, scope: 'all' };
+
+        document.getElementById('setup-exam-title').textContent = paper.title || 'Thiết lập bài thi';
+        document.getElementById('setup-exam-subtitle').textContent = `${subjName} • ${paper.questions.length} câu hỏi`;
+        document.getElementById('setup-minutes').value = Math.max(1, Number(paper.minutes) || 50);
+        document.getElementById('setup-q-count').value = paper.questions.length;
+        document.getElementById('setup-shuffle-q').checked = paper.shuffleQ !== false;
+        document.getElementById('setup-shuffle-opt').checked = paper.shuffleOpt !== false;
+        document.getElementById('setup-auto-next').checked = false;
+        document.getElementById('setup-pass-pct').value = Number(paper.passPct) || 70;
+
+        refreshExamSetupModalUI();
+        const modal = document.getElementById('modal-exam-setup');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        lucide.createIcons();
+      }
+
+      function closeExamSetupModal() {
+        const modal = document.getElementById('modal-exam-setup');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        pendingExamSetup = null;
       }
 
       // --- ACTIVE EXAM WORKSPACE ---
@@ -1526,10 +1724,11 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         };
       }
 
-      function startExamPaper(pool, seconds, title, paperKey, subj, passPct = 70, shuffleOpt = true) {
+      function startExamPaper(pool, seconds, title, paperKey, subj, passPct = 70, shuffleOpt = true, autoNext = false) {
         if (!pool || pool.length === 0) return;
 
         if (examState.timerId) clearInterval(examState.timerId);
+        if (examState.autoNextTimer) clearTimeout(examState.autoNextTimer);
         examState = {
           active: true,
           finished: false,
@@ -1538,6 +1737,8 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
           subject: subj || activeSubjectName || '',
           passPct: passPct,
           shuffleOpt: shuffleOpt,
+          autoNext: autoNext,
+          autoNextTimer: null,
           rawPool: [...pool],
           questions: pool.map(q => prepareExamQuestionItem(q, shuffleOpt)),
           answers: {},
@@ -1685,10 +1886,20 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         if (!q || optIdx >= q.shuffledOptions.length) return;
         examState.answers[idx] = optIdx;
         renderActiveExamQuestion();
+        if (examState.autoNext && idx < examState.questions.length - 1) {
+          if (examState.autoNextTimer) clearTimeout(examState.autoNextTimer);
+          examState.autoNextTimer = setTimeout(() => {
+            if (examState.active && examState.currentIndex === idx && examState.currentIndex < examState.questions.length - 1) {
+              examState.currentIndex++;
+              renderActiveExamQuestion();
+            }
+          }, 220);
+        }
       }
 
       function submitExam() {
         if (examState.timerId) clearInterval(examState.timerId);
+        if (examState.autoNextTimer) clearTimeout(examState.autoNextTimer);
         examState.active = false;
         examState.finished = true;
 
@@ -2615,10 +2826,67 @@ D. 60.0 ms`;
 
         document.getElementById('btn-save-studio-exam').addEventListener('click', saveStudioExam);
 
+        // Pre-Exam Settings Modal
+        document.getElementById('close-exam-setup-modal').addEventListener('click', closeExamSetupModal);
+        document.getElementById('cancel-exam-setup-modal').addEventListener('click', closeExamSetupModal);
+        document.getElementById('setup-mode-timed').addEventListener('click', () => {
+          if (!pendingExamSetup) return;
+          pendingExamSetup.timed = true;
+          refreshExamSetupModalUI();
+        });
+        document.getElementById('setup-mode-unlimited').addEventListener('click', () => {
+          if (!pendingExamSetup) return;
+          pendingExamSetup.timed = false;
+          refreshExamSetupModalUI();
+        });
+        document.querySelectorAll('.setup-min-preset').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.getElementById('setup-minutes').value = Number(btn.dataset.min);
+          });
+        });
+        document.getElementById('setup-scope-all').addEventListener('click', () => {
+          if (!pendingExamSetup) return;
+          pendingExamSetup.scope = 'all';
+          document.getElementById('setup-q-count').value = getSetupScopedPool().length;
+          refreshExamSetupModalUI();
+        });
+        document.getElementById('setup-scope-weak').addEventListener('click', () => {
+          if (!pendingExamSetup) return;
+          pendingExamSetup.scope = 'weak';
+          document.getElementById('setup-q-count').value = getSetupScopedPool().length;
+          refreshExamSetupModalUI();
+        });
+        document.querySelectorAll('.setup-cnt-preset').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const maxLen = getSetupScopedPool().length || 1;
+            const val = btn.dataset.cnt === 'max' ? maxLen : Math.min(maxLen, Number(btn.dataset.cnt));
+            document.getElementById('setup-q-count').value = Math.max(1, val);
+          });
+        });
+        document.getElementById('btn-start-configured-exam').addEventListener('click', () => {
+          if (!pendingExamSetup) return;
+          const { paper, subjName, timed } = pendingExamSetup;
+          const scopedPool = getSetupScopedPool();
+          const shuffleQ = document.getElementById('setup-shuffle-q').checked;
+          const shuffleOpt = document.getElementById('setup-shuffle-opt').checked;
+          const autoNext = document.getElementById('setup-auto-next').checked;
+          const passPct = Math.max(10, Math.min(100, Number(document.getElementById('setup-pass-pct').value) || 70));
+          const minutes = Math.max(1, Number(document.getElementById('setup-minutes').value) || 50);
+          const qCount = Math.max(1, Math.min(scopedPool.length, Number(document.getElementById('setup-q-count').value) || scopedPool.length));
+          const seconds = timed ? minutes * 60 : 0;
+
+          let poolToRun = shuffleQ ? shuffleArray(scopedPool) : [...scopedPool];
+          poolToRun = poolToRun.slice(0, qCount);
+
+          closeExamSetupModal();
+          startExamPaper(poolToRun, seconds, paper.title, paper.key, subjName, passPct, shuffleOpt, autoNext);
+        });
+
         // Active Exam Controls
         document.getElementById('btn-exit-exam').addEventListener('click', () => {
           if (Object.keys(examState.answers).length > 0 && !confirm('Thoát khỏi đề đang làm?')) return;
           if (examState.timerId) clearInterval(examState.timerId);
+          if (examState.autoNextTimer) clearTimeout(examState.autoNextTimer);
           examState.active = false;
           examState.finished = false;
           if (activeSubjectName) renderSubjectDetail(activeSubjectName);
@@ -2659,7 +2927,7 @@ D. 60.0 ms`;
         });
 
         document.getElementById('btn-retry-current-paper').addEventListener('click', () => {
-          startExamPaper(examState.rawPool, examState.totalSeconds, examState.title, examState.paperKey, examState.subject, examState.passPct, examState.shuffleOpt);
+          startExamPaper(examState.rawPool, examState.totalSeconds, examState.title, examState.paperKey, examState.subject, examState.passPct, examState.shuffleOpt, examState.autoNext);
         });
 
         document.getElementById('btn-retry-wrong-only').addEventListener('click', () => {
