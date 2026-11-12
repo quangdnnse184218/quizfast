@@ -97,7 +97,7 @@
     }
   </style>
 </head>
-<body class="bg-[#f3f7f4] dark:bg-[#0b100d] text-slate-900 dark:text-[#e7efe9] min-h-screen flex flex-col transition-colors duration-200 selection:bg-brand-500/30">
+<body class="bg-[#f3f7f4] dark:bg-[#0b100d] text-slate-900 dark:text-[#e7efe9] h-screen overflow-hidden flex flex-col transition-colors duration-200 selection:bg-brand-500/30">
 
   <!-- ==================== TOP HEADER ==================== -->
   <header class="sticky top-0 z-30 bg-white/90 dark:bg-[#111915]/90 backdrop-blur-md border-b border-slate-200/80 dark:border-[#1f2c25]">
@@ -157,7 +157,7 @@
   </header>
 
   <!-- ==================== MAIN CONTENT ==================== -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
+  <main id="app-main" class="flex-1 min-h-0 max-w-7xl w-full mx-auto px-4 sm:px-6 py-5 sm:py-6 overflow-y-auto">
 
     <!-- ==================== VIEW 1: HOME (SUBJECTS + SMART UPLOAD) ==================== -->
     <section id="view-home" class="space-y-8">
@@ -243,9 +243,9 @@
           </div>
         </div>
 
-        <!-- Subject Mastery Bar + Default Feedback Mode -->
+        <!-- Subject Mastery Bar -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          <div class="lg:col-span-7 bg-white dark:bg-[#111915] border border-slate-200/90 dark:border-[#1f2c25] rounded-2xl p-5 space-y-3 shadow-sm">
+          <div class="lg:col-span-12 bg-white dark:bg-[#111915] border border-slate-200/90 dark:border-[#1f2c25] rounded-2xl p-5 space-y-3 shadow-sm">
             <div class="flex items-center justify-between">
               <span class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Độ thông thạo môn học</span>
               <div class="flex items-center gap-3">
@@ -275,19 +275,6 @@
               </div>
             </div>
           </div>
-
-          <div class="lg:col-span-5 bg-white dark:bg-[#111915] border border-slate-200/90 dark:border-[#1f2c25] rounded-2xl p-5 flex flex-col justify-between gap-3 shadow-sm">
-            <div class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Chế độ làm bài mặc định</div>
-            <div class="grid grid-cols-2 gap-2 bg-slate-100 dark:bg-[#0b100d] p-1.5 rounded-xl border border-slate-200 dark:border-[#1f2c25]">
-              <button data-fb-mode="instant" class="fb-mode-btn py-2 px-3 rounded-lg text-xs font-extrabold transition-all text-center">
-                💡 Báo Đúng/Sai ngay
-              </button>
-              <button data-fb-mode="exam" class="fb-mode-btn py-2 px-3 rounded-lg text-xs font-extrabold transition-all text-center">
-                ⏱️ Thi thật (Nộp mới chấm)
-              </button>
-            </div>
-            <p class="text-xs text-slate-500 dark:text-slate-400">Bạn có thể bật/tắt nhanh chế độ này bất cứ lúc nào khi đang làm bài.</p>
-          </div>
         </div>
 
         <!-- Papers Grid -->
@@ -295,8 +282,8 @@
       </div>
 
       <!-- 1C. MÀN HÌNH ĐANG LÀM ĐỀ (ACTIVE EXAM WORKSPACE) -->
-      <div id="exam-running" class="hidden space-y-5">
-        <div class="bg-white dark:bg-[#111915] border border-slate-200/90 dark:border-[#1f2c25] rounded-2xl p-3.5 sm:p-4 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+      <div id="exam-running" class="hidden h-full flex-col gap-4">
+        <div class="shrink-0 bg-white dark:bg-[#111915] border border-slate-200/90 dark:border-[#1f2c25] rounded-2xl p-3.5 sm:p-4 flex flex-wrap items-center justify-between gap-3 shadow-sm">
           <div class="flex items-center gap-3">
             <button id="btn-exit-exam" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#18231d] hover:bg-slate-200 dark:hover:bg-[#223129] text-slate-700 dark:text-slate-200 text-xs sm:text-sm font-bold transition-all">
               <i data-lucide="arrow-left" class="w-4 h-4"></i>
@@ -311,11 +298,6 @@
           </div>
 
           <div class="flex flex-wrap items-center gap-2">
-            <button id="btn-toggle-instant-fb" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all">
-              <i data-lucide="zap" class="w-3.5 h-3.5"></i>
-              <span id="lbl-instant-fb">Báo đáp án ngay: BẬT</span>
-            </button>
-
             <div class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-brand-50 dark:bg-[#16221b] border border-brand-200 dark:border-brand-700/40">
               <i data-lucide="clock" class="w-4 h-4 text-brand-600 dark:text-brand-400"></i>
               <span id="exam-timer" class="font-mono-code text-base sm:text-lg font-extrabold text-brand-700 dark:text-brand-400">50:00</span>
@@ -327,9 +309,9 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+        <div class="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
           <!-- Question Card -->
-          <div class="lg:col-span-8 bg-white dark:bg-[#111915] border border-slate-200/90 dark:border-[#1f2c25] rounded-2xl p-5 sm:p-7 space-y-6 shadow-sm">
+          <div class="lg:col-span-8 max-h-full overflow-y-auto bg-white dark:bg-[#111915] border border-slate-200/90 dark:border-[#1f2c25] rounded-2xl p-5 sm:p-7 space-y-5 shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-slate-200/80 dark:border-[#1f2c25]">
               <div class="flex flex-wrap items-center gap-2">
                 <span id="eq-number-badge" class="px-3 py-1 rounded-lg text-xs font-extrabold bg-brand-600 text-white">Câu 1 / 60</span>
@@ -361,44 +343,17 @@
             <h2 id="eq-question" class="text-base sm:text-xl font-bold text-slate-900 dark:text-white leading-relaxed"></h2>
 
             <div id="eq-options" class="space-y-3"></div>
-
-            <div id="eq-feedback" class="hidden space-y-3 pt-2 animate-fade-up">
-              <div id="eq-anchor-box" class="bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/30 rounded-xl p-4">
-                <div class="text-amber-800 dark:text-amber-300 font-extrabold text-xs uppercase tracking-wider mb-1">⚡ Mẹo nhớ 2 giây</div>
-                <p id="eq-anchor" class="text-sm sm:text-base text-amber-950 dark:text-amber-100 font-bold"></p>
-              </div>
-              <div id="eq-exp-box" class="bg-brand-50/80 dark:bg-brand-950/30 border border-brand-200 dark:border-brand-800/50 rounded-xl p-4">
-                <div class="text-brand-800 dark:text-brand-300 font-extrabold text-xs uppercase tracking-wider mb-1">📖 Giải thích</div>
-                <p id="eq-explanation" class="text-sm text-slate-700 dark:text-slate-200 leading-relaxed"></p>
-              </div>
-            </div>
-
-            <div class="flex items-center justify-between pt-4 border-t border-slate-200/80 dark:border-[#1f2c25]">
-              <button id="btn-exam-prev" class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-[#18231d] hover:bg-slate-200 dark:hover:bg-[#223129] text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 transition-all disabled:opacity-40">
-                <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                <span>Câu trước</span>
-              </button>
-              <div class="text-xs text-slate-400 hidden sm:block">
-                <kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-[#18231d] border border-slate-300 dark:border-[#293830]">1-4</kbd> chọn •
-                <kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-[#18231d] border border-slate-300 dark:border-[#293830]">←</kbd> <kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-[#18231d] border border-slate-300 dark:border-[#293830]">→</kbd> chuyển câu
-              </div>
-              <button id="btn-exam-next" class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-xs sm:text-sm font-extrabold text-white transition-all">
-                <span>Câu tiếp theo</span>
-                <i data-lucide="arrow-right" class="w-4 h-4"></i>
-              </button>
-            </div>
           </div>
 
           <!-- Palette -->
-          <div class="lg:col-span-4 bg-white dark:bg-[#111915] border border-slate-200/90 dark:border-[#1f2c25] rounded-2xl p-5 space-y-4 shadow-sm lg:sticky lg:top-20">
-            <div class="flex items-center justify-between">
+          <div class="lg:col-span-4 max-h-full flex flex-col bg-white dark:bg-[#111915] border border-slate-200/90 dark:border-[#1f2c25] rounded-2xl p-5 space-y-4 shadow-sm">
+            <div class="flex items-center justify-between shrink-0">
               <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Bảng câu hỏi</span>
               <span id="palette-progress-pct" class="text-xs font-bold text-brand-600 dark:text-brand-400">0%</span>
             </div>
             <div id="exam-palette" class="grid grid-cols-6 sm:grid-cols-10 lg:grid-cols-6 gap-2 max-h-[380px] overflow-y-auto pr-1"></div>
-            <div class="grid grid-cols-2 gap-2 pt-3 border-t border-slate-200/80 dark:border-[#1f2c25] text-[11px] font-semibold text-slate-500 dark:text-slate-400">
-              <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-brand-600 inline-block"></span> Đã làm / Đúng</span>
-              <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-rose-500 inline-block"></span> Chọn sai</span>
+            <div class="shrink-0 grid grid-cols-3 gap-2 pt-3 border-t border-slate-200/80 dark:border-[#1f2c25] text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+              <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-brand-600 inline-block"></span> Đã làm</span>
               <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-amber-400 inline-block"></span> Đánh dấu cờ</span>
               <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-slate-200 dark:bg-[#18231d] border border-slate-300 dark:border-[#2a3b31] inline-block"></span> Chưa làm</span>
             </div>
@@ -888,8 +843,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
       let progressMap = {};
       let paperHistory = {};
 
-      let highlightEnabled = true;
-      let instantFeedback = true;
+      let instantFeedback = false;
       let geminiApiKey = '';
       let currentTheme = 'dark';
       let currentMode = 'home'; // 'home' | 'mistakes' | 'flashcards'
@@ -943,6 +897,23 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         localStorage.setItem(STORAGE_KEYS.THEME, theme);
       }
 
+      function setExamScrollLock(locked) {
+        const main = document.getElementById('app-main');
+        const examEl = document.getElementById('exam-running');
+        if (main) {
+          main.classList.toggle('overflow-hidden', locked);
+          main.classList.toggle('overflow-y-auto', !locked);
+          main.classList.toggle('py-3', locked);
+          main.classList.toggle('sm:py-4', locked);
+          main.classList.toggle('py-5', !locked);
+          main.classList.toggle('sm:py-6', !locked);
+        }
+        if (examEl) {
+          examEl.classList.toggle('hidden', !locked);
+          examEl.classList.toggle('flex', locked);
+        }
+      }
+
       // --- STORAGE ---
       function loadStorage() {
         try { progressMap = JSON.parse(localStorage.getItem(STORAGE_KEYS.PROGRESS) || '{}'); } catch { progressMap = {}; }
@@ -956,11 +927,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
           if (!Array.isArray(customExams)) customExams = [];
         } catch { customExams = []; }
 
-        const savedHl = localStorage.getItem(STORAGE_KEYS.HIGHLIGHT);
-        highlightEnabled = savedHl === null ? true : savedHl === 'true';
-
-        const savedFb = localStorage.getItem(STORAGE_KEYS.FB_MODE);
-        instantFeedback = savedFb === null ? true : savedFb === 'instant';
+        instantFeedback = false;
 
         const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) || 'light';
         applyTheme(savedTheme);
@@ -1334,8 +1301,8 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
           if (activeSubjectName) renderSubjectDetail(activeSubjectName);
           else renderHomeSubjects();
         }
-        if (mode === 'mistakes') renderNotebook();
-        if (mode === 'flashcards') renderFlashcards();
+        if (mode === 'mistakes') { setExamScrollLock(false); renderNotebook(); }
+        if (mode === 'flashcards') { setExamScrollLock(false); renderFlashcards(); }
       }
 
       // --- RENDER HOME (SUBJECTS) ---
@@ -1343,7 +1310,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         activeSubjectName = null;
         document.getElementById('home-subjects-screen').classList.remove('hidden');
         document.getElementById('subject-detail-screen').classList.add('hidden');
-        document.getElementById('exam-running').classList.add('hidden');
+        setExamScrollLock(false);
         document.getElementById('exam-result').classList.add('hidden');
 
         updateGlobalCounters();
@@ -1422,7 +1389,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         activeSubjectName = subjName;
         document.getElementById('home-subjects-screen').classList.add('hidden');
         document.getElementById('subject-detail-screen').classList.remove('hidden');
-        document.getElementById('exam-running').classList.add('hidden');
+        setExamScrollLock(false);
         document.getElementById('exam-result').classList.add('hidden');
 
         const subjMeta = getAllSubjects().find(s => s.name === subjName) || { name: subjName, description: '' };
@@ -1450,14 +1417,6 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         document.getElementById('stat-green').textContent = green;
         document.getElementById('stat-yellow').textContent = yellow;
         document.getElementById('stat-red').textContent = red;
-
-        // Feedback Mode Buttons
-        document.querySelectorAll('.fb-mode-btn').forEach(btn => {
-          const active = (btn.dataset.fbMode === 'instant') === instantFeedback;
-          btn.className = active
-            ? 'fb-mode-btn py-2 px-3 rounded-lg text-xs font-extrabold transition-all text-center bg-brand-600 text-white shadow-sm'
-            : 'fb-mode-btn py-2 px-3 rounded-lg text-xs font-bold transition-all text-center text-slate-600 dark:text-slate-400';
-        });
 
         // Papers Grid
         const grid = document.getElementById('exam-papers-grid');
@@ -1592,7 +1551,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
 
         document.getElementById('home-subjects-screen').classList.add('hidden');
         document.getElementById('subject-detail-screen').classList.add('hidden');
-        document.getElementById('exam-running').classList.remove('hidden');
+        setExamScrollLock(true);
         document.getElementById('exam-result').classList.add('hidden');
         document.getElementById('exam-running-title').textContent = title;
 
@@ -1619,17 +1578,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         el.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
       }
 
-      function updateExamToolbarButtons() {
-        const fbBtn = document.getElementById('btn-toggle-instant-fb');
-        document.getElementById('lbl-instant-fb').textContent = instantFeedback ? 'Báo đáp án ngay: BẬT' : 'Báo đáp án ngay: TẮT';
-        fbBtn.className = instantFeedback
-          ? 'flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-extrabold border transition-all bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-300 border-brand-300 dark:border-brand-700/60'
-          : 'flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all bg-slate-100 dark:bg-[#18231d] text-slate-600 dark:text-slate-300 border-slate-200 dark:border-[#26372e]';
-      }
-
       function renderActiveExamQuestion() {
-        updateExamToolbarButtons();
-
         const total = examState.questions.length;
         const idx = examState.currentIndex;
         const q = examState.questions[idx];
@@ -1684,25 +1633,12 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
           let cardCls = 'w-full text-left p-4 rounded-xl border-2 transition-all flex items-start gap-3.5 group ';
           let badgeCls = 'w-7 h-7 rounded-lg flex items-center justify-center text-xs font-extrabold shrink-0 mt-0.5 transition-colors ';
 
-          if (instantFeedback && hasAnswered) {
-            if (isCorrectOpt) {
-              cardCls += 'bg-brand-50 dark:bg-brand-900/30 border-brand-500 text-brand-950 dark:text-brand-100';
-              badgeCls += 'bg-brand-600 text-white';
-            } else if (isSelected) {
-              cardCls += 'bg-rose-50 dark:bg-rose-500/15 border-rose-500 text-rose-950 dark:text-rose-100';
-              badgeCls += 'bg-rose-600 text-white';
-            } else {
-              cardCls += 'bg-slate-50/60 dark:bg-[#111915] border-slate-200/70 dark:border-[#1f2c25] text-slate-400 opacity-70';
-              badgeCls += 'bg-slate-200 dark:bg-[#18231d] text-slate-400';
-            }
+          if (isSelected) {
+            cardCls += 'bg-brand-50 dark:bg-brand-900/30 border-brand-600 text-slate-900 dark:text-white';
+            badgeCls += 'bg-brand-600 text-white';
           } else {
-            if (isSelected) {
-              cardCls += 'bg-brand-50 dark:bg-brand-900/30 border-brand-600 text-slate-900 dark:text-white';
-              badgeCls += 'bg-brand-600 text-white';
-            } else {
-              cardCls += 'bg-slate-50/80 dark:bg-[#16201b] hover:bg-brand-50/50 dark:hover:bg-[#1c2a23] border-slate-200 dark:border-[#24342b] hover:border-brand-500 text-slate-800 dark:text-slate-200';
-              badgeCls += 'bg-white dark:bg-[#111915] border border-slate-200 dark:border-[#293b31] text-slate-600 dark:text-slate-300 group-hover:bg-brand-600 group-hover:text-white group-hover:border-brand-600';
-            }
+            cardCls += 'bg-slate-50/80 dark:bg-[#16201b] hover:bg-brand-50/50 dark:hover:bg-[#1c2a23] border-slate-200 dark:border-[#24342b] hover:border-brand-500 text-slate-800 dark:text-slate-200';
+            badgeCls += 'bg-white dark:bg-[#111915] border border-slate-200 dark:border-[#293b31] text-slate-600 dark:text-slate-300 group-hover:bg-brand-600 group-hover:text-white group-hover:border-brand-600';
           }
 
           btn.className = cardCls;
@@ -1714,24 +1650,10 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
           optionsEl.appendChild(btn);
         });
 
-        const fbPanel = document.getElementById('eq-feedback');
-        if (instantFeedback && hasAnswered && (q.keyword_anchor || q.explanation)) {
-          fbPanel.classList.remove('hidden');
-          document.getElementById('eq-anchor-box').classList.toggle('hidden', !q.keyword_anchor);
-          document.getElementById('eq-anchor').textContent = q.keyword_anchor || '';
-          document.getElementById('eq-exp-box').classList.toggle('hidden', !q.explanation);
-          document.getElementById('eq-explanation').textContent = q.explanation || '';
-        } else {
-          fbPanel.classList.add('hidden');
-        }
-
-        document.getElementById('btn-exam-prev').disabled = idx === 0;
         const prevTop = document.getElementById('btn-exam-prev-top');
         const nextTop = document.getElementById('btn-exam-next-top');
-        const nextBottom = document.getElementById('btn-exam-next');
         if (prevTop) prevTop.disabled = idx === 0;
         if (nextTop) nextTop.disabled = idx >= total - 1;
-        if (nextBottom) nextBottom.disabled = idx >= total - 1;
 
         const palette = document.getElementById('exam-palette');
         palette.innerHTML = '';
@@ -1741,16 +1663,11 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
           const ans = examState.answers[i];
           const answered = ans !== undefined;
           const flagged = !!examState.flags[i];
-          const itemQ = examState.questions[i];
 
           let cls = 'h-9 rounded-lg text-xs font-extrabold transition-all ';
           if (flagged) cls += 'bg-amber-400 text-slate-950 ';
-          else if (answered) {
-            if (instantFeedback) cls += (ans === itemQ.shuffledCorrectIndex) ? 'bg-brand-600 text-white ' : 'bg-rose-500 text-white ';
-            else cls += 'bg-brand-600 text-white ';
-          } else {
-            cls += 'bg-slate-100 dark:bg-[#16201b] text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-[#24342b] hover:border-brand-500 ';
-          }
+          else if (answered) cls += 'bg-brand-600 text-white ';
+          else cls += 'bg-slate-100 dark:bg-[#16201b] text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-[#24342b] hover:border-brand-500 ';
           if (current) cls += 'ring-2 ring-brand-600 dark:ring-white ring-offset-2 ring-offset-white dark:ring-offset-[#111915] ';
 
           b.className = cls;
@@ -1766,9 +1683,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         const idx = examState.currentIndex;
         const q = examState.questions[idx];
         if (!q || optIdx >= q.shuffledOptions.length) return;
-        if (instantFeedback && examState.answers[idx] !== undefined) return;
         examState.answers[idx] = optIdx;
-        if (instantFeedback) recordAnswer(q.id, optIdx === q.shuffledCorrectIndex);
         renderActiveExamQuestion();
       }
 
@@ -1782,7 +1697,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
           const userAns = examState.answers[i];
           const isOk = userAns === q.shuffledCorrectIndex;
           if (isOk) correct++;
-          if (!instantFeedback && userAns !== undefined) recordAnswer(q.id, isOk);
+          if (userAns !== undefined) recordAnswer(q.id, isOk);
         });
 
         const total = examState.questions.length;
@@ -1801,7 +1716,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
           savePaperHistory();
         }
 
-        document.getElementById('exam-running').classList.add('hidden');
+        setExamScrollLock(false);
         document.getElementById('exam-result').classList.remove('hidden');
 
         const badge = document.getElementById('exam-score-badge');
@@ -1862,12 +1777,6 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
               </div>
               ${!isOk ? `<div class="text-brand-700 dark:text-brand-300">Đáp án đúng: <strong>${letters[q.shuffledCorrectIndex]}. ${escapeHtml(q.shuffledOptions[q.shuffledCorrectIndex])}</strong></div>` : ''}
             </div>
-            ${(q.keyword_anchor || q.explanation) ? `
-              <div class="bg-slate-50 dark:bg-[#16201b] border border-slate-200/80 dark:border-[#24342b] rounded-xl p-3.5 text-xs sm:text-sm space-y-1">
-                ${q.keyword_anchor ? `<div class="text-amber-700 dark:text-amber-300 font-extrabold">⚡ ${escapeHtml(q.keyword_anchor)}</div>` : ''}
-                ${q.explanation ? `<div class="text-slate-600 dark:text-slate-300">${escapeHtml(q.explanation)}</div>` : ''}
-              </div>
-            ` : ''}
           `;
           listEl.appendChild(card);
         });
@@ -2117,7 +2026,6 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
                 </div>
               `).join('')}
             </div>
-            <input type="text" value="${escapeHtml(q.explanation || '')}" placeholder="Giải thích ngắn (tùy chọn)..." class="draft-exp-input w-full bg-white dark:bg-[#0b100d] border border-slate-200 dark:border-[#24342b] rounded-lg px-2.5 py-1.5 text-xs focus:outline-none" />
           `;
 
           card.querySelector('.btn-remove-draft-q').addEventListener('click', () => {
@@ -2140,10 +2048,6 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
             inp.addEventListener('input', (e) => {
               studioDraftQuestions[qIdx].options[Number(inp.dataset.opt)] = e.target.value;
             });
-          });
-
-          card.querySelector('.draft-exp-input').addEventListener('input', (e) => {
-            studioDraftQuestions[qIdx].explanation = e.target.value;
           });
 
           list.appendChild(card);
@@ -2184,8 +2088,6 @@ YÊU CẦU BẮT BUỘC:
    - "question": string (nội dung câu hỏi sạch sẽ, bỏ số thứ tự "Câu 1:", "1." ở đầu nếu có)
    - "options": array gồm 4 chuỗi đáp án A, B, C, D (bỏ tiền tố "A.", "b)", "✅", "*" ở các đáp án)
    - "correctIndex": integer (0 = A, 1 = B, 2 = C, 3 = D). Xác định dựa theo dấu ✅, *, khoanh tròn, tô đậm, gạch chân, bảng đáp án cuối bài, hoặc nếu đề chưa đánh dấu đáp án đúng thì tự suy luận đáp án chính xác nhất.
-   - "keyword_anchor": string (câu mẹo nhớ nhanh 1 dòng cực ngắn)
-   - "explanation": string (giải thích ngắn gọn 1-2 câu bằng tiếng Việt vì sao đáp án đó đúng)
 3. Trả về thuần JSON array, không giải thích thêm ngoài JSON.`;
 
         const parts = [{ text: promptText }];
@@ -2478,12 +2380,6 @@ YÊU CẦU BẮT BUỘC:
             <div class="text-xs sm:text-sm text-brand-700 dark:text-brand-300 font-bold">
               ✓ Đáp án đúng: ${letters[q.correctIndex]}. ${escapeHtml(stripOptionPrefix(q.options[q.correctIndex]))}
             </div>
-            ${(q.keyword_anchor || q.explanation) ? `
-              <div class="bg-slate-50 dark:bg-[#16201b] rounded-xl p-3 text-xs space-y-1">
-                ${q.keyword_anchor ? `<div class="text-amber-700 dark:text-amber-300 font-extrabold">⚡ ${escapeHtml(q.keyword_anchor)}</div>` : ''}
-                ${q.explanation ? `<div class="text-slate-600 dark:text-slate-300">${escapeHtml(q.explanation)}</div>` : ''}
-              </div>
-            ` : ''}
           `;
           listEl.appendChild(card);
         });
@@ -2579,15 +2475,8 @@ YÊU CẦU BẮT BUỘC:
           heroDrop.addEventListener(ev, (e) => e.preventDefault());
         });
 
-        // Subject Detail & Feedback Mode
+        // Subject Detail
         document.getElementById('btn-back-subjects').addEventListener('click', () => renderHomeSubjects());
-        document.querySelectorAll('.fb-mode-btn').forEach(btn => {
-          btn.addEventListener('click', () => {
-            instantFeedback = btn.dataset.fbMode === 'instant';
-            localStorage.setItem(STORAGE_KEYS.FB_MODE, instantFeedback ? 'instant' : 'exam');
-            if (activeSubjectName) renderSubjectDetail(activeSubjectName);
-          });
-        });
 
         document.getElementById('btn-reset-progress').addEventListener('click', () => {
           if (!confirm('Xóa toàn bộ lịch sử làm bài và điểm số?')) return;
@@ -2736,12 +2625,6 @@ D. 60.0 ms`;
           else renderHomeSubjects();
         });
 
-        document.getElementById('btn-toggle-instant-fb').addEventListener('click', () => {
-          instantFeedback = !instantFeedback;
-          localStorage.setItem(STORAGE_KEYS.FB_MODE, instantFeedback ? 'instant' : 'exam');
-          renderActiveExamQuestion();
-        });
-
         document.getElementById('btn-star-exam-q').addEventListener('click', () => {
           const q = examState.questions[examState.currentIndex];
           if (q) { toggleStar(q.id); renderActiveExamQuestion(); }
@@ -2758,8 +2641,6 @@ D. 60.0 ms`;
         const goNextQuestion = () => {
           if (examState.currentIndex < examState.questions.length - 1) { examState.currentIndex++; renderActiveExamQuestion(); }
         };
-        document.getElementById('btn-exam-prev').addEventListener('click', goPrevQuestion);
-        document.getElementById('btn-exam-next').addEventListener('click', goNextQuestion);
         document.getElementById('btn-exam-prev-top').addEventListener('click', goPrevQuestion);
         document.getElementById('btn-exam-next-top').addEventListener('click', goNextQuestion);
 
