@@ -113,6 +113,10 @@
             <span id="total-bank-badge" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-brand-100 dark:bg-brand-900/50 text-brand-700 dark:text-brand-300 border border-brand-200 dark:border-brand-700/50">
               0 câu
             </span>
+            <button id="btn-cloud-sync" type="button" class="hidden sm:inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-[#18231d] text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-[#26372e] hover:border-brand-500 transition-all" title="Bấm để đồng bộ lại đề từ Supabase">
+              <span id="cloud-sync-dot" class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+              <span id="cloud-sync-label">Đang kết nối...</span>
+            </button>
           </div>
           <p class="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block">Upload Ảnh, PDF, Docs, Text • Tạo đề thi thông minh</p>
         </div>
@@ -939,6 +943,142 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
       function saveCustomSubjects() { localStorage.setItem(STORAGE_KEYS.CUSTOM_SUBJECTS, JSON.stringify(customSubjects)); }
       function saveCustomExams() { localStorage.setItem(STORAGE_KEYS.CUSTOM_EXAMS, JSON.stringify(customExams)); }
 
+      // --- SUPABASE CLOUD SYNC ---
+      const SUPABASE_REST_URL = 'https://typsubizynimfhukhewc.supabase.co/rest/v1';
+      const SUPABASE_KEY = 'sb_publishable_uyBM4WsSz16ie7pnpNJtfA_jsYw882Q';
+
+      function setCloudStatus(state, text) {
+        const dot = document.getElementById('cloud-sync-dot');
+        const lbl = document.getElementById('cloud-sync-label');
+        if (!dot || !lbl) return;
+        lbl.textContent = text;
+        if (state === 'ok') dot.className = 'w-1.5 h-1.5 rounded-full bg-brand-500';
+        else if (state === 'syncing') dot.className = 'w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse';
+        else dot.className = 'w-1.5 h-1.5 rounded-full bg-rose-500';
+      }
+
+      async function sbFetch(path, options = {}) {
+        const headers = {
+          'apikey': SUPABASE_KEY,
+          'Content-Type': 'application/json',
+          ...(options.headers || {})
+        };
+        const res = await fetch(`${SUPABASE_REST_URL}${path}`, { ...options, headers });
+        if (!res.ok) {
+          const errText = await res.text();
+          throw new Error(`Supabase ${res.status}: ${errText}`);
+        }
+        const txt = await res.text();
+        return txt ? JSON.parse(txt) : null;
+      }
+
+      async function syncFromSupabase() {
+        setCloudStatus('syncing', 'Đang đồng bộ...');
+        try {
+          const [subjRows, examRows] = await Promise.all([
+            sbFetch('/quizfast_subjects?select=*&order=created_at.asc'),
+            sbFetch('/quizfast_exams?select=*&order=created_at.asc')
+          ]);
+
+          if (Array.isArray(subjRows)) {
+            customSubjects = subjRows.map(r => ({
+              name: r.name,
+              description: r.description || 'Môn học chia sẻ trên Cloud'
+            }));
+            saveCustomSubjects();
+          }
+
+          if (Array.isArray(examRows)) {
+            customExams = examRows.map(r => ({
+              id: r.id,
+              subject: r.subject,
+              title: r.title,
+              minutes: typeof r.minutes === 'number' ? r.minutes : DEFAULT_MINUTES_PER_PAPER,
+              passPct: r.pass_pct || 70,
+              shuffleQ: !!r.shuffle_q,
+              shuffleOpt: r.shuffle_opt !== false,
+              questions: Array.isArray(r.questions) ? r.questions : []
+            }));
+            saveCustomExams();
+          }
+
+          setCloudStatus('ok', 'Cloud Đã Đồng Bộ');
+          updateGlobalCounters();
+          if (currentMode === 'home' && !examState.active && !examState.finished) {
+            if (activeSubjectName) renderSubjectDetail(activeSubjectName);
+            else renderHomeSubjects();
+          }
+        } catch (err) {
+          console.warn('Supabase sync error:', err);
+          setCloudStatus('err', 'Offline (Local)');
+        }
+      }
+
+      async function sbUpsertSubject(subj) {
+        try {
+          setCloudStatus('syncing', 'Đang lưu môn...');
+          await sbFetch('/quizfast_subjects?on_conflict=name', {
+            method: 'POST',
+            headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+            body: JSON.stringify({ name: subj.name, description: subj.description || '' })
+          });
+          setCloudStatus('ok', 'Cloud Đã Đồng Bộ');
+        } catch (err) {
+          console.warn('sbUpsertSubject error:', err);
+          setCloudStatus('err', 'Lỗi đồng bộ');
+        }
+      }
+
+      async function sbDeleteSubject(name) {
+        try {
+          setCloudStatus('syncing', 'Đang xóa...');
+          await sbFetch(`/quizfast_exams?subject=eq.${encodeURIComponent(name)}`, { method: 'DELETE' });
+          await sbFetch(`/quizfast_subjects?name=eq.${encodeURIComponent(name)}`, { method: 'DELETE' });
+          setCloudStatus('ok', 'Cloud Đã Đồng Bộ');
+        } catch (err) {
+          console.warn('sbDeleteSubject error:', err);
+          setCloudStatus('err', 'Lỗi đồng bộ');
+        }
+      }
+
+      async function sbUpsertExams(examsList) {
+        if (!Array.isArray(examsList) || examsList.length === 0) return;
+        try {
+          setCloudStatus('syncing', 'Đang lưu lên Cloud...');
+          const payload = examsList.map(ex => ({
+            id: ex.id,
+            subject: ex.subject,
+            title: ex.title,
+            minutes: ex.minutes,
+            pass_pct: ex.passPct || 70,
+            shuffle_q: !!ex.shuffleQ,
+            shuffle_opt: ex.shuffleOpt !== false,
+            questions: ex.questions || []
+          }));
+          await sbFetch('/quizfast_exams?on_conflict=id', {
+            method: 'POST',
+            headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+            body: JSON.stringify(payload)
+          });
+          setCloudStatus('ok', 'Cloud Đã Đồng Bộ');
+        } catch (err) {
+          console.warn('sbUpsertExams error:', err);
+          setCloudStatus('err', 'Lỗi lưu Cloud');
+          alert('Đã lưu trên máy, nhưng không lưu được lên Supabase: ' + err.message);
+        }
+      }
+
+      async function sbDeleteExam(examId) {
+        try {
+          setCloudStatus('syncing', 'Đang xóa...');
+          await sbFetch(`/quizfast_exams?id=eq.${encodeURIComponent(examId)}`, { method: 'DELETE' });
+          setCloudStatus('ok', 'Cloud Đã Đồng Bộ');
+        } catch (err) {
+          console.warn('sbDeleteExam error:', err);
+          setCloudStatus('err', 'Lỗi đồng bộ');
+        }
+      }
+
       function getQuestionRecord(id) {
         if (!progressMap[id]) {
           progressMap[id] = { streak: 0, wrongCount: 0, status: 'unseen', starred: false };
@@ -1241,6 +1381,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
               customExams = customExams.filter(ex => ex.subject !== subj.name);
               saveCustomSubjects();
               saveCustomExams();
+              sbDeleteSubject(subj.name);
               renderHomeSubjects();
             });
           }
@@ -1373,6 +1514,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
                 if (!confirm(`Xóa đề "${paper.title}"?`)) return;
                 customExams = customExams.filter(ex => ex.id !== paper.customExamId);
                 saveCustomExams();
+                sbDeleteExam(paper.customExamId);
                 renderSubjectDetail(subjName);
               });
             }
@@ -2071,8 +2213,10 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
 
         // Ensure subject exists if new
         if (!getAllSubjects().some(s => s.name === subjName)) {
-          customSubjects.push({ name: subjName, description: 'Môn học tự tạo' });
+          const newSubj = { name: subjName, description: 'Môn học tự tạo' };
+          customSubjects.push(newSubj);
           saveCustomSubjects();
+          sbUpsertSubject(newSubj);
         }
 
         const baseTitle = document.getElementById('cfg-exam-title').value.trim() || `Đề mới (${validQs.length} câu)`;
@@ -2081,6 +2225,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         const shuffleQ = document.getElementById('cfg-shuffle-q').checked;
         const shuffleOpt = document.getElementById('cfg-shuffle-opt').checked;
         const splitSize = Number(document.getElementById('cfg-split-size').value) || 0;
+        const examsToSync = [];
 
         if (studioEditingExamId) {
           const idx = customExams.findIndex(ex => ex.id === studioEditingExamId);
@@ -2095,13 +2240,14 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
               shuffleOpt,
               questions: validQs.map((q, i) => ({ ...q, subject: subjName, id: q.id || `${studioEditingExamId}_Q${i + 1}` }))
             };
+            examsToSync.push(customExams[idx]);
           }
         } else if (splitSize > 0 && validQs.length > splitSize) {
           const chunks = Math.ceil(validQs.length / splitSize);
           for (let c = 0; c < chunks; c++) {
             const slice = validQs.slice(c * splitSize, (c + 1) * splitSize);
             const exId = `CUSTOM_EX_${Date.now()}_${c + 1}`;
-            customExams.push({
+            const item = {
               id: exId,
               subject: subjName,
               title: `${baseTitle} — Đề ${c + 1}`,
@@ -2110,11 +2256,13 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
               shuffleQ,
               shuffleOpt,
               questions: slice.map((q, i) => ({ ...q, subject: subjName, id: `${exId}_Q${i + 1}` }))
-            });
+            };
+            customExams.push(item);
+            examsToSync.push(item);
           }
         } else {
           const exId = `CUSTOM_EX_${Date.now()}`;
-          customExams.push({
+          const item = {
             id: exId,
             subject: subjName,
             title: baseTitle,
@@ -2123,10 +2271,13 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
             shuffleQ,
             shuffleOpt,
             questions: validQs.map((q, i) => ({ ...q, subject: subjName, id: `${exId}_Q${i + 1}` }))
-          });
+          };
+          customExams.push(item);
+          examsToSync.push(item);
         }
 
         saveCustomExams();
+        sbUpsertExams(examsToSync);
         document.getElementById('modal-upload').classList.add('hidden');
         document.getElementById('modal-upload').classList.remove('flex');
         switchMode('home');
@@ -2341,10 +2492,16 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
           if (getAllSubjects().some(s => s.name.toLowerCase() === name.toLowerCase())) {
             return alert('Môn học này đã tồn tại.');
           }
-          customSubjects.push({ name, description: desc || 'Môn học tự tạo' });
+          const newSubj = { name, description: desc || 'Môn học tự tạo' };
+          customSubjects.push(newSubj);
           saveCustomSubjects();
+          sbUpsertSubject(newSubj);
           closeNewSubj();
           renderHomeSubjects();
+        });
+
+        document.getElementById('btn-cloud-sync').addEventListener('click', () => {
+          syncFromSupabase();
         });
 
         // Upload Studio Modal
@@ -2594,6 +2751,7 @@ D. 60.0 ms`;
         bindEvents();
         switchMode('home');
         lucide.createIcons();
+        syncFromSupabase();
       }
 
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
