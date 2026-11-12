@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" class="dark">
+<html lang="vi">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -166,39 +166,37 @@
       <div id="home-subjects-screen" class="space-y-8">
 
         <!-- Smart Upload Dropzone Hero -->
-        <div id="hero-dropzone" class="relative overflow-hidden bg-white dark:bg-[#111915] border-2 border-dashed border-brand-400/70 dark:border-brand-700/60 hover:border-brand-500 rounded-3xl p-6 sm:p-8 transition-all shadow-sm">
+        <div id="hero-dropzone" class="relative overflow-hidden bg-white dark:bg-[#111915] border-2 border-dashed border-brand-400/70 dark:border-brand-700/60 rounded-3xl p-6 sm:p-8 transition-all shadow-sm">
           <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div class="space-y-2.5 max-w-2xl">
               <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-300 text-xs font-extrabold">
                 <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-                <span>Smart Exam Importer — Nhận diện đề tự động</span>
+                <span>Smart Exam Importer — AI Bóc Tách Đề</span>
               </div>
               <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-                Kéo thả file đề hoặc dán văn bản để tạo bài thi ngay
+                Dán văn bản đề thi để tạo bài thi &amp; lưu lên Cloud ngay
               </h1>
               <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                Hỗ trợ <strong class="text-slate-700 dark:text-slate-200">Ảnh (JPG, PNG, WebP)</strong>, <strong class="text-slate-700 dark:text-slate-200">PDF</strong>, <strong class="text-slate-700 dark:text-slate-200">Word (.docx)</strong>, <strong class="text-slate-700 dark:text-slate-200">Text / JSON (.txt, .md, .json)</strong>. Tự động bóc tách câu hỏi, tùy chỉnh thời gian, tiêu đề và chia đề linh hoạt.
+                Hỗ trợ <strong class="text-slate-700 dark:text-slate-200">Dán văn bản từ Word, Google Docs, PDF hoặc JSON</strong>, tùy chỉnh thời gian, tiêu đề và chia đề linh hoạt.
               </p>
               <div class="flex flex-wrap items-center gap-2 pt-1 text-[11px] font-bold text-slate-500 dark:text-slate-400">
-                <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-[#18231d]">🖼️ Ảnh (OCR)</span>
-                <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-[#18231d]">📄 PDF</span>
-                <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-[#18231d]">📝 Word (.docx)</span>
-                <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-[#18231d]">📋 Dán từ Google Docs</span>
+                <span class="px-2.5 py-1 rounded-lg bg-brand-50 dark:bg-[#18231d] text-brand-700 dark:text-brand-300 border border-brand-200 dark:border-brand-800/50">📋 Dán văn bản (Hoạt động)</span>
+                <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-[#18231d] opacity-75">🖼️ Ảnh / 📄 PDF / 📝 Word — 🚀 Sớm ra mắt</span>
               </div>
             </div>
 
             <div class="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
-              <button id="btn-hero-select-file" class="px-5 py-3.5 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-extrabold shadow-md shadow-brand-600/20 flex items-center justify-center gap-2 transition-all active:scale-95">
-                <i data-lucide="file-up" class="w-4 h-4"></i>
-                <span>Chọn file từ máy tính</span>
-              </button>
-              <button id="btn-hero-paste-text" class="px-5 py-3 rounded-2xl bg-slate-100 dark:bg-[#18231d] hover:bg-slate-200 dark:hover:bg-[#223129] text-slate-800 dark:text-slate-100 text-sm font-bold border border-slate-200 dark:border-[#26372e] flex items-center justify-center gap-2 transition-all">
+              <button id="btn-hero-paste-text" class="px-5 py-3.5 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-extrabold shadow-md shadow-brand-600/20 flex items-center justify-center gap-2 transition-all active:scale-95">
                 <i data-lucide="clipboard-paste" class="w-4 h-4"></i>
-                <span>Dán văn bản / Tạo thủ công</span>
+                <span>Dán văn bản / Tạo đề mới</span>
+              </button>
+              <button id="btn-hero-select-file" type="button" disabled class="px-5 py-3 rounded-2xl bg-slate-100 dark:bg-[#18231d] text-slate-400 dark:text-slate-500 text-xs sm:text-sm font-bold border border-slate-200 dark:border-[#26372e] flex items-center justify-center gap-2 cursor-not-allowed">
+                <i data-lucide="lock" class="w-4 h-4"></i>
+                <span>Kéo thả / Upload file (Sớm ra mắt)</span>
               </button>
             </div>
           </div>
-          <input id="hero-file-input" type="file" accept=".pdf,.docx,.txt,.md,.json,.csv,image/*" class="hidden" />
+          <input id="hero-file-input" type="file" accept=".pdf,.docx,.txt,.md,.json,.csv,image/*" class="hidden" disabled />
         </div>
 
         <!-- Subjects Section -->
@@ -318,11 +316,6 @@
               <span id="lbl-instant-fb">Báo đáp án ngay: BẬT</span>
             </button>
 
-            <button id="btn-toggle-highlight" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all" title="Phím tắt: H">
-              <i data-lucide="highlighter" class="w-3.5 h-3.5"></i>
-              <span>Highlight (H)</span>
-            </button>
-
             <div class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-brand-50 dark:bg-[#16221b] border border-brand-200 dark:border-brand-700/40">
               <i data-lucide="clock" class="w-4 h-4 text-brand-600 dark:text-brand-400"></i>
               <span id="exam-timer" class="font-mono-code text-base sm:text-lg font-extrabold text-brand-700 dark:text-brand-400">50:00</span>
@@ -337,21 +330,30 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
           <!-- Question Card -->
           <div class="lg:col-span-8 bg-white dark:bg-[#111915] border border-slate-200/90 dark:border-[#1f2c25] rounded-2xl p-5 sm:p-7 space-y-6 shadow-sm">
-            <div class="flex items-center justify-between gap-2 pb-4 border-b border-slate-200/80 dark:border-[#1f2c25]">
-              <div class="flex items-center gap-2.5">
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-slate-200/80 dark:border-[#1f2c25]">
+              <div class="flex flex-wrap items-center gap-2">
                 <span id="eq-number-badge" class="px-3 py-1 rounded-lg text-xs font-extrabold bg-brand-600 text-white">Câu 1 / 60</span>
                 <span id="eq-subject-badge" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 dark:bg-[#18231d] text-slate-600 dark:text-slate-300"></span>
                 <span id="eq-mastery-badge" class="px-2.5 py-1 rounded-lg text-xs font-bold"></span>
               </div>
 
-              <div class="flex items-center gap-2">
-                <button id="btn-star-exam-q" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all" title="Gắn sao (S)">
+              <div class="flex flex-wrap items-center gap-1.5">
+                <button id="btn-star-exam-q" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border text-xs font-bold transition-all" title="Gắn sao (S)">
                   <i data-lucide="star" class="w-3.5 h-3.5"></i>
-                  <span class="hidden sm:inline">Gắn sao</span>
+                  <span class="hidden sm:inline">Sao</span>
                 </button>
-                <button id="btn-flag-exam-q" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all" title="Đánh dấu (F)">
+                <button id="btn-flag-exam-q" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border text-xs font-bold transition-all" title="Đánh dấu (F)">
                   <i data-lucide="flag" class="w-3.5 h-3.5"></i>
-                  <span>Đánh dấu</span>
+                  <span class="hidden sm:inline">Cờ</span>
+                </button>
+                <div class="h-5 w-px bg-slate-200 dark:bg-[#223129] mx-0.5"></div>
+                <button id="btn-exam-prev-top" class="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-[#18231d] hover:bg-slate-200 dark:hover:bg-[#223129] text-xs font-bold text-slate-700 dark:text-slate-200 transition-all disabled:opacity-40" title="Câu trước (←)">
+                  <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+                  <span class="hidden sm:inline">Trước</span>
+                </button>
+                <button id="btn-exam-next-top" class="flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-xs font-extrabold text-white transition-all" title="Câu tiếp theo (→)">
+                  <span>Tiếp theo</span>
+                  <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                 </button>
               </div>
             </div>
@@ -605,14 +607,14 @@
               <p class="text-[11px] text-slate-500 dark:text-slate-400">Key chỉ lưu trên trình duyệt của bạn (`localStorage`), không chia sẻ ra ngoài.</p>
             </div>
 
-            <div id="modal-dropzone" class="border-2 border-dashed border-slate-300 dark:border-[#2a3b31] hover:border-brand-500 rounded-2xl p-4 text-center cursor-pointer bg-slate-50/70 dark:bg-[#151e19] transition-all space-y-2">
-              <div class="w-10 h-10 mx-auto rounded-xl bg-brand-100 dark:bg-brand-900/40 text-brand-600 dark:text-brand-400 flex items-center justify-center">
-                <i data-lucide="file-plus-2" class="w-5 h-5"></i>
+            <div id="modal-dropzone" class="border-2 border-dashed border-slate-200 dark:border-[#24342b] rounded-2xl p-4 text-center bg-slate-100/70 dark:bg-[#151e19] space-y-1.5 opacity-80 cursor-not-allowed select-none">
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 text-[11px] font-extrabold">
+                <span>🚀 Sớm ra mắt</span>
               </div>
-              <div class="text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200">
-                Bấm chọn hoặc kéo thả <span class="text-brand-600 dark:text-brand-400">Ảnh, PDF, DOCX, TXT, JSON</span>
+              <div class="text-xs font-bold text-slate-500 dark:text-slate-400">
+                Tính năng kéo thả &amp; tải file (Ảnh, PDF, DOCX) đang được hoàn thiện. Hiện tại hãy dán văn bản vào ô bên dưới!
               </div>
-              <input id="modal-file-input" type="file" accept=".pdf,.docx,.txt,.md,.json,.csv,image/*" class="hidden" />
+              <input id="modal-file-input" type="file" accept=".pdf,.docx,.txt,.md,.json,.csv,image/*" class="hidden" disabled />
             </div>
 
             <!-- Parse Progress Banner -->
@@ -796,7 +798,6 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         <div class="flex justify-between py-2 border-b border-slate-200 dark:border-[#1f2c25]"><span>Chọn đáp án A, B, C, D</span><span class="font-mono-code font-bold text-brand-600 dark:text-brand-400">1 - 4 hoặc A - D</span></div>
         <div class="flex justify-between py-2 border-b border-slate-200 dark:border-[#1f2c25]"><span>Câu tiếp theo</span><span class="font-mono-code font-bold text-brand-600 dark:text-brand-400">→ / Enter / Space</span></div>
         <div class="flex justify-between py-2 border-b border-slate-200 dark:border-[#1f2c25]"><span>Câu trước đó</span><span class="font-mono-code font-bold text-brand-600 dark:text-brand-400">←</span></div>
-        <div class="flex justify-between py-2 border-b border-slate-200 dark:border-[#1f2c25]"><span>Bật / Tắt Highlight từ khóa</span><span class="font-mono-code font-bold text-brand-600 dark:text-brand-400">H</span></div>
         <div class="flex justify-between py-2 border-b border-slate-200 dark:border-[#1f2c25]"><span>Đánh dấu cờ câu hỏi</span><span class="font-mono-code font-bold text-brand-600 dark:text-brand-400">F</span></div>
         <div class="flex justify-between py-2"><span>Gắn sao câu hỏi</span><span class="font-mono-code font-bold text-brand-600 dark:text-brand-400">S</span></div>
       </div>
@@ -961,7 +962,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         const savedFb = localStorage.getItem(STORAGE_KEYS.FB_MODE);
         instantFeedback = savedFb === null ? true : savedFb === 'instant';
 
-        const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) || 'dark';
+        const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) || 'light';
         applyTheme(savedTheme);
         geminiApiKey = localStorage.getItem(STORAGE_KEYS.GEMINI_KEY) || '';
       }
@@ -1282,16 +1283,8 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       }
 
-      function formatWithHighlights(text, highlightWords) {
-        const safe = escapeHtml(text);
-        if (!highlightEnabled || !Array.isArray(highlightWords) || highlightWords.length === 0) {
-          return safe;
-        }
-        const cleaned = highlightWords.map(w => String(w || '').trim()).filter(Boolean).sort((a, b) => b.length - a.length);
-        if (cleaned.length === 0) return safe;
-        const pattern = cleaned.map(w => escapeRegExp(escapeHtml(w))).join('|');
-        const regex = new RegExp(`(${pattern})`, 'gi');
-        return safe.replace(regex, '<mark class="kw-highlight">$1</mark>');
+      function formatWithHighlights(text) {
+        return escapeHtml(text);
       }
 
       function stripOptionPrefix(opt) {
@@ -1632,11 +1625,6 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         fbBtn.className = instantFeedback
           ? 'flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-extrabold border transition-all bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-300 border-brand-300 dark:border-brand-700/60'
           : 'flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all bg-slate-100 dark:bg-[#18231d] text-slate-600 dark:text-slate-300 border-slate-200 dark:border-[#26372e]';
-
-        const hlBtn = document.getElementById('btn-toggle-highlight');
-        hlBtn.className = highlightEnabled
-          ? 'flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-extrabold border transition-all bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-500/40'
-          : 'flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all bg-slate-100 dark:bg-[#18231d] text-slate-600 dark:text-slate-300 border-slate-200 dark:border-[#26372e]';
       }
 
       function renderActiveExamQuestion() {
@@ -1738,6 +1726,12 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         }
 
         document.getElementById('btn-exam-prev').disabled = idx === 0;
+        const prevTop = document.getElementById('btn-exam-prev-top');
+        const nextTop = document.getElementById('btn-exam-next-top');
+        const nextBottom = document.getElementById('btn-exam-next');
+        if (prevTop) prevTop.disabled = idx === 0;
+        if (nextTop) nextTop.disabled = idx >= total - 1;
+        if (nextBottom) nextBottom.disabled = idx >= total - 1;
 
         const palette = document.getElementById('exam-palette');
         palette.innerHTML = '';
@@ -2575,29 +2569,14 @@ YÊU CẦU BẮT BUỘC:
           });
         });
 
-        // Hero Dropzone & Buttons
+        // Hero Dropzone & Buttons (File drop disabled — Coming Soon)
         const heroDrop = document.getElementById('hero-dropzone');
-        const heroFileInp = document.getElementById('hero-file-input');
-        document.getElementById('btn-hero-select-file').addEventListener('click', () => heroFileInp.click());
         document.getElementById('btn-hero-paste-text').addEventListener('click', () => openUploadStudio());
         document.getElementById('btn-open-upload').addEventListener('click', () => openUploadStudio());
         document.getElementById('btn-upload-into-subject').addEventListener('click', () => openUploadStudio(activeSubjectName));
 
-        heroFileInp.addEventListener('change', (e) => {
-          const f = e.target.files && e.target.files[0];
-          if (f) openUploadStudio(null, f);
-          e.target.value = '';
-        });
-
-        ['dragenter', 'dragover'].forEach(ev => {
-          heroDrop.addEventListener(ev, (e) => { e.preventDefault(); heroDrop.classList.add('border-brand-500', 'bg-brand-50/30', 'dark:bg-brand-950/20'); });
-        });
-        ['dragleave', 'drop'].forEach(ev => {
-          heroDrop.addEventListener(ev, (e) => { e.preventDefault(); heroDrop.classList.remove('border-brand-500', 'bg-brand-50/30', 'dark:bg-brand-950/20'); });
-        });
-        heroDrop.addEventListener('drop', (e) => {
-          const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
-          if (f) openUploadStudio(null, f);
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(ev => {
+          heroDrop.addEventListener(ev, (e) => e.preventDefault());
         });
 
         // Subject Detail & Feedback Mode
@@ -2657,22 +2636,8 @@ YÊU CẦU BẮT BUỘC:
         document.getElementById('cancel-upload-modal').addEventListener('click', closeUpload);
 
         const modalDrop = document.getElementById('modal-dropzone');
-        const modalFileInp = document.getElementById('modal-file-input');
-        modalDrop.addEventListener('click', () => modalFileInp.click());
-        modalFileInp.addEventListener('change', (e) => {
-          const f = e.target.files && e.target.files[0];
-          if (f) handleStudioFileSelected(f);
-          e.target.value = '';
-        });
-        ['dragenter', 'dragover'].forEach(ev => {
-          modalDrop.addEventListener(ev, (e) => { e.preventDefault(); modalDrop.classList.add('border-brand-500'); });
-        });
-        ['dragleave', 'drop'].forEach(ev => {
-          modalDrop.addEventListener(ev, (e) => { e.preventDefault(); modalDrop.classList.remove('border-brand-500'); });
-        });
-        modalDrop.addEventListener('drop', (e) => {
-          const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
-          if (f) handleStudioFileSelected(f);
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(ev => {
+          modalDrop.addEventListener(ev, (e) => e.preventDefault());
         });
 
         document.getElementById('btn-insert-sample-format').addEventListener('click', () => {
@@ -2777,12 +2742,6 @@ D. 60.0 ms`;
           renderActiveExamQuestion();
         });
 
-        document.getElementById('btn-toggle-highlight').addEventListener('click', () => {
-          highlightEnabled = !highlightEnabled;
-          localStorage.setItem(STORAGE_KEYS.HIGHLIGHT, String(highlightEnabled));
-          renderActiveExamQuestion();
-        });
-
         document.getElementById('btn-star-exam-q').addEventListener('click', () => {
           const q = examState.questions[examState.currentIndex];
           if (q) { toggleStar(q.id); renderActiveExamQuestion(); }
@@ -2793,12 +2752,16 @@ D. 60.0 ms`;
           renderActiveExamQuestion();
         });
 
-        document.getElementById('btn-exam-prev').addEventListener('click', () => {
+        const goPrevQuestion = () => {
           if (examState.currentIndex > 0) { examState.currentIndex--; renderActiveExamQuestion(); }
-        });
-        document.getElementById('btn-exam-next').addEventListener('click', () => {
+        };
+        const goNextQuestion = () => {
           if (examState.currentIndex < examState.questions.length - 1) { examState.currentIndex++; renderActiveExamQuestion(); }
-        });
+        };
+        document.getElementById('btn-exam-prev').addEventListener('click', goPrevQuestion);
+        document.getElementById('btn-exam-next').addEventListener('click', goNextQuestion);
+        document.getElementById('btn-exam-prev-top').addEventListener('click', goPrevQuestion);
+        document.getElementById('btn-exam-next-top').addEventListener('click', goNextQuestion);
 
         document.getElementById('btn-submit-exam').addEventListener('click', () => {
           const answered = Object.keys(examState.answers).length;
@@ -2899,11 +2862,6 @@ D. 60.0 ms`;
             } else if (e.key === 'ArrowLeft') {
               e.preventDefault();
               if (examState.currentIndex > 0) { examState.currentIndex--; renderActiveExamQuestion(); }
-            } else if (key === 'h') {
-              e.preventDefault();
-              highlightEnabled = !highlightEnabled;
-              localStorage.setItem(STORAGE_KEYS.HIGHLIGHT, String(highlightEnabled));
-              renderActiveExamQuestion();
             } else if (key === 'f') {
               e.preventDefault();
               examState.flags[examState.currentIndex] = !examState.flags[examState.currentIndex];
