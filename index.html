@@ -584,7 +584,26 @@
 
           <!-- 1. File Dropzone & Raw Text Input -->
           <div id="studio-source-box" class="space-y-3">
-            <label class="text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">1. Nguồn dữ liệu đề (File hoặc Dán văn bản)</label>
+            <div class="flex items-center justify-between gap-2">
+              <label class="text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">1. Nguồn dữ liệu đề</label>
+              <button id="btn-toggle-ai-key" type="button" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-extrabold bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-300 hover:bg-brand-200 dark:hover:bg-brand-900/60 transition-all">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                <span id="ai-key-status-lbl">Cài đặt AI (Gemini)</span>
+              </button>
+            </div>
+
+            <!-- Collapsible AI Key Setup -->
+            <div id="ai-key-box" class="hidden rounded-2xl bg-brand-50/80 dark:bg-[#13221a] border border-brand-200 dark:border-brand-800/50 p-3.5 space-y-2.5">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-xs font-extrabold text-brand-800 dark:text-brand-300">✨ Gemini 2.5 Flash API Key (Đọc Ảnh, PDF, Text chuẩn 99%)</span>
+                <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" class="text-[11px] font-bold text-brand-600 dark:text-brand-400 underline">Lấy key miễn phí ↗</a>
+              </div>
+              <div class="flex gap-2">
+                <input id="inp-gemini-key" type="password" placeholder="Dán Gemini API Key (AIza...) vào đây" class="flex-1 bg-white dark:bg-[#0b100d] border border-slate-200 dark:border-[#24342b] rounded-xl px-3 py-1.5 text-xs font-mono-code focus:outline-none focus:ring-2 focus:ring-brand-500" />
+                <button id="btn-save-gemini-key" type="button" class="px-3.5 py-1.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-extrabold">Lưu Key</button>
+              </div>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400">Key chỉ lưu trên trình duyệt của bạn (`localStorage`), không chia sẻ ra ngoài.</p>
+            </div>
 
             <div id="modal-dropzone" class="border-2 border-dashed border-slate-300 dark:border-[#2a3b31] hover:border-brand-500 rounded-2xl p-4 text-center cursor-pointer bg-slate-50/70 dark:bg-[#151e19] transition-all space-y-2">
               <div class="w-10 h-10 mx-auto rounded-xl bg-brand-100 dark:bg-brand-900/40 text-brand-600 dark:text-brand-400 flex items-center justify-center">
@@ -611,7 +630,13 @@
             <div class="space-y-2">
               <div class="flex items-center justify-between">
                 <span class="text-xs font-bold text-slate-600 dark:text-slate-300">Văn bản thô / JSON</span>
-                <button id="btn-insert-sample-format" class="text-[11px] font-bold text-brand-600 dark:text-brand-400 hover:underline">Xem mẫu định dạng</button>
+                <div class="flex items-center gap-3">
+                  <label class="inline-flex items-center gap-1.5 cursor-pointer text-[11px] font-bold text-slate-600 dark:text-slate-300">
+                    <input id="chk-use-ai-parse" type="checkbox" class="accent-brand-600 w-3.5 h-3.5 rounded" />
+                    <span>✨ Dùng AI bóc tách</span>
+                  </label>
+                  <button id="btn-insert-sample-format" class="text-[11px] font-bold text-brand-600 dark:text-brand-400 hover:underline">Xem mẫu</button>
+                </div>
               </div>
               <textarea id="studio-raw-text" rows="5" placeholder="Dán nội dung đề từ Word, PDF, Google Docs hoặc JSON vào đây...
 Ví dụ:
@@ -622,8 +647,8 @@ C. Python
 D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dark:border-[#24342b] rounded-xl p-3 text-xs font-mono-code focus:outline-none focus:ring-2 focus:ring-brand-500"></textarea>
 
               <button id="btn-parse-raw-text" class="w-full py-2.5 rounded-xl bg-slate-800 dark:bg-[#1f2e26] hover:bg-slate-900 dark:hover:bg-[#293d32] text-white text-xs font-extrabold flex items-center justify-center gap-2 transition-all">
-                <i data-lucide="cpu" class="w-4 h-4 text-brand-400"></i>
-                <span>Tự động bóc tách câu hỏi từ văn bản</span>
+                <i data-lucide="sparkles" class="w-4 h-4 text-brand-400"></i>
+                <span id="lbl-parse-btn">Bóc tách câu hỏi thông minh</span>
               </button>
             </div>
           </div>
@@ -848,7 +873,8 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         CUSTOM_EXAMS: 'quizfast_custom_exams_v1',
         HIGHLIGHT: 'quizfast_highlight_v1',
         THEME: 'quizfast_theme_v1',
-        FB_MODE: 'quizfast_fb_mode_v1'
+        FB_MODE: 'quizfast_fb_mode_v1',
+        GEMINI_KEY: 'quizfast_gemini_key_v1'
       };
 
       const DEFAULT_QUESTIONS_PER_PAPER = 60;
@@ -863,6 +889,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
 
       let highlightEnabled = true;
       let instantFeedback = true;
+      let geminiApiKey = '';
       let currentTheme = 'dark';
       let currentMode = 'home'; // 'home' | 'mistakes' | 'flashcards'
       let activeSubjectName = null; // null = subjects grid, string = subject detail or running exam
@@ -936,6 +963,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
 
         const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) || 'dark';
         applyTheme(savedTheme);
+        geminiApiKey = localStorage.getItem(STORAGE_KEYS.GEMINI_KEY) || '';
       }
 
       function saveProgress() { localStorage.setItem(STORAGE_KEYS.PROGRESS, JSON.stringify(progressMap)); }
@@ -2128,11 +2156,100 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         });
       }
 
+      function updateAiKeyUI() {
+        const hasKey = !!geminiApiKey;
+        const lbl = document.getElementById('ai-key-status-lbl');
+        const chk = document.getElementById('chk-use-ai-parse');
+        const btnLbl = document.getElementById('lbl-parse-btn');
+        if (lbl) lbl.textContent = hasKey ? '✨ AI Gemini: Sẵn sàng' : 'Cài đặt AI (Gemini)';
+        if (chk) chk.checked = hasKey;
+        if (btnLbl) btnLbl.textContent = hasKey ? '✨ Bóc tách thông minh bằng AI' : 'Bóc tách câu hỏi từ văn bản';
+      }
+
+      function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const res = String(reader.result || '');
+            const idx = res.indexOf(',');
+            resolve(idx >= 0 ? res.slice(idx + 1) : res);
+          };
+          reader.onerror = () => reject(new Error('Không thể đọc file.'));
+          reader.readAsDataURL(file);
+        });
+      }
+
+      async function extractQuestionsWithGemini({ text = '', fileBase64 = null, mimeType = '', subjName = 'Chung' }) {
+        if (!geminiApiKey) throw new Error('Chưa nhập Gemini API Key.');
+
+        const promptText = `Bạn là chuyên gia bóc tách đề thi trắc nghiệm. Hãy đọc toàn bộ nội dung đề thi được cung cấp (từ ảnh, PDF hoặc văn bản) và trả về MỘT MẢNG JSON các câu hỏi trắc nghiệm.
+
+YÊU CẦU BẮT BUỘC:
+1. Bóc tách ĐẦY ĐỦ 100% số câu hỏi có trong tài liệu, không bỏ sót câu nào.
+2. Mỗi phần tử trong mảng JSON phải có đúng các trường sau:
+   - "question": string (nội dung câu hỏi sạch sẽ, bỏ số thứ tự "Câu 1:", "1." ở đầu nếu có)
+   - "options": array gồm 4 chuỗi đáp án A, B, C, D (bỏ tiền tố "A.", "b)", "✅", "*" ở các đáp án)
+   - "correctIndex": integer (0 = A, 1 = B, 2 = C, 3 = D). Xác định dựa theo dấu ✅, *, khoanh tròn, tô đậm, gạch chân, bảng đáp án cuối bài, hoặc nếu đề chưa đánh dấu đáp án đúng thì tự suy luận đáp án chính xác nhất.
+   - "keyword_anchor": string (câu mẹo nhớ nhanh 1 dòng cực ngắn)
+   - "explanation": string (giải thích ngắn gọn 1-2 câu bằng tiếng Việt vì sao đáp án đó đúng)
+3. Trả về thuần JSON array, không giải thích thêm ngoài JSON.`;
+
+        const parts = [{ text: promptText }];
+        if (fileBase64 && mimeType) {
+          parts.push({ inlineData: { mimeType, data: fileBase64 } });
+        }
+        if (text && text.trim()) {
+          parts.push({ text: `\n\nNỘI DUNG ĐỀ THI:\n${text}` });
+        }
+
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(geminiApiKey)}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts }],
+            generationConfig: {
+              responseMimeType: 'application/json',
+              temperature: 0.1
+            }
+          })
+        });
+
+        if (!res.ok) {
+          const errBody = await res.text();
+          throw new Error(`Lỗi Gemini API (${res.status}): ${errBody.slice(0, 200)}`);
+        }
+
+        const data = await res.json();
+        const rawOut = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+        let parsed = JSON.parse(rawOut);
+        if (!Array.isArray(parsed) && Array.isArray(parsed?.questions)) parsed = parsed.questions;
+        if (!Array.isArray(parsed)) throw new Error('AI không trả về đúng định dạng danh sách câu hỏi.');
+
+        return parsed
+          .filter(q => q && q.question && Array.isArray(q.options) && q.options.length >= 2)
+          .map((q, idx) => {
+            const opts = q.options.slice(0, 4).map(stripOptionPrefix);
+            while (opts.length < 4) opts.push('');
+            return {
+              id: `QF_AI_${Date.now()}_${idx + 1}`,
+              subject: subjName || 'Chung',
+              question: String(q.question).trim(),
+              options: opts,
+              correctIndex: (typeof q.correctIndex === 'number' && q.correctIndex >= 0 && q.correctIndex < 4) ? q.correctIndex : 0,
+              keyword_anchor: String(q.keyword_anchor || '').trim(),
+              explanation: String(q.explanation || '').trim()
+            };
+          });
+      }
+
       function openUploadStudio(preferredSubject = null, initialFile = null) {
         studioEditingExamId = null;
         studioDraftQuestions = [];
         document.getElementById('upload-modal-title').textContent = 'Smart Exam Studio — Tải lên & Cấu hình Đề';
         document.getElementById('studio-source-box').classList.remove('hidden');
+        document.getElementById('ai-key-box').classList.add('hidden');
+        document.getElementById('inp-gemini-key').value = geminiApiKey;
+        updateAiKeyUI();
         document.getElementById('studio-raw-text').value = '';
         document.getElementById('cfg-exam-title').value = '';
         document.getElementById('cfg-time-minutes').value = '50';
@@ -2178,16 +2295,45 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         if (!document.getElementById('cfg-exam-title').value.trim()) {
           document.getElementById('cfg-exam-title').value = baseName;
         }
+        const subj = document.getElementById('cfg-subject-select').value;
+        const useAi = document.getElementById('chk-use-ai-parse').checked && !!geminiApiKey;
+        const ext = file.name.toLowerCase().split('.').pop();
+        const isImg = file.type.startsWith('image/') || ['png', 'jpg', 'jpeg', 'webp'].includes(ext);
+        const isPdf = ext === 'pdf' || file.type === 'application/pdf';
+
         try {
+          // If AI is enabled and file is Image or PDF (<15MB), send directly to Gemini Multimodal!
+          if (useAi && (isImg || (isPdf && file.size < 15 * 1024 * 1024))) {
+            setParseProgress(true, `✨ AI Gemini đang đọc & bóc tách "${file.name}"...`, 45);
+            const b64 = await fileToBase64(file);
+            const mime = file.type || (isPdf ? 'application/pdf' : 'image/png');
+            const aiQuestions = await extractQuestionsWithGemini({ fileBase64: b64, mimeType: mime, subjName: subj });
+            setParseProgress(false);
+            studioDraftQuestions = aiQuestions;
+            renderStudioQuestions();
+            document.getElementById('studio-status-msg').textContent = `✨ AI Gemini đã bóc tách chuẩn xác ${aiQuestions.length} câu hỏi từ "${file.name}"!`;
+            return;
+          }
+
+          // Extract text (Word / Text / JSON / or PDF fallback)
           const text = await extractTextFromFile(file);
           document.getElementById('studio-raw-text').value = text;
-          const subj = document.getElementById('cfg-subject-select').value;
-          const parsed = smartParseQuestions(text, subj);
-          studioDraftQuestions = parsed;
-          renderStudioQuestions();
-          document.getElementById('studio-status-msg').textContent = parsed.length > 0
-            ? `✅ Đã nhận diện ${parsed.length} câu hỏi từ "${file.name}". Kiểm tra lại đáp án đúng rồi bấm Lưu!`
-            : `⚠️ Đã đọc file nhưng chưa nhận diện được mẫu câu hỏi tự động. Hãy chỉnh sửa văn bản hoặc thêm câu thủ công.`;
+
+          if (useAi && !text.trim().startsWith('[')) {
+            setParseProgress(true, `✨ AI Gemini đang phân tích ${file.name}...`, 65);
+            const aiQuestions = await extractQuestionsWithGemini({ text, subjName: subj });
+            setParseProgress(false);
+            studioDraftQuestions = aiQuestions;
+            renderStudioQuestions();
+            document.getElementById('studio-status-msg').textContent = `✨ AI Gemini đã bóc tách ${aiQuestions.length} câu hỏi kèm giải thích!`;
+          } else {
+            const parsed = smartParseQuestions(text, subj);
+            studioDraftQuestions = parsed;
+            renderStudioQuestions();
+            document.getElementById('studio-status-msg').textContent = parsed.length > 0
+              ? `✅ Đã nhận diện ${parsed.length} câu hỏi từ "${file.name}". ${!geminiApiKey ? '(Gợi ý: Cài đặt AI Gemini Key để bóc tách chuẩn hơn)' : ''}`
+              : `⚠️ Chưa nhận diện được mẫu câu hỏi tự động. Hãy bật "✨ Cài đặt AI (Gemini)" để AI tự bóc tách chính xác nhé!`;
+          }
         } catch (err) {
           setParseProgress(false);
           alert(err.message);
@@ -2545,15 +2691,46 @@ C. 8.3 ms
 D. 60.0 ms`;
         });
 
-        document.getElementById('btn-parse-raw-text').addEventListener('click', () => {
+        document.getElementById('btn-toggle-ai-key').addEventListener('click', () => {
+          document.getElementById('ai-key-box').classList.toggle('hidden');
+        });
+
+        document.getElementById('btn-save-gemini-key').addEventListener('click', () => {
+          geminiApiKey = document.getElementById('inp-gemini-key').value.trim();
+          localStorage.setItem(STORAGE_KEYS.GEMINI_KEY, geminiApiKey);
+          updateAiKeyUI();
+          document.getElementById('ai-key-box').classList.add('hidden');
+          document.getElementById('studio-status-msg').textContent = geminiApiKey
+            ? '✨ Đã lưu Gemini API Key! Bây giờ bạn có thể tải Ảnh, PDF, Word hoặc dán chữ để AI bóc tách.'
+            : 'Đã xóa Gemini API Key.';
+        });
+
+        document.getElementById('btn-parse-raw-text').addEventListener('click', async () => {
           const raw = document.getElementById('studio-raw-text').value;
+          if (!raw.trim()) return alert('Vui lòng dán nội dung đề vào ô văn bản trước.');
           const subj = document.getElementById('cfg-subject-select').value;
-          const parsed = smartParseQuestions(raw, subj);
-          studioDraftQuestions = parsed;
-          renderStudioQuestions();
-          document.getElementById('studio-status-msg').textContent = parsed.length > 0
-            ? `✅ Đã bóc tách thành công ${parsed.length} câu hỏi!`
-            : '⚠️ Không tìm thấy câu hỏi nào. Hãy kiểm tra định dạng (1. Câu hỏi / A. B. C. D.).';
+          const useAi = document.getElementById('chk-use-ai-parse').checked && !!geminiApiKey;
+
+          if (useAi && !raw.trim().startsWith('[')) {
+            try {
+              setParseProgress(true, '✨ AI Gemini đang phân tích & bóc tách câu hỏi...', 55);
+              const aiQuestions = await extractQuestionsWithGemini({ text: raw, subjName: subj });
+              setParseProgress(false);
+              studioDraftQuestions = aiQuestions;
+              renderStudioQuestions();
+              document.getElementById('studio-status-msg').textContent = `✨ AI Gemini đã bóc tách chuẩn xác ${aiQuestions.length} câu hỏi kèm giải thích!`;
+            } catch (err) {
+              setParseProgress(false);
+              alert(err.message);
+            }
+          } else {
+            const parsed = smartParseQuestions(raw, subj);
+            studioDraftQuestions = parsed;
+            renderStudioQuestions();
+            document.getElementById('studio-status-msg').textContent = parsed.length > 0
+              ? `✅ Đã bóc tách ${parsed.length} câu hỏi!`
+              : '⚠️ Không tìm thấy câu hỏi nào. Hãy bấm "Cài đặt AI (Gemini)" ở trên để AI tự bóc tách chính xác mọi định dạng!';
+          }
         });
 
         document.getElementById('btn-toggle-new-subj-input').addEventListener('click', () => {
