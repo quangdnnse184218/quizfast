@@ -850,12 +850,16 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
               <input id="setup-shuffle-opt" type="checkbox" class="w-4 h-4 accent-brand-600 rounded" />
             </label>
             <label class="flex items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 dark:bg-[#16201b] border border-slate-200 dark:border-[#24342b] cursor-pointer">
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-200">💡 Chấm ngay</span>
+              <input id="setup-instant-fb" type="checkbox" class="w-4 h-4 accent-brand-600 rounded" />
+            </label>
+            <label class="flex items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 dark:bg-[#16201b] border border-slate-200 dark:border-[#24342b] cursor-pointer">
               <span class="text-xs font-bold text-slate-700 dark:text-slate-200">⚡ Tự qua câu khi chọn</span>
               <input id="setup-auto-next" type="checkbox" class="w-4 h-4 accent-brand-600 rounded" />
             </label>
-            <div class="flex items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 dark:bg-[#16201b] border border-slate-200 dark:border-[#24342b]">
-              <span class="text-xs font-bold text-slate-700 dark:text-slate-200">🎯 Mục tiêu đạt (%)</span>
-              <input id="setup-pass-pct" type="number" min="10" max="100" value="70" class="w-16 bg-white dark:bg-[#0b100d] border border-slate-200 dark:border-[#24342b] rounded-lg px-2 py-1 text-xs font-extrabold text-center focus:outline-none" />
+            <div class="sm:col-span-2 flex items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 dark:bg-[#16201b] border border-slate-200 dark:border-[#24342b]">
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-200">🎯 Điểm đạt (trên thang 10, mặc định &gt; 4đ)</span>
+              <input id="setup-pass-score10" type="number" min="0" max="9.5" step="0.5" value="4" class="w-16 bg-white dark:bg-[#0b100d] border border-slate-200 dark:border-[#24342b] rounded-lg px-2 py-1 text-xs font-extrabold text-center focus:outline-none" />
             </div>
           </div>
         </div>
@@ -976,9 +980,11 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         paperKey: '',
         title: '',
         subject: '',
-        passPct: 70,
+        passPct: 40,
+        passScore10: 4,
         shuffleOpt: true,
         autoNext: false,
+        instantFeedback: false,
         autoNextTimer: null,
         rawPool: [],
         questions: [],
@@ -1692,8 +1698,9 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         document.getElementById('setup-q-count').value = paper.questions.length;
         document.getElementById('setup-shuffle-q').checked = paper.shuffleQ !== false;
         document.getElementById('setup-shuffle-opt').checked = paper.shuffleOpt !== false;
+        document.getElementById('setup-instant-fb').checked = false;
         document.getElementById('setup-auto-next').checked = false;
-        document.getElementById('setup-pass-pct').value = Number(paper.passPct) || 70;
+        document.getElementById('setup-pass-score10').value = 4;
 
         refreshExamSetupModalUI();
         const modal = document.getElementById('modal-exam-setup');
@@ -1724,7 +1731,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         };
       }
 
-      function startExamPaper(pool, seconds, title, paperKey, subj, passPct = 70, shuffleOpt = true, autoNext = false) {
+      function startExamPaper(pool, seconds, title, paperKey, subj, passPct = 40, shuffleOpt = true, autoNext = false, instantFb = false, passScore10 = 4) {
         if (!pool || pool.length === 0) return;
 
         if (examState.timerId) clearInterval(examState.timerId);
@@ -1736,8 +1743,10 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
           title: title,
           subject: subj || activeSubjectName || '',
           passPct: passPct,
+          passScore10: passScore10,
           shuffleOpt: shuffleOpt,
           autoNext: autoNext,
+          instantFeedback: instantFb,
           autoNextTimer: null,
           rawPool: [...pool],
           questions: pool.map(q => prepareExamQuestionItem(q, shuffleOpt)),
@@ -1834,12 +1843,25 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
           let cardCls = 'w-full text-left p-4 rounded-xl border-2 transition-all flex items-start gap-3.5 group ';
           let badgeCls = 'w-7 h-7 rounded-lg flex items-center justify-center text-xs font-extrabold shrink-0 mt-0.5 transition-colors ';
 
-          if (isSelected) {
-            cardCls += 'bg-brand-50 dark:bg-brand-900/30 border-brand-600 text-slate-900 dark:text-white';
-            badgeCls += 'bg-brand-600 text-white';
+          if (examState.instantFeedback && hasAnswered) {
+            if (isCorrectOpt) {
+              cardCls += 'bg-brand-50 dark:bg-brand-900/30 border-brand-500 text-brand-950 dark:text-brand-100';
+              badgeCls += 'bg-brand-600 text-white';
+            } else if (isSelected) {
+              cardCls += 'bg-rose-50 dark:bg-rose-500/15 border-rose-500 text-rose-950 dark:text-rose-100';
+              badgeCls += 'bg-rose-600 text-white';
+            } else {
+              cardCls += 'bg-slate-50/60 dark:bg-[#111915] border-slate-200/70 dark:border-[#1f2c25] text-slate-400 opacity-70';
+              badgeCls += 'bg-slate-200 dark:bg-[#18231d] text-slate-400';
+            }
           } else {
-            cardCls += 'bg-slate-50/80 dark:bg-[#16201b] hover:bg-brand-50/50 dark:hover:bg-[#1c2a23] border-slate-200 dark:border-[#24342b] hover:border-brand-500 text-slate-800 dark:text-slate-200';
-            badgeCls += 'bg-white dark:bg-[#111915] border border-slate-200 dark:border-[#293b31] text-slate-600 dark:text-slate-300 group-hover:bg-brand-600 group-hover:text-white group-hover:border-brand-600';
+            if (isSelected) {
+              cardCls += 'bg-brand-50 dark:bg-brand-900/30 border-brand-600 text-slate-900 dark:text-white';
+              badgeCls += 'bg-brand-600 text-white';
+            } else {
+              cardCls += 'bg-slate-50/80 dark:bg-[#16201b] hover:bg-brand-50/50 dark:hover:bg-[#1c2a23] border-slate-200 dark:border-[#24342b] hover:border-brand-500 text-slate-800 dark:text-slate-200';
+              badgeCls += 'bg-white dark:bg-[#111915] border border-slate-200 dark:border-[#293b31] text-slate-600 dark:text-slate-300 group-hover:bg-brand-600 group-hover:text-white group-hover:border-brand-600';
+            }
           }
 
           btn.className = cardCls;
@@ -1864,11 +1886,14 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
           const ans = examState.answers[i];
           const answered = ans !== undefined;
           const flagged = !!examState.flags[i];
+          const itemQ = examState.questions[i];
 
           let cls = 'h-9 rounded-lg text-xs font-extrabold transition-all ';
           if (flagged) cls += 'bg-amber-400 text-slate-950 ';
-          else if (answered) cls += 'bg-brand-600 text-white ';
-          else cls += 'bg-slate-100 dark:bg-[#16201b] text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-[#24342b] hover:border-brand-500 ';
+          else if (answered) {
+            if (examState.instantFeedback) cls += (ans === itemQ.shuffledCorrectIndex) ? 'bg-brand-600 text-white ' : 'bg-rose-500 text-white ';
+            else cls += 'bg-brand-600 text-white ';
+          } else cls += 'bg-slate-100 dark:bg-[#16201b] text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-[#24342b] hover:border-brand-500 ';
           if (current) cls += 'ring-2 ring-brand-600 dark:ring-white ring-offset-2 ring-offset-white dark:ring-offset-[#111915] ';
 
           b.className = cls;
@@ -1884,16 +1909,19 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         const idx = examState.currentIndex;
         const q = examState.questions[idx];
         if (!q || optIdx >= q.shuffledOptions.length) return;
+        if (examState.instantFeedback && examState.answers[idx] !== undefined) return;
         examState.answers[idx] = optIdx;
+        if (examState.instantFeedback) recordAnswer(q.id, optIdx === q.shuffledCorrectIndex);
         renderActiveExamQuestion();
         if (examState.autoNext && idx < examState.questions.length - 1) {
           if (examState.autoNextTimer) clearTimeout(examState.autoNextTimer);
+          const delay = examState.instantFeedback ? 650 : 220;
           examState.autoNextTimer = setTimeout(() => {
             if (examState.active && examState.currentIndex === idx && examState.currentIndex < examState.questions.length - 1) {
               examState.currentIndex++;
               renderActiveExamQuestion();
             }
-          }, 220);
+          }, delay);
         }
       }
 
@@ -1908,12 +1936,15 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
           const userAns = examState.answers[i];
           const isOk = userAns === q.shuffledCorrectIndex;
           if (isOk) correct++;
-          if (userAns !== undefined) recordAnswer(q.id, isOk);
+          if (!examState.instantFeedback && userAns !== undefined) recordAnswer(q.id, isOk);
         });
 
         const total = examState.questions.length;
         const pct = Math.round((correct / total) * 100);
-        const passed = pct >= (examState.passPct || 70);
+        const score10Raw = (correct / total) * 10;
+        const score10 = Math.round(score10Raw * 10) / 10;
+        const passScore10 = Number.isFinite(examState.passScore10) ? examState.passScore10 : 4;
+        const passed = score10Raw > passScore10;
 
         if (examState.paperKey) {
           const prev = paperHistory[examState.paperKey];
@@ -1931,12 +1962,12 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         document.getElementById('exam-result').classList.remove('hidden');
 
         const badge = document.getElementById('exam-score-badge');
-        badge.textContent = passed ? `🎉 ĐẠT YÊU CẦU (≥ ${examState.passPct || 70}%)` : `⚠️ CHƯA ĐẠT (< ${examState.passPct || 70}%)`;
+        badge.textContent = passed ? `🎉 ĐẠT YÊU CẦU (> ${passScore10}đ / 10)` : `⚠️ CHƯA ĐẠT (≤ ${passScore10}đ / 10)`;
         badge.className = passed
           ? 'inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs sm:text-sm font-extrabold bg-brand-100 dark:bg-brand-900/50 text-brand-700 dark:text-brand-300 border border-brand-300 dark:border-brand-700'
           : 'inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs sm:text-sm font-extrabold bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300 border border-rose-300 dark:border-rose-500/40';
 
-        document.getElementById('exam-score-text').textContent = `${correct} / ${total} (${pct}%)`;
+        document.getElementById('exam-score-text').textContent = `${score10.toFixed(1)} / 10 điểm (${correct}/${total} câu)`;
 
         let subText = examState.title;
         if (examState.totalSeconds > 0) {
@@ -2869,8 +2900,11 @@ D. 60.0 ms`;
           const scopedPool = getSetupScopedPool();
           const shuffleQ = document.getElementById('setup-shuffle-q').checked;
           const shuffleOpt = document.getElementById('setup-shuffle-opt').checked;
+          const instantFb = document.getElementById('setup-instant-fb').checked;
           const autoNext = document.getElementById('setup-auto-next').checked;
-          const passPct = Math.max(10, Math.min(100, Number(document.getElementById('setup-pass-pct').value) || 70));
+          const rawScore10 = parseFloat(document.getElementById('setup-pass-score10').value);
+          const passScore10 = Number.isFinite(rawScore10) ? Math.max(0, Math.min(9.5, rawScore10)) : 4;
+          const passPct = Math.round((passScore10 / 10) * 100);
           const minutes = Math.max(1, Number(document.getElementById('setup-minutes').value) || 50);
           const qCount = Math.max(1, Math.min(scopedPool.length, Number(document.getElementById('setup-q-count').value) || scopedPool.length));
           const seconds = timed ? minutes * 60 : 0;
@@ -2879,7 +2913,7 @@ D. 60.0 ms`;
           poolToRun = poolToRun.slice(0, qCount);
 
           closeExamSetupModal();
-          startExamPaper(poolToRun, seconds, paper.title, paper.key, subjName, passPct, shuffleOpt, autoNext);
+          startExamPaper(poolToRun, seconds, paper.title, paper.key, subjName, passPct, shuffleOpt, autoNext, instantFb, passScore10);
         });
 
         // Active Exam Controls
@@ -2927,13 +2961,13 @@ D. 60.0 ms`;
         });
 
         document.getElementById('btn-retry-current-paper').addEventListener('click', () => {
-          startExamPaper(examState.rawPool, examState.totalSeconds, examState.title, examState.paperKey, examState.subject, examState.passPct, examState.shuffleOpt, examState.autoNext);
+          startExamPaper(examState.rawPool, examState.totalSeconds, examState.title, examState.paperKey, examState.subject, examState.passPct, examState.shuffleOpt, examState.autoNext, examState.instantFeedback, examState.passScore10);
         });
 
         document.getElementById('btn-retry-wrong-only').addEventListener('click', () => {
           const wrongQs = examState.questions.filter((q, i) => examState.answers[i] !== q.shuffledCorrectIndex);
           if (wrongQs.length === 0) return;
-          startExamPaper(wrongQs, Math.max(10, wrongQs.length) * 50, `${examState.title} (Ôn ${wrongQs.length} câu sai)`, '', examState.subject, examState.passPct, examState.shuffleOpt);
+          startExamPaper(wrongQs, Math.max(10, wrongQs.length) * 50, `${examState.title} (Ôn ${wrongQs.length} câu sai)`, '', examState.subject, examState.passPct, examState.shuffleOpt, examState.autoNext, examState.instantFeedback, examState.passScore10);
         });
 
         document.querySelectorAll('.exam-review-tab').forEach(btn => {
