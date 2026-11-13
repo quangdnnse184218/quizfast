@@ -328,6 +328,10 @@
                   <i data-lucide="flag" class="w-3.5 h-3.5"></i>
                   <span class="hidden sm:inline">Cờ</span>
                 </button>
+                <button id="btn-toggle-exam-highlight" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border text-xs font-bold transition-all" title="Bật/Tắt tô từ khóa (H)">
+                  <i data-lucide="highlighter" class="w-3.5 h-3.5"></i>
+                  <span class="hidden sm:inline">Từ khóa</span>
+                </button>
                 <div class="h-5 w-px bg-slate-200 dark:bg-[#223129] mx-0.5"></div>
                 <button id="btn-exam-prev-top" class="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-[#18231d] hover:bg-slate-200 dark:hover:bg-[#223129] text-xs font-bold text-slate-700 dark:text-slate-200 transition-all disabled:opacity-40" title="Câu trước (←)">
                   <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
@@ -753,6 +757,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         <div class="flex justify-between py-2 border-b border-slate-200 dark:border-[#1f2c25]"><span>Chọn đáp án A, B, C, D</span><span class="font-mono-code font-bold text-brand-600 dark:text-brand-400">1 - 4 hoặc A - D</span></div>
         <div class="flex justify-between py-2 border-b border-slate-200 dark:border-[#1f2c25]"><span>Câu tiếp theo</span><span class="font-mono-code font-bold text-brand-600 dark:text-brand-400">→ / Enter / Space</span></div>
         <div class="flex justify-between py-2 border-b border-slate-200 dark:border-[#1f2c25]"><span>Câu trước đó</span><span class="font-mono-code font-bold text-brand-600 dark:text-brand-400">←</span></div>
+        <div class="flex justify-between py-2 border-b border-slate-200 dark:border-[#1f2c25]"><span>Bật / Tắt tô từ khóa</span><span class="font-mono-code font-bold text-brand-600 dark:text-brand-400">H</span></div>
         <div class="flex justify-between py-2 border-b border-slate-200 dark:border-[#1f2c25]"><span>Đánh dấu cờ câu hỏi</span><span class="font-mono-code font-bold text-brand-600 dark:text-brand-400">F</span></div>
         <div class="flex justify-between py-2"><span>Gắn sao câu hỏi</span><span class="font-mono-code font-bold text-brand-600 dark:text-brand-400">S</span></div>
       </div>
@@ -852,6 +857,10 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
             <label class="flex items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 dark:bg-[#16201b] border border-slate-200 dark:border-[#24342b] cursor-pointer">
               <span class="text-xs font-bold text-slate-700 dark:text-slate-200">💡 Chấm ngay</span>
               <input id="setup-instant-fb" type="checkbox" class="w-4 h-4 accent-brand-600 rounded" />
+            </label>
+            <label class="flex items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 dark:bg-[#16201b] border border-slate-200 dark:border-[#24342b] cursor-pointer">
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-200">✨ Tô từ khóa</span>
+              <input id="setup-highlight" type="checkbox" class="w-4 h-4 accent-brand-600 rounded" />
             </label>
             <label class="flex items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 dark:bg-[#16201b] border border-slate-200 dark:border-[#24342b] cursor-pointer">
               <span class="text-xs font-bold text-slate-700 dark:text-slate-200">⚡ Tự qua câu khi chọn</span>
@@ -960,6 +969,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
       let progressMap = {};
       let paperHistory = {};
 
+      let highlightEnabled = true;
       let instantFeedback = false;
       let geminiApiKey = '';
       let currentTheme = 'dark';
@@ -985,6 +995,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         shuffleOpt: true,
         autoNext: false,
         instantFeedback: false,
+        highlightEnabled: true,
         autoNextTimer: null,
         rawPool: [],
         questions: [],
@@ -1050,6 +1061,9 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
           customExams = JSON.parse(localStorage.getItem(STORAGE_KEYS.CUSTOM_EXAMS) || '[]');
           if (!Array.isArray(customExams)) customExams = [];
         } catch { customExams = []; }
+
+        const savedHl = localStorage.getItem(STORAGE_KEYS.HIGHLIGHT);
+        highlightEnabled = savedHl === null ? true : savedHl === 'true';
 
         instantFeedback = false;
 
@@ -1399,8 +1413,52 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       }
 
-      function formatWithHighlights(text) {
-        return escapeHtml(text);
+      function extractAutoKeywords(text, q) {
+        const words = [];
+        if (q && Array.isArray(q.highlight_words) && q.highlight_words.length > 0) {
+          words.push(...q.highlight_words);
+        }
+        if (!text) return words;
+
+        // 1. Quoted terms/phrases: "Vertical Slice", "Cut-list", etc.
+        const quotes = text.match(/"([^"]+)"/g);
+        if (quotes) {
+          quotes.forEach(m => {
+            const inner = m.replace(/^"|"$/g, '').trim();
+            if (inner.length >= 2 && inner.length <= 45) words.push(inner);
+          });
+        }
+
+        // 2. Acronyms & technical terms
+        const acronyms = text.match(/\b(DPS|TTK|LOD|FPS|A-A-R|SOLID|CPU|GPU|UI|UX|RPC|PUN|Sentis|OCR|PDF|DOCX|JSON|HTML|CSS|API|HTTP|REST|SRS|GDD|QA|SRP|OCP|LSP|ISP|DIP)\b/gi);
+        if (acronyms) {
+          acronyms.forEach(a => words.push(a.trim()));
+        }
+
+        // 3. Numbers with units: 60 FPS, 16.6 ms, 33.3 ms, 30 FPS, 0.3 second, 0.5 second, 1000ms
+        const numUnits = text.match(/\b\d+(\.\d+)?\s*(ms|fps|s|second|seconds|frame|frames|%)\b/gi);
+        if (numUnits) {
+          numUnits.forEach(nu => words.push(nu.trim()));
+        }
+
+        return Array.from(new Set(words));
+      }
+
+      function formatWithHighlights(text, highlightWords, q) {
+        const safe = escapeHtml(text);
+        if (!examState.highlightEnabled) return safe;
+
+        const kwList = extractAutoKeywords(text, { highlight_words: highlightWords, ...(q || {}) });
+        if (!kwList || kwList.length === 0) return safe;
+
+        const cleaned = kwList.map(w => String(w || '').trim()).filter(w => w.length >= 2).sort((a, b) => b.length - a.length);
+        if (cleaned.length === 0) return safe;
+
+        const pattern = cleaned.map(w => escapeRegExp(escapeHtml(w))).join('|');
+        if (!pattern) return safe;
+
+        const regex = new RegExp(`(${pattern})`, 'gi');
+        return safe.replace(regex, '<mark class="kw-highlight">$1</mark>');
       }
 
       function stripOptionPrefix(opt) {
@@ -1724,6 +1782,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         document.getElementById('setup-shuffle-q').checked = paper.shuffleQ !== false;
         document.getElementById('setup-shuffle-opt').checked = paper.shuffleOpt !== false;
         document.getElementById('setup-instant-fb').checked = false;
+        document.getElementById('setup-highlight').checked = highlightEnabled;
         document.getElementById('setup-auto-next').checked = false;
         document.getElementById('setup-pass-score10').value = 4;
 
@@ -1756,7 +1815,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
         };
       }
 
-      function startExamPaper(pool, seconds, title, paperKey, subj, passPct = 40, shuffleOpt = true, autoNext = false, instantFb = false, passScore10 = 4) {
+      function startExamPaper(pool, seconds, title, paperKey, subj, passPct = 40, shuffleOpt = true, autoNext = false, instantFb = false, passScore10 = 4, hlEnabled = true) {
         if (!pool || pool.length === 0) return;
 
         if (examState.timerId) clearInterval(examState.timerId);
@@ -1772,6 +1831,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
           shuffleOpt: shuffleOpt,
           autoNext: autoNext,
           instantFeedback: instantFb,
+          highlightEnabled: typeof hlEnabled === 'boolean' ? hlEnabled : true,
           autoNextTimer: null,
           rawPool: [...pool],
           questions: pool.map(q => prepareExamQuestionItem(q, shuffleOpt)),
@@ -1854,7 +1914,14 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
           ? 'flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-amber-400 bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 text-xs font-extrabold transition-all'
           : 'flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-[#26372e] bg-slate-50 dark:bg-[#18231d] text-slate-500 dark:text-slate-300 text-xs font-bold transition-all';
 
-        document.getElementById('eq-question').innerHTML = formatWithHighlights(q.question, q.highlight_words);
+        const hlBtn = document.getElementById('btn-toggle-exam-highlight');
+        if (hlBtn) {
+          hlBtn.className = examState.highlightEnabled
+            ? 'flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-amber-400 bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-200 text-xs font-extrabold transition-all'
+            : 'flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-slate-200 dark:border-[#26372e] bg-slate-50 dark:bg-[#18231d] text-slate-500 dark:text-slate-300 text-xs font-bold transition-all';
+        }
+
+        document.getElementById('eq-question').innerHTML = formatWithHighlights(q.question, q.highlight_words, q);
 
         const optionsEl = document.getElementById('eq-options');
         optionsEl.innerHTML = '';
@@ -1892,7 +1959,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
           btn.className = cardCls;
           btn.innerHTML = `
             <span class="${badgeCls}">${letters[optIdx] || optIdx + 1}</span>
-            <span class="text-sm sm:text-base font-medium leading-relaxed">${formatWithHighlights(optText, q.highlight_words)}</span>
+            <span class="text-sm sm:text-base font-medium leading-relaxed">${formatWithHighlights(optText, q.highlight_words, q)}</span>
           `;
           btn.addEventListener('click', () => selectExamOption(optIdx));
           optionsEl.appendChild(btn);
@@ -2927,6 +2994,10 @@ D. 60.0 ms`;
           const shuffleOpt = document.getElementById('setup-shuffle-opt').checked;
           const instantFb = document.getElementById('setup-instant-fb').checked;
           const autoNext = document.getElementById('setup-auto-next').checked;
+          const highlight = document.getElementById('setup-highlight').checked;
+          highlightEnabled = highlight;
+          localStorage.setItem(STORAGE_KEYS.HIGHLIGHT, String(highlight));
+
           const rawScore10 = parseFloat(document.getElementById('setup-pass-score10').value);
           const passScore10 = Number.isFinite(rawScore10) ? Math.max(0, Math.min(9.5, rawScore10)) : 4;
           const passPct = Math.round((passScore10 / 10) * 100);
@@ -2938,7 +3009,7 @@ D. 60.0 ms`;
           poolToRun = poolToRun.slice(0, qCount);
 
           closeExamSetupModal();
-          startExamPaper(poolToRun, seconds, paper.title, paper.key, subjName, passPct, shuffleOpt, autoNext, instantFb, passScore10);
+          startExamPaper(poolToRun, seconds, paper.title, paper.key, subjName, passPct, shuffleOpt, autoNext, instantFb, passScore10, highlight);
         });
 
         // Active Exam Controls
@@ -2959,6 +3030,13 @@ D. 60.0 ms`;
 
         document.getElementById('btn-flag-exam-q').addEventListener('click', () => {
           examState.flags[examState.currentIndex] = !examState.flags[examState.currentIndex];
+          renderActiveExamQuestion();
+        });
+
+        document.getElementById('btn-toggle-exam-highlight').addEventListener('click', () => {
+          examState.highlightEnabled = !examState.highlightEnabled;
+          highlightEnabled = examState.highlightEnabled;
+          localStorage.setItem(STORAGE_KEYS.HIGHLIGHT, String(highlightEnabled));
           renderActiveExamQuestion();
         });
 
@@ -2986,13 +3064,13 @@ D. 60.0 ms`;
         });
 
         document.getElementById('btn-retry-current-paper').addEventListener('click', () => {
-          startExamPaper(examState.rawPool, examState.totalSeconds, examState.title, examState.paperKey, examState.subject, examState.passPct, examState.shuffleOpt, examState.autoNext, examState.instantFeedback, examState.passScore10);
+          startExamPaper(examState.rawPool, examState.totalSeconds, examState.title, examState.paperKey, examState.subject, examState.passPct, examState.shuffleOpt, examState.autoNext, examState.instantFeedback, examState.passScore10, examState.highlightEnabled);
         });
 
         document.getElementById('btn-retry-wrong-only').addEventListener('click', () => {
           const wrongQs = examState.questions.filter((q, i) => examState.answers[i] !== q.shuffledCorrectIndex);
           if (wrongQs.length === 0) return;
-          startExamPaper(wrongQs, Math.max(10, wrongQs.length) * 50, `${examState.title} (Ôn ${wrongQs.length} câu sai)`, '', examState.subject, examState.passPct, examState.shuffleOpt, examState.autoNext, examState.instantFeedback, examState.passScore10);
+          startExamPaper(wrongQs, Math.max(10, wrongQs.length) * 50, `${examState.title} (Ôn ${wrongQs.length} câu sai)`, '', examState.subject, examState.passPct, examState.shuffleOpt, examState.autoNext, examState.instantFeedback, examState.passScore10, examState.highlightEnabled);
         });
 
         document.querySelectorAll('.exam-review-tab').forEach(btn => {
@@ -3070,6 +3148,12 @@ D. 60.0 ms`;
             } else if (e.key === 'ArrowLeft') {
               e.preventDefault();
               if (examState.currentIndex > 0) { examState.currentIndex--; renderActiveExamQuestion(); }
+            } else if (key === 'h') {
+              e.preventDefault();
+              examState.highlightEnabled = !examState.highlightEnabled;
+              highlightEnabled = examState.highlightEnabled;
+              localStorage.setItem(STORAGE_KEYS.HIGHLIGHT, String(highlightEnabled));
+              renderActiveExamQuestion();
             } else if (key === 'f') {
               e.preventDefault();
               examState.flags[examState.currentIndex] = !examState.flags[examState.currentIndex];
