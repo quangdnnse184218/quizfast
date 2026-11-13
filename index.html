@@ -146,13 +146,6 @@
         <div>
           <div class="flex items-center gap-2">
             <span class="hidden sm:inline font-display font-extrabold text-lg sm:text-xl tracking-tight text-slate-900 dark:text-white">QuizFast</span>
-            <span id="total-bank-badge" class="whitespace-nowrap hidden sm:inline-block text-[11px] font-bold px-2 py-0.5 rounded-full bg-brand-100 dark:bg-brand-900/50 text-brand-700 dark:text-brand-300 border border-brand-200 dark:border-brand-700/50">
-              0 câu
-            </span>
-            <button id="btn-cloud-sync" type="button" class="hidden xl:inline-flex whitespace-nowrap items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-[#24302a] text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-[#46594e] hover:border-brand-500 transition-all" title="Bấm để đồng bộ lại đề từ Supabase">
-              <span id="cloud-sync-dot" class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-              <span id="cloud-sync-label">Đang kết nối...</span>
-            </button>
           </div>
         </div>
       </div>
@@ -184,6 +177,7 @@
           <i id="theme-icon-sun" data-lucide="sun" class="w-4 h-4 hidden text-amber-400"></i>
           <i id="theme-icon-moon" data-lucide="moon" class="w-4 h-4 text-slate-700"></i>
         </button>
+        <div id="auth-area" class="flex items-center gap-2"></div>
         <button id="btn-shortcuts-help" class="hidden lg:flex p-2.5 rounded-xl bg-slate-100 dark:bg-[#24302a] hover:bg-slate-200 dark:hover:bg-[#3b4e44] text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-[#46594e] transition-all" title="Phím tắt bàn phím">
           <i data-lucide="keyboard" class="w-4 h-4"></i>
         </button>
@@ -214,13 +208,9 @@
           <div id="hero-dropzone" class="flex flex-wrap items-end justify-between gap-3">
             <div>
               <h2 id="home-user-title" class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Môn học của bạn</h2>
-              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Môn và đề do chính bạn thêm. Dữ liệu được lưu trên cloud theo mã đồng bộ của bạn.</p>
+              <p id="user-subjects-sub" class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Môn và đề do chính bạn thêm. Đăng nhập để lưu vào tài khoản của bạn trên cloud.</p>
             </div>
             <div class="flex flex-wrap items-center gap-2">
-              <button id="btn-sync-code" type="button" class="px-3.5 py-2 rounded-xl bg-white dark:bg-[#19211d] hover:bg-slate-50 dark:hover:bg-[#24302a] border border-slate-200 dark:border-[#34453b] text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 shadow-sm transition-all" title="Xem hoặc nhập mã để dùng môn học của bạn trên máy khác">
-                <i data-lucide="key-round" class="w-4 h-4 text-brand-600 dark:text-brand-400"></i>
-                <span>Mã đồng bộ</span>
-              </button>
               <button id="btn-new-subject" type="button" class="px-3.5 py-2 rounded-xl bg-white dark:bg-[#19211d] hover:bg-slate-50 dark:hover:bg-[#24302a] border border-slate-200 dark:border-[#34453b] text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 shadow-sm transition-all">
                 <i data-lucide="folder-plus" class="w-4 h-4 text-brand-600 dark:text-brand-400"></i>
                 <span>Tạo môn mới</span>
@@ -566,85 +556,56 @@
 
   </main>
 
-  <!-- ==================== MODAL: SMART UPLOAD & EXAM STUDIO ==================== -->
+  <!-- ==================== MODAL: THÊM ĐỀ (STUDIO) ==================== -->
   <div id="modal-upload" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-5">
-    <div class="bg-white dark:bg-[#19211d] border border-slate-200 dark:border-[#46594e] rounded-3xl max-w-5xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+    <div class="bg-white dark:bg-[#19211d] border border-slate-200 dark:border-[#46594e] rounded-3xl max-w-6xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden">
 
-      <!-- Modal Header -->
-      <div class="px-6 py-4 border-b border-slate-200/80 dark:border-[#34453b] flex items-center justify-between shrink-0">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-brand-600 text-white flex items-center justify-center">
-            <i data-lucide="wand-2" class="w-5 h-5"></i>
+      <!-- Tiêu đề -->
+      <div class="px-5 sm:px-6 py-4 border-b border-slate-200/80 dark:border-[#34453b] flex items-center justify-between gap-3 shrink-0">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-10 h-10 rounded-xl bg-brand-600 text-white flex items-center justify-center shrink-0">
+            <i data-lucide="file-plus-2" class="w-5 h-5"></i>
           </div>
-          <div>
-            <h3 id="upload-modal-title" class="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white">Thêm đề mới</h3>
-            <p class="text-xs text-slate-500 dark:text-slate-400">Tải file Word, PDF, ảnh hoặc dán nội dung, kiểm tra lại từng câu rồi lưu</p>
+          <div class="min-w-0">
+            <h3 id="upload-modal-title" class="text-lg font-extrabold text-slate-900 dark:text-white truncate">Thêm đề mới</h3>
+            <p id="upload-modal-sub" class="text-xs text-slate-500 dark:text-slate-400">Dán văn bản hoặc chọn file Word (.docx) / .txt, kiểm tra từng câu rồi lưu</p>
           </div>
         </div>
-        <button id="close-upload-modal" class="p-2 rounded-xl bg-slate-100 dark:bg-[#24302a] hover:bg-slate-200 dark:hover:bg-[#3b4e44] text-slate-500">
+        <button id="close-upload-modal" type="button" class="p-2 rounded-xl bg-slate-100 dark:bg-[#24302a] hover:bg-slate-200 dark:hover:bg-[#3b4e44] text-slate-500 shrink-0" aria-label="Đóng">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
-      <!-- Modal Body (2-Column Smart Layout) -->
-      <div class="flex-1 overflow-y-auto p-5 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <!-- Nội dung -->
+      <div class="flex-1 overflow-y-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 bg-slate-50/60 dark:bg-[#141b18]">
 
-        <!-- Left Column: Source Input + Exam Settings (5 cols) -->
+        <!-- Cột trái -->
         <div class="lg:col-span-5 space-y-5">
 
-          <!-- 1. Nguồn đề -->
-          <div id="studio-source-box" class="space-y-4">
-            <div class="flex items-center justify-between gap-2">
-              <label class="text-sm font-bold text-slate-500 dark:text-slate-400">1. Nguồn đề</label>
-              <button id="btn-toggle-ai-key" type="button" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-extrabold bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-300 hover:bg-brand-200 dark:hover:bg-brand-900/60 transition-all">
-                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-                <span id="ai-key-status-lbl">Cài đặt AI (Gemini)</span>
-              </button>
+          <!-- Bước 1: nội dung đề -->
+          <section id="studio-source-box" class="bg-white dark:bg-[#19211d] border border-slate-200 dark:border-[#34453b] rounded-2xl p-4 sm:p-5 space-y-4" aria-labelledby="st-step1">
+            <div class="flex items-center gap-2.5">
+              <span class="w-6 h-6 rounded-full bg-brand-600 text-white text-xs font-extrabold flex items-center justify-center">1</span>
+              <h4 id="st-step1" class="text-sm font-extrabold text-slate-800 dark:text-slate-100">Nội dung đề</h4>
             </div>
 
-            <!-- Khóa AI (thu gọn) -->
-            <div id="ai-key-box" class="hidden rounded-2xl bg-brand-50/80 dark:bg-[#1b2a22] border border-brand-200 dark:border-brand-800/50 p-3.5 space-y-2.5">
-              <div class="flex items-center justify-between gap-2">
-                <span class="text-xs font-extrabold text-brand-800 dark:text-brand-300">Khóa Gemini (đọc ảnh, PDF scan, đề khó)</span>
-                <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" class="text-[11px] font-bold text-brand-600 dark:text-brand-400 underline">Lấy khóa miễn phí</a>
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <label for="studio-raw-text" class="text-xs font-bold text-slate-600 dark:text-slate-300">Dán văn bản đề</label>
+                <button id="btn-insert-sample-format" type="button" class="text-[11px] font-bold text-brand-600 dark:text-brand-400 hover:underline">Xem mẫu</button>
               </div>
-              <div class="flex gap-2">
-                <input id="inp-gemini-key" type="password" autocomplete="off" placeholder="Dán khóa (AIza...) vào đây" class="flex-1 min-w-0 bg-white dark:bg-[#0f1512] border border-slate-200 dark:border-[#46594e] rounded-xl px-3 py-1.5 text-xs font-mono-code focus:outline-none focus:ring-2 focus:ring-brand-500" />
-                <button id="btn-save-gemini-key" type="button" class="px-3.5 py-1.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-extrabold">Lưu khóa</button>
-              </div>
-              <p class="text-[11px] text-slate-500 dark:text-slate-400">Khóa chỉ lưu trên trình duyệt của bạn. Nội dung đề được gửi tới Google để AI đọc.</p>
+              <textarea id="studio-raw-text" rows="7" placeholder="Dán câu hỏi từ Word, Google Docs hoặc JSON vào đây..." class="w-full bg-slate-50 dark:bg-[#0f1512] border border-slate-200 dark:border-[#46594e] rounded-xl p-3 text-xs font-mono-code focus:outline-none focus:ring-2 focus:ring-brand-500"></textarea>
             </div>
 
-            <!-- Kéo thả / chọn file -->
-            <div id="st-dropzone" tabindex="0" role="button" aria-label="Chọn hoặc kéo thả file đề" class="border-2 border-dashed border-slate-300 dark:border-[#46594e] rounded-2xl px-4 py-5 text-center cursor-pointer hover:border-brand-500 transition-colors space-y-1">
-              <i data-lucide="upload-cloud" class="w-7 h-7 mx-auto text-brand-600 dark:text-brand-400"></i>
-              <p class="text-sm font-bold text-slate-700 dark:text-slate-200">Kéo thả file vào đây hoặc bấm để chọn</p>
-              <p class="text-xs text-slate-500 dark:text-slate-400">Word (.docx), PDF, ảnh (png, jpg), .txt. Có thể dán ảnh bằng Ctrl+V.</p>
-              <input id="st-file-input" type="file" multiple accept=".docx,.pdf,.txt,.md,.json,.csv,image/*" class="hidden" />
+            <div class="flex items-center gap-3 text-[11px] font-bold text-slate-400"><span class="flex-1 h-px bg-slate-200 dark:bg-[#34453b]"></span>hoặc<span class="flex-1 h-px bg-slate-200 dark:bg-[#34453b]"></span></div>
+
+            <div id="st-dropzone" tabindex="0" role="button" aria-label="Chọn hoặc kéo thả file văn bản" class="border-2 border-dashed border-slate-300 dark:border-[#46594e] rounded-xl px-4 py-4 text-center cursor-pointer hover:border-brand-500 transition-colors">
+              <p class="text-sm font-bold text-slate-700 dark:text-slate-200">Chọn hoặc kéo thả file vào đây</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Word (.docx) hoặc văn bản (.txt)</p>
+              <input id="st-file-input" type="file" multiple accept=".docx,.txt,.md,.json,.csv" class="hidden" />
             </div>
             <ul id="st-file-list" class="space-y-1.5"></ul>
 
-            <!-- Dán nội dung -->
-            <div class="space-y-2">
-              <div class="flex items-center justify-between">
-                <label for="studio-raw-text" class="text-xs font-bold text-slate-600 dark:text-slate-300">Hoặc dán nội dung đề</label>
-                <button id="btn-insert-sample-format" type="button" class="text-[11px] font-bold text-brand-600 dark:text-brand-400 hover:underline">Xem mẫu</button>
-              </div>
-              <textarea id="studio-raw-text" rows="5" placeholder="Dán câu hỏi từ Word, PDF, Google Docs hoặc JSON vào đây..." class="w-full bg-slate-50 dark:bg-[#0f1512] border border-slate-200 dark:border-[#46594e] rounded-xl p-3 text-xs font-mono-code focus:outline-none focus:ring-2 focus:ring-brand-500"></textarea>
-            </div>
-
-            <!-- Cách bóc tách -->
-            <div class="space-y-1.5">
-              <label for="st-method" class="text-xs font-bold text-slate-600 dark:text-slate-300">Cách bóc tách</label>
-              <select id="st-method" class="w-full bg-white dark:bg-[#0f1512] border border-slate-200 dark:border-[#46594e] rounded-xl px-3 py-2 text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-brand-500">
-                <option value="auto">Tự động: code trước, AI khi cần</option>
-                <option value="code">Chỉ dùng code (miễn phí, không cần khóa)</option>
-                <option value="ai">Dùng AI cho mọi nguồn (cần khóa Gemini)</option>
-              </select>
-              <p class="text-[11px] text-slate-500 dark:text-slate-400">Ảnh và PDF scan luôn cần AI. Word và PDF có chữ thường tách được bằng code.</p>
-            </div>
-
-            <!-- Tiến trình -->
             <div id="parse-progress-box" class="hidden rounded-xl bg-brand-50 dark:bg-brand-950/40 border border-brand-200 dark:border-brand-800/50 p-3 space-y-2" role="status" aria-live="polite">
               <div class="flex items-center justify-between text-xs font-bold text-brand-700 dark:text-brand-300">
                 <span id="parse-progress-label">Đang đọc file...</span>
@@ -655,58 +616,51 @@
               </div>
             </div>
 
-            <button id="btn-parse-raw-text" type="button" class="w-full py-2.5 rounded-xl bg-brand-700 hover:bg-brand-600 text-white text-sm font-extrabold flex items-center justify-center gap-2 transition-colors">
-              <i data-lucide="sparkles" class="w-4 h-4"></i>
+            <button id="btn-parse-raw-text" type="button" class="w-full py-2.5 rounded-xl bg-brand-700 hover:bg-brand-600 text-white text-sm font-extrabold flex items-center justify-center gap-2 transition-colors disabled:cursor-not-allowed">
+              <i data-lucide="scan-text" class="w-4 h-4"></i>
               <span id="lbl-parse-btn">Bóc tách câu hỏi</span>
             </button>
-          </div>
+          </section>
 
-          <!-- 2. Smart Exam Configuration -->
-          <div class="bg-slate-50/80 dark:bg-[#202b25] border border-slate-200/80 dark:border-[#3b4e44] rounded-2xl p-4 space-y-4">
-            <div class="text-sm font-bold text-slate-500 dark:text-slate-400">2. Cấu hình Đề thi</div>
+          <!-- Bước 2: thông tin đề -->
+          <section class="bg-white dark:bg-[#19211d] border border-slate-200 dark:border-[#34453b] rounded-2xl p-4 sm:p-5 space-y-4" aria-labelledby="st-step2">
+            <div class="flex items-center gap-2.5">
+              <span class="w-6 h-6 rounded-full bg-brand-600 text-white text-xs font-extrabold flex items-center justify-center">2</span>
+              <h4 id="st-step2" class="text-sm font-extrabold text-slate-800 dark:text-slate-100">Thông tin đề</h4>
+            </div>
 
-            <!-- Subject Selector or Create New -->
             <div class="space-y-1.5">
-              <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Môn học</label>
+              <label for="cfg-subject-select" class="text-xs font-bold text-slate-600 dark:text-slate-300">Môn học</label>
               <div class="flex gap-2">
-                <select id="cfg-subject-select" class="flex-1 bg-white dark:bg-[#0f1512] border border-slate-200 dark:border-[#46594e] rounded-xl px-3 py-2 text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-brand-500"></select>
-                <button id="btn-toggle-new-subj-input" class="px-3 py-2 rounded-xl bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-300 text-xs font-extrabold whitespace-nowrap hover:bg-brand-200 dark:hover:bg-brand-900/60">
-                  + Môn mới
-                </button>
+                <select id="cfg-subject-select" class="flex-1 min-w-0 bg-white dark:bg-[#0f1512] border border-slate-200 dark:border-[#46594e] rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-brand-500"></select>
+                <button id="btn-toggle-new-subj-input" type="button" class="px-3 py-2 rounded-xl bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-300 text-xs font-extrabold whitespace-nowrap hover:bg-brand-200 dark:hover:bg-brand-900/60">+ Môn mới</button>
               </div>
-              <input id="cfg-new-subject-input" type="text" placeholder="Nhập tên môn mới (VD: CSI104, MAD101...)" class="hidden w-full mt-1.5 bg-white dark:bg-[#0f1512] border border-brand-500 rounded-xl px-3 py-2 text-xs sm:text-sm font-bold focus:outline-none" />
+              <input id="cfg-new-subject-input" type="text" placeholder="Nhập tên môn mới (VD: CSI104, MAD101...)" class="hidden w-full bg-white dark:bg-[#0f1512] border border-brand-500 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none" />
             </div>
 
-            <!-- Exam Title -->
             <div class="space-y-1.5">
-              <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Tiêu đề đề thi</label>
-              <input id="cfg-exam-title" type="text" placeholder="VD: Đề ôn tập số 1" class="w-full bg-white dark:bg-[#0f1512] border border-slate-200 dark:border-[#46594e] rounded-xl px-3 py-2 text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-brand-500" />
+              <label for="cfg-exam-title" class="text-xs font-bold text-slate-600 dark:text-slate-300">Tiêu đề đề thi</label>
+              <input id="cfg-exam-title" type="text" placeholder="VD: Đề ôn tập số 1" class="w-full bg-white dark:bg-[#0f1512] border border-slate-200 dark:border-[#46594e] rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-brand-500" />
             </div>
 
-            <div class="space-y-1 pt-1 border-t border-slate-200/80 dark:border-[#3b4e44]">
-              <p class="text-xs text-slate-500 dark:text-slate-400 pt-3">Mỗi đề tối đa 60 câu, đề dài hơn sẽ tự chia thành nhiều đề. Thời gian: 60 phút hoặc không giới hạn (chọn khi bắt đầu làm bài). Điểm đạt: trên 4/10.</p>
-            </div>
-          </div>
-
+            <p class="text-[11px] leading-relaxed text-slate-500 dark:text-slate-400 pt-3 border-t border-slate-200/80 dark:border-[#34453b]">Mỗi đề tối đa 60 câu, đề dài hơn tự chia thành nhiều đề. Thời gian 60 phút hoặc không giới hạn (chọn khi bắt đầu làm). Điểm đạt: trên 4/10.</p>
+          </section>
         </div>
 
-        <!-- Cột phải: kiểm tra và chỉnh sửa từng câu -->
-        <div class="lg:col-span-7 flex flex-col space-y-3 min-h-[380px]">
+        <!-- Cột phải: Bước 3 -->
+        <section class="lg:col-span-7 bg-white dark:bg-[#19211d] border border-slate-200 dark:border-[#34453b] rounded-2xl p-4 sm:p-5 flex flex-col gap-3 min-h-[380px]" aria-labelledby="st-step3">
           <div class="flex flex-wrap items-center justify-between gap-2">
             <div class="flex flex-wrap items-center gap-2">
-              <span class="text-sm font-bold text-slate-500 dark:text-slate-400">3. Kiểm tra &amp; chỉnh sửa</span>
+              <span class="w-6 h-6 rounded-full bg-brand-600 text-white text-xs font-extrabold flex items-center justify-center">3</span>
+              <h4 id="st-step3" class="text-sm font-extrabold text-slate-800 dark:text-slate-100">Kiểm tra &amp; chỉnh sửa</h4>
               <span id="studio-q-count-badge" class="px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-300">0 câu</span>
               <span id="st-warn-badge" class="hidden"></span>
-              <span id="st-method-badge" class="hidden px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-[#24302a] text-slate-600 dark:text-slate-300"></span>
             </div>
             <div class="flex flex-wrap items-center gap-2">
               <label id="st-only-warn-wrap" class="hidden inline-flex items-center gap-1.5 cursor-pointer text-[11px] font-bold text-slate-600 dark:text-slate-300">
                 <input id="st-only-warn" type="checkbox" class="accent-brand-600 w-3.5 h-3.5 rounded" />
                 <span>Chỉ hiện câu cần kiểm tra</span>
               </label>
-              <button id="btn-ai-fill" type="button" class="hidden px-3 py-1.5 rounded-xl bg-sky-50 dark:bg-sky-500/10 hover:bg-sky-100 dark:hover:bg-sky-500/20 text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-500/30 text-xs font-extrabold items-center gap-1 disabled:opacity-60">
-                <span>AI điền đáp án còn thiếu</span>
-              </button>
               <button id="btn-add-blank-q" type="button" class="px-3 py-1.5 rounded-xl bg-brand-50 dark:bg-brand-900/30 hover:bg-brand-100 dark:hover:bg-brand-900/50 text-brand-700 dark:text-brand-300 border border-brand-200 dark:border-brand-800/50 text-xs font-extrabold flex items-center gap-1">
                 <i data-lucide="plus" class="w-3.5 h-3.5"></i>
                 <span>Thêm câu</span>
@@ -716,21 +670,21 @@
 
           <div id="st-notes" class="hidden" role="status"></div>
 
-          <div id="studio-questions-list" class="flex-1 overflow-y-auto space-y-3 pr-1 max-h-[540px]">
+          <div id="studio-questions-list" class="flex-1 overflow-y-auto space-y-3 pr-1 max-h-[560px]">
             <!-- Populated dynamically -->
           </div>
-        </div>
+        </section>
 
       </div>
 
-      <!-- Modal Footer -->
-      <div class="px-6 py-4 border-t border-slate-200/80 dark:border-[#34453b] bg-slate-50/70 dark:bg-[#141b18] flex flex-wrap items-center justify-between gap-3 shrink-0">
+      <!-- Chân -->
+      <div class="px-5 sm:px-6 py-4 border-t border-slate-200/80 dark:border-[#34453b] bg-white dark:bg-[#19211d] flex flex-wrap items-center justify-between gap-3 shrink-0">
         <div id="studio-status-msg" class="text-xs font-bold text-slate-500 dark:text-slate-400">
-          Chọn file hoặc dán nội dung đề, bấm "Bóc tách câu hỏi", rồi kiểm tra từng câu trước khi lưu.
+          Dán văn bản hoặc chọn file, bấm "Bóc tách câu hỏi", rồi kiểm tra từng câu trước khi lưu.
         </div>
         <div class="flex items-center gap-2.5">
-          <button id="cancel-upload-modal" class="px-4 py-2.5 rounded-xl bg-white dark:bg-[#24302a] border border-slate-200 dark:border-[#46594e] text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200">Hủy</button>
-          <button id="btn-save-studio-exam" class="px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs sm:text-sm font-extrabold shadow-sm shadow-brand-600/20 flex items-center gap-2">
+          <button id="cancel-upload-modal" type="button" class="px-4 py-2.5 rounded-xl bg-white dark:bg-[#24302a] border border-slate-200 dark:border-[#46594e] text-sm font-bold text-slate-700 dark:text-slate-200">Hủy</button>
+          <button id="btn-save-studio-exam" type="button" class="px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-extrabold shadow-sm shadow-brand-600/20 flex items-center gap-2">
             <i data-lucide="check-circle-2" class="w-4 h-4"></i>
             <span>Lưu đề</span>
           </button>
@@ -766,33 +720,40 @@
     </div>
   </div>
 
-  <!-- ==================== MODAL: MÃ ĐỒNG BỘ ==================== -->
-  <div id="modal-sync-code" class="fixed inset-0 z-50 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4">
-    <div class="bg-white dark:bg-[#19211d] border border-slate-200 dark:border-[#46594e] rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl">
+  <!-- ==================== MODAL: ĐĂNG NHẬP / ĐĂNG KÝ ==================== -->
+  <div id="modal-auth" class="fixed inset-0 z-50 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#19211d] border border-slate-200 dark:border-[#46594e] rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
       <div class="flex items-start justify-between gap-3">
         <div>
-          <h3 class="text-lg font-extrabold">Mã đồng bộ</h3>
-          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Môn và đề bạn tạo gắn với mã này. Chép mã sang máy khác để dùng lại, và đừng chia sẻ cho người bạn không muốn họ xem hoặc sửa.</p>
+          <h3 id="auth-title" class="text-lg font-extrabold">Đăng nhập</h3>
+          <p id="auth-reason" class="text-xs text-slate-500 dark:text-slate-400 mt-1">Đăng nhập để tạo môn, thêm đề và lưu vào tài khoản của bạn.</p>
         </div>
-        <button id="close-sync-code-modal" class="p-1.5 rounded-lg bg-slate-100 dark:bg-[#24302a] text-slate-500" aria-label="Đóng">
+        <button id="close-auth-modal" type="button" class="p-1.5 rounded-lg bg-slate-100 dark:bg-[#24302a] text-slate-500" aria-label="Đóng">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
-      <div class="space-y-2">
-        <label class="text-xs font-bold text-slate-600 dark:text-slate-300" for="sync-code-value">Mã của máy này</label>
-        <div class="flex gap-2">
-          <input id="sync-code-value" type="text" readonly class="flex-1 min-w-0 bg-slate-50 dark:bg-[#0f1512] border border-slate-200 dark:border-[#46594e] rounded-xl px-3 py-2 text-xs font-mono-code focus:outline-none" />
-          <button id="btn-copy-sync-code" type="button" class="px-3.5 py-2 rounded-xl bg-brand-700 hover:bg-brand-600 text-white text-xs font-bold whitespace-nowrap">Sao chép</button>
-        </div>
+      <div class="flex gap-1 bg-slate-100 dark:bg-[#0f1512] p-1 rounded-xl border border-slate-200/80 dark:border-[#34453b]">
+        <button id="auth-tab-login" type="button" class="flex-1 px-3 py-1.5 rounded-lg text-sm font-bold">Đăng nhập</button>
+        <button id="auth-tab-register" type="button" class="flex-1 px-3 py-1.5 rounded-lg text-sm font-bold">Đăng ký</button>
       </div>
-      <div class="space-y-2 pt-4 border-t border-slate-200 dark:border-[#34453b]">
-        <label class="text-xs font-bold text-slate-600 dark:text-slate-300" for="sync-code-input">Dùng mã từ máy khác</label>
-        <div class="flex gap-2">
-          <input id="sync-code-input" type="text" placeholder="Dán mã vào đây" autocomplete="off" class="flex-1 min-w-0 bg-white dark:bg-[#0f1512] border border-slate-200 dark:border-[#46594e] rounded-xl px-3 py-2 text-xs font-mono-code focus:outline-none focus:ring-2 focus:ring-brand-500" />
-          <button id="btn-apply-sync-code" type="button" class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-[#24302a] hover:bg-slate-200 dark:hover:bg-[#3b4e44] text-xs font-bold whitespace-nowrap">Dùng mã này</button>
+      <form id="auth-form" class="space-y-3" novalidate>
+        <div id="auth-name-row" class="hidden space-y-1">
+          <label class="text-xs font-bold text-slate-600 dark:text-slate-300" for="auth-name">Tên hiển thị</label>
+          <input id="auth-name" type="text" autocomplete="name" maxlength="60" class="w-full bg-white dark:bg-[#0f1512] border border-slate-200 dark:border-[#46594e] rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />
         </div>
-        <p class="text-[11px] text-slate-500 dark:text-slate-400">Môn học trên máy này sẽ được thay bằng dữ liệu của mã vừa nhập. Hãy chép lại mã hiện tại trước nếu muốn quay lại.</p>
-      </div>
+        <div class="space-y-1">
+          <label class="text-xs font-bold text-slate-600 dark:text-slate-300" for="auth-email">Email</label>
+          <input id="auth-email" type="email" autocomplete="email" required class="w-full bg-white dark:bg-[#0f1512] border border-slate-200 dark:border-[#46594e] rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />
+        </div>
+        <div class="space-y-1">
+          <label class="text-xs font-bold text-slate-600 dark:text-slate-300" for="auth-password">Mật khẩu</label>
+          <input id="auth-password" type="password" autocomplete="current-password" required minlength="8" class="w-full bg-white dark:bg-[#0f1512] border border-slate-200 dark:border-[#46594e] rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />
+          <p id="auth-pass-hint" class="hidden text-[11px] text-slate-500 dark:text-slate-400">Ít nhất 8 ký tự.</p>
+        </div>
+        <p id="auth-msg" role="alert" class="hidden text-xs font-bold rounded-lg px-3 py-2"></p>
+        <button id="auth-submit" type="submit" class="w-full px-4 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-600 text-white text-sm font-extrabold transition-colors disabled:opacity-60">Đăng nhập</button>
+        <button id="auth-forgot" type="button" class="w-full text-xs font-bold text-brand-700 dark:text-brand-300 hover:underline">Quên mật khẩu?</button>
+      </form>
     </div>
   </div>
 
@@ -944,6 +905,7 @@
   </script>
 
   <!-- PRELOADED BUILT-IN QUESTION BANKS -->
+  <script src="qf-auth.js"></script>
   <script src="data-gdc.js"></script>
   <script src="data-agu-1.js"></script>
   <script src="data-agu-2.js"></script>
@@ -960,8 +922,7 @@
         HL_PREFS: 'quizfast_hl_prefs_v1',
         USER_HL: 'quizfast_user_hl_v1',
         THEME: 'quizfast_theme_v1',
-        FB_MODE: 'quizfast_fb_mode_v1',
-        GEMINI_KEY: 'quizfast_gemini_key_v1'
+        FB_MODE: 'quizfast_fb_mode_v1'
       };
 
       // Quy tắc cố định
@@ -977,7 +938,6 @@
       let paperHistory = {};
 
       let instantFeedback = false;
-      let geminiApiKey = '';
       let currentTheme = 'dark';
       let currentMode = 'home'; // 'home' | 'mistakes' | 'flashcards'
       let activeSubjectName = null; // null = subjects grid, string = subject detail or running exam
@@ -1071,7 +1031,6 @@
 
         const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) || 'light';
         applyTheme(savedTheme);
-        geminiApiKey = localStorage.getItem(STORAGE_KEYS.GEMINI_KEY) || '';
       }
 
       function saveProgress() { localStorage.setItem(STORAGE_KEYS.PROGRESS, JSON.stringify(progressMap)); }
@@ -1080,27 +1039,12 @@
       function saveCustomExams() { localStorage.setItem(STORAGE_KEYS.CUSTOM_EXAMS, JSON.stringify(customExams)); }
 
       // --- SUPABASE CLOUD SYNC ---
-      const SUPABASE_REST_URL = 'https://typsubizynimfhukhewc.supabase.co/rest/v1';
-      const SUPABASE_KEY = 'sb_publishable_uyBM4WsSz16ie7pnpNJtfA_jsYw882Q';
       const SYNC_QUEUE_KEY = 'quizfast_sync_queue_v1';
 
-      // Mã riêng của mỗi trình duyệt: gắn môn và đề của người dùng với dữ liệu trên cloud.
-      // Gửi kèm header x-owner-id; chính sách RLS trên DB chỉ cho đọc/ghi các dòng có đúng mã này.
-      const OWNER_KEY_STORAGE = 'quizfast_owner_key_v1';
-      const OWNER_KEY_RE = /^[A-Za-z0-9-]{32,64}$/;
-      function newOwnerKey() {
-        if (window.crypto && typeof crypto.randomUUID === 'function') return crypto.randomUUID();
-        return (Date.now().toString(16) + Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2) + '0123456789abcdef0123456789abcdef').slice(0, 36);
-      }
-      let ownerKey = (() => {
-        try {
-          const saved = localStorage.getItem(OWNER_KEY_STORAGE);
-          if (saved && OWNER_KEY_RE.test(saved)) return saved;
-          const created = newOwnerKey();
-          localStorage.setItem(OWNER_KEY_STORAGE, created);
-          return created;
-        } catch { return newOwnerKey(); }
-      })();
+      // Môn và đề của người dùng gắn với tài khoản đăng nhập (Supabase Auth). owner_id = id tài khoản.
+      // Chưa đăng nhập thì chỉ học được môn mặc định; tạo môn/đề cần đăng nhập.
+      const DATA_OWNER_KEY = 'quizfast_data_owner_v1'; // tài khoản mà dữ liệu cục bộ đang thuộc về
+      function currentUserId() { return window.QFAuth && QFAuth.user ? QFAuth.user.id : null; }
 
       // Hàng đợi thay đổi chưa đẩy lên cloud (lưu trong máy, để không mất khi lỗi mạng hoặc tải lại trang)
       let syncQueue = { upSubj: [], upExam: [], delSubj: [], delExam: [] };
@@ -1129,20 +1073,66 @@
       }
 
       async function sbFetch(path, options = {}) {
-        const headers = {
-          'apikey': SUPABASE_KEY,
-          'Content-Type': 'application/json',
-          ...(options.headers || {})
-        };
-        // Chỉ các bảng của người dùng cần mã; bảng câu hỏi và môn mặc định là dữ liệu công khai
-        if (path.startsWith('/quizfast_subjects') || path.startsWith('/quizfast_exams')) headers['x-owner-id'] = ownerKey;
-        const res = await fetch(`${SUPABASE_REST_URL}${path}`, { ...options, headers });
-        if (!res.ok) {
-          const errText = await res.text();
-          throw new Error(`Supabase ${res.status}: ${errText}`);
+        // Bảng của người dùng cần đăng nhập; bảng câu hỏi và môn mặc định là dữ liệu công khai
+        if ((path.startsWith('/quizfast_subjects') || path.startsWith('/quizfast_exams')) && !currentUserId()) {
+          throw new Error('NOT_SIGNED_IN');
         }
-        const txt = await res.text();
-        return txt ? JSON.parse(txt) : null;
+        return QFAuth.rest(path, options);
+      }
+
+      // ---- Đăng nhập: chặn tính năng tạo môn/đề khi chưa có tài khoản ----
+      let openAuthModal = () => {};
+      let pendingAfterLogin = null;
+      function requireLogin(reason, action) {
+        if (currentUserId()) { action(); return; }
+        pendingAfterLogin = action;
+        openAuthModal('login', reason);
+      }
+
+      function escAuth(t) { return String(t == null ? '' : t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+      function renderAuthArea() {
+        const el = document.getElementById('auth-area');
+        if (!el) return;
+        const st = QFAuth.state();
+        if (!st.user) {
+          el.innerHTML = `
+            <button type="button" data-auth-action="login" class="whitespace-nowrap px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#24302a] hover:bg-slate-200 dark:hover:bg-[#3b4e44] border border-slate-200/80 dark:border-[#46594e] text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 transition-all">Đăng nhập</button>
+            <button type="button" data-auth-action="register" class="hidden sm:inline-block whitespace-nowrap px-3 py-2 rounded-xl border border-brand-600 text-brand-700 dark:text-brand-300 hover:bg-brand-50 dark:hover:bg-brand-900/30 text-sm font-bold transition-all">Đăng ký</button>`;
+          return;
+        }
+        const label = (st.profile && st.profile.display_name) || st.user.email || 'Tài khoản';
+        el.innerHTML = `
+          ${st.isAdmin ? `<a href="admin.html" class="whitespace-nowrap flex items-center gap-1 px-3 py-2 rounded-xl bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-200 border border-amber-200 dark:border-amber-500/40 text-xs sm:text-sm font-bold transition-all" title="Trang quản trị">Admin</a>` : ''}
+          <span class="hidden md:inline max-w-[140px] truncate text-xs font-bold text-slate-600 dark:text-slate-300" title="${escAuth(st.user.email)}">${escAuth(label)}</span>
+          <button type="button" data-auth-action="logout" class="whitespace-nowrap px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#24302a] hover:bg-slate-200 dark:hover:bg-[#3b4e44] border border-slate-200/80 dark:border-[#46594e] text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 transition-all">Đăng xuất</button>`;
+      }
+
+      // Đổi tài khoản (đăng nhập/đăng xuất): dữ liệu cục bộ của người này không được lẫn sang người khác
+      let lastAuthUid = undefined;
+      function handleAuthChange() {
+        renderAuthArea();
+        const uid = currentUserId();
+        const sub = document.getElementById('user-subjects-sub');
+        if (sub) sub.textContent = uid
+          ? 'Môn và đề do chính bạn thêm, được lưu vào tài khoản của bạn trên cloud.'
+          : 'Môn và đề do chính bạn thêm. Đăng nhập để lưu vào tài khoản của bạn trên cloud.';
+        if (uid === lastAuthUid) return;
+        lastAuthUid = uid;
+        let owner = null;
+        try { owner = localStorage.getItem(DATA_OWNER_KEY); } catch { /* bỏ qua */ }
+        // owner === null: dữ liệu cũ từ trước khi có tài khoản, giữ lại để đẩy lên tài khoản vừa đăng nhập
+        if (owner !== null && owner !== (uid || '')) {
+          customSubjects = [];
+          customExams = [];
+          syncQueue = { upSubj: [], upExam: [], delSubj: [], delExam: [] };
+          saveCustomSubjects();
+          saveCustomExams();
+          saveSyncQueue();
+        }
+        if (uid || owner !== null) { try { localStorage.setItem(DATA_OWNER_KEY, uid || ''); } catch { /* bỏ qua */ } }
+        if (uid) syncFromSupabase();
+        else setCloudStatus('err', 'Chưa đăng nhập');
+        refreshHomeView();
       }
 
       function refreshHomeView() {
@@ -1197,12 +1187,12 @@
         flushing = true;
         try {
           for (const name of [...syncQueue.delSubj]) {
-            await sbFetch(`/quizfast_exams?owner_id=eq.${ownerKey}&subject=eq.${encodeURIComponent(name)}`, { method: 'DELETE' });
-            await sbFetch(`/quizfast_subjects?owner_id=eq.${ownerKey}&name=eq.${encodeURIComponent(name)}`, { method: 'DELETE' });
+            await sbFetch(`/quizfast_exams?owner_id=eq.${currentUserId()}&subject=eq.${encodeURIComponent(name)}`, { method: 'DELETE' });
+            await sbFetch(`/quizfast_subjects?owner_id=eq.${currentUserId()}&name=eq.${encodeURIComponent(name)}`, { method: 'DELETE' });
             qDrop('delSubj', name);
           }
           for (const id of [...syncQueue.delExam]) {
-            await sbFetch(`/quizfast_exams?owner_id=eq.${ownerKey}&id=eq.${encodeURIComponent(id)}`, { method: 'DELETE' });
+            await sbFetch(`/quizfast_exams?owner_id=eq.${currentUserId()}&id=eq.${encodeURIComponent(id)}`, { method: 'DELETE' });
             qDrop('delExam', id);
           }
 
@@ -1211,7 +1201,7 @@
             await sbFetch('/quizfast_subjects?on_conflict=owner_id,name', {
               method: 'POST',
               headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
-              body: JSON.stringify(subs.map(x => ({ owner_id: ownerKey, name: x.name, description: x.description || '' })))
+              body: JSON.stringify(subs.map(x => ({ owner_id: currentUserId(), name: x.name, description: x.description || '' })))
             });
           }
           syncQueue.upSubj = [];
@@ -1222,7 +1212,7 @@
               method: 'POST',
               headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
               body: JSON.stringify(exs.map(ex => ({
-                owner_id: ownerKey,
+                owner_id: currentUserId(),
                 id: ex.id,
                 subject: ex.subject,
                 title: ex.title,
@@ -1246,12 +1236,14 @@
       }
 
       async function pushToCloud(label) {
+        if (!currentUserId()) { setCloudStatus('err', 'Chưa đăng nhập'); return; }
         setCloudStatus('syncing', label);
         const ok = await flushQueue();
-        setCloudStatus(ok ? 'ok' : 'err', ok ? 'Cloud Đã Đồng Bộ' : 'Chưa đồng bộ được');
+        setCloudStatus(ok ? 'ok' : 'err', ok ? 'Đã đồng bộ' : 'Chưa đồng bộ được');
       }
 
       async function syncFromSupabase() {
+        if (!currentUserId()) { setCloudStatus('err', 'Chưa đăng nhập'); return; }
         setCloudStatus('syncing', 'Đang đồng bộ...');
         try {
           // 1. Đẩy các thay đổi đang chờ trước, để lần tải về không ghi đè mất chúng
@@ -1260,8 +1252,8 @@
 
           // 2. Tải về
           const [subjRows, examRows] = await Promise.all([
-            sbFetch(`/quizfast_subjects?select=*&owner_id=eq.${ownerKey}&order=created_at.asc`),
-            sbFetch(`/quizfast_exams?select=*&owner_id=eq.${ownerKey}&order=created_at.asc`)
+            sbFetch(`/quizfast_subjects?select=*&owner_id=eq.${currentUserId()}&order=created_at.asc`),
+            sbFetch(`/quizfast_exams?select=*&owner_id=eq.${currentUserId()}&order=created_at.asc`)
           ]);
 
           if (Array.isArray(subjRows) && Array.isArray(examRows)) {
@@ -1295,7 +1287,7 @@
             }
           }
 
-          setCloudStatus('ok', 'Cloud Đã Đồng Bộ');
+          setCloudStatus('ok', 'Đã đồng bộ');
           refreshHomeView();
         } catch (err) {
           console.warn('Supabase sync error:', err);
@@ -1935,7 +1927,6 @@
       // --- GLOBAL COUNTERS ---
       function updateGlobalCounters() {
         const all = getAllQuestionsFlat();
-        document.getElementById('total-bank-badge').textContent = `${all.length} câu`;
 
         let totalRed = 0, totalStar = 0;
         all.forEach(q => {
@@ -2102,7 +2093,7 @@
             </div>
           `;
           const emptyBtn = grid.querySelector('#btn-empty-add-paper');
-          if (emptyBtn) emptyBtn.addEventListener('click', () => openUploadStudio(subjName));
+          if (emptyBtn) emptyBtn.addEventListener('click', () => requireLogin('Đăng nhập để thêm đề và lưu vào tài khoản của bạn.', () => openUploadStudio(subjName)));
         } else {
           papers.forEach(paper => {
             const qCount = paper.isShuffle ? paper.size : paper.questions.length;
@@ -2940,41 +2931,6 @@
         } catch { return null; }
       }
 
-      // Văn bản "giàu định dạng" để gửi cho AI: **đậm**, __gạch chân__, {{màu hoặc tô nền}}
-      function richLineText(line) {
-        const t = line.text;
-        const runs = (line.runs || []).filter(r => r.f & (FMT_BOLD | FMT_STRONG)).sort((a, b) => a.s - b.s);
-        if (!runs.length) return t;
-        const boldOnlyEverywhere = emphasisRatio(line, 0, FMT_BOLD) > 0.95 && !runs.some(r => r.f & FMT_STRONG);
-        let out = '', pos = 0;
-        runs.forEach(r => {
-          if (r.s < pos) return;
-          const seg = t.slice(r.s, r.e);
-          if (!seg.trim()) return;
-          const mark = (r.f & (FMT_COLOR | FMT_HIGHLIGHT)) ? '{{' : ((r.f & FMT_UNDERLINE) ? '__' : (boldOnlyEverywhere ? '' : '**'));
-          if (!mark) return;
-          const close = mark === '{{' ? '}}' : mark;
-          out += t.slice(pos, r.s) + mark + seg + close;
-          pos = r.e;
-        });
-        return out + t.slice(pos);
-      }
-      function linesToRichText(lines) { return lines.map(richLineText).join('\n'); }
-
-      // Chia văn bản dài thành nhiều đoạn cho AI, ưu tiên cắt ở chỗ bắt đầu câu mới hoặc dòng trống
-      function chunkLinesForAi(lines, maxChars) {
-        const chunks = [];
-        let cur = [], size = 0;
-        const isBoundary = (l) => !l.text.trim() || RE_Q_EXPLICIT.test(l.text.trim()) || RE_Q_NUM.test(l.text.trim());
-        lines.forEach(l => {
-          if (size > maxChars && isBoundary(l)) { chunks.push(cur); cur = []; size = 0; }
-          cur.push(l);
-          size += l.text.length + 1;
-        });
-        if (cur.some(l => l.text.trim())) chunks.push(cur);
-        return chunks;
-      }
-
       // Cảnh báo cho từng câu trong bản nháp (dùng ở cả bước kiểm tra và lúc lưu)
       function computeQuestionWarnings(q, dupCount) {
         const w = [];
@@ -2995,13 +2951,11 @@
       }
 
       // ---------------------------------------------------------------------------------------------
-      // STUDIO: ĐỌC FILE (Word, PDF, ảnh) VÀ GỌI AI
+      // STUDIO: ĐỌC FILE (Word, văn bản)
       // ---------------------------------------------------------------------------------------------
       const STUDIO_LIBS = {
-        jszip: { url: 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js', global: 'JSZip' },
-        pdfjs: { url: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js', global: 'pdfjsLib' }
+        jszip: { url: 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js', global: 'JSZip' }
       };
-      const STUDIO_PDF_WORKER = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
       const STUDIO_MAX_FILE_MB = 18;
       const studioLibPromises = {};
       const studioSleep = (ms) => new Promise(r => setTimeout(r, ms));
@@ -3022,19 +2976,6 @@
           document.head.appendChild(sc);
         });
         return studioLibPromises[name];
-      }
-
-      function fileToBase64(file) {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => {
-            const res = String(reader.result || '');
-            const idx = res.indexOf(',');
-            resolve(idx >= 0 ? res.slice(idx + 1) : res);
-          };
-          reader.onerror = () => reject(new Error('Không thể đọc file.'));
-          reader.readAsDataURL(file);
-        });
       }
 
       // ----- Word (.docx): đọc trực tiếp XML để lấy đánh số tự động và định dạng chữ -----
@@ -3257,310 +3198,69 @@
         return out.map(l => ({ text: l.text.replace(/ /g, ' '), runs: l.runs }));
       }
 
-      // ----- PDF: lấy chữ theo từng dòng; PDF scan (không có chữ) sẽ chuyển sang AI -----
-      async function readPdfLines(file) {
-        await loadStudioLib('pdfjs');
-        window.pdfjsLib.GlobalWorkerOptions.workerSrc = STUDIO_PDF_WORKER;
-        let pdf;
-        try { pdf = await window.pdfjsLib.getDocument({ data: await file.arrayBuffer() }).promise; }
-        catch { throw new Error(`Không mở được "${file.name}". File PDF có thể bị hỏng hoặc đặt mật khẩu.`); }
-        const lines = [];
-        let chars = 0;
-        for (let pg = 1; pg <= pdf.numPages; pg++) {
-          const page = await pdf.getPage(pg);
-          const content = await page.getTextContent();
-          const items = content.items
-            .filter(it => typeof it.str === 'string' && it.str !== '')
-            .map(it => ({ s: it.str, x: it.transform[4], y: it.transform[5], w: it.width || 0, h: it.height || 10 }))
-            .sort((a, b) => b.y - a.y || a.x - b.x);
-          const rows = [];
-          items.forEach(it => {
-            const row = rows[rows.length - 1];
-            if (row && Math.abs(row.y - it.y) <= Math.max(2.5, it.h * 0.35)) row.items.push(it);
-            else rows.push({ y: it.y, items: [it] });
-          });
-          rows.forEach(row => {
-            row.items.sort((a, b) => a.x - b.x);
-            let t = '';
-            let prevEnd = null;
-            row.items.forEach(it => {
-              if (prevEnd !== null && it.x - prevEnd > Math.max(1, it.h * 0.15) && !t.endsWith(' ') && !it.s.startsWith(' ')) t += ' ';
-              t += it.s;
-              prevEnd = it.x + it.w;
-            });
-            t = t.replace(/ /g, ' ').replace(/\s+/g, ' ').trim();
-            if (t) { lines.push(mkLine(t)); chars += t.length; }
-          });
-          lines.push(mkLine(''));
-        }
-        return { lines, chars, pages: pdf.numPages, scanned: chars < 30 * pdf.numPages };
-      }
-
-      // ----- Ảnh: thu nhỏ trước khi gửi AI để nhẹ và nhanh -----
-      async function prepareImageForAi(file) {
-        const raw = async () => ({ mime: file.type || 'image/jpeg', data: await fileToBase64(file) });
-        try {
-          const bmp = await createImageBitmap(file);
-          const scale = Math.min(1, 2200 / Math.max(bmp.width, bmp.height));
-          if (scale === 1 && file.size < 3 * 1024 * 1024) { if (bmp.close) bmp.close(); return await raw(); }
-          const c = document.createElement('canvas');
-          c.width = Math.max(1, Math.round(bmp.width * scale));
-          c.height = Math.max(1, Math.round(bmp.height * scale));
-          const ctx = c.getContext('2d');
-          ctx.fillStyle = '#fff';
-          ctx.fillRect(0, 0, c.width, c.height);
-          ctx.drawImage(bmp, 0, 0, c.width, c.height);
-          if (bmp.close) bmp.close();
-          const url = c.toDataURL('image/jpeg', 0.88);
-          return { mime: 'image/jpeg', data: url.slice(url.indexOf(',') + 1) };
-        } catch { return raw(); }
-      }
-
       function studioFileKind(file) {
         const name = file.name.toLowerCase();
         const ext = name.includes('.') ? name.split('.').pop() : '';
         if (ext === 'docx') return 'docx';
         if (ext === 'doc') return 'doc';
-        if (ext === 'pdf' || file.type === 'application/pdf') return 'pdf';
-        if (file.type.startsWith('image/') || ['png', 'jpg', 'jpeg', 'webp', 'bmp', 'gif'].includes(ext)) return 'image';
         if (['txt', 'md', 'json', 'csv'].includes(ext) || file.type.startsWith('text/')) return 'text';
         return 'unknown';
       }
 
       async function readStudioSource(file) {
-        if (file.size > STUDIO_MAX_FILE_MB * 1024 * 1024) throw new Error(`"${file.name}" lớn hơn ${STUDIO_MAX_FILE_MB} MB. Hãy tách nhỏ file hoặc nén ảnh.`);
+        if (file.size > STUDIO_MAX_FILE_MB * 1024 * 1024) throw new Error(`"${file.name}" lớn hơn ${STUDIO_MAX_FILE_MB} MB. Hãy tách nhỏ file.`);
         const kind = studioFileKind(file);
         if (kind === 'docx') return { kind: 'text', name: file.name, lines: await readDocxLines(file) };
-        if (kind === 'doc') throw new Error(`"${file.name}" là file Word đời cũ (.doc). Hãy mở bằng Word rồi Lưu thành .docx hoặc PDF, sau đó chọn lại.`);
-        if (kind === 'pdf') {
-          const pdf = await readPdfLines(file);
-          if (pdf.scanned) return { kind: 'scan', name: file.name, file, mime: 'application/pdf' };
-          return { kind: 'text', name: file.name, lines: pdf.lines, file, mime: 'application/pdf' };
-        }
-        if (kind === 'image') return { kind: 'image', name: file.name, file };
+        if (kind === 'doc') throw new Error(`"${file.name}" là file Word đời cũ (.doc). Hãy mở bằng Word rồi Lưu thành .docx, sau đó chọn lại.`);
         if (kind === 'text') {
           const text = await file.text();
           return { kind: 'text', name: file.name, lines: textToLines(text), rawText: text };
         }
-        throw new Error(`Chưa hỗ trợ định dạng của "${file.name}". Dùng Word (.docx), PDF, ảnh hoặc .txt.`);
+        throw new Error(`Chưa hỗ trợ định dạng của "${file.name}". Chỉ nhận Word (.docx) hoặc văn bản (.txt).`);
       }
 
-      // ----- AI (Gemini) -----
-      const GEMINI_MODEL = 'gemini-2.5-flash';
-      const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/' + GEMINI_MODEL + ':generateContent';
-      const AI_QUESTION_SCHEMA = {
-        type: 'ARRAY',
-        items: {
-          type: 'OBJECT',
-          properties: {
-            question: { type: 'STRING' },
-            options: { type: 'ARRAY', items: { type: 'STRING' } },
-            correctIndex: { type: 'INTEGER' },
-            answerSource: { type: 'STRING', enum: ['marked', 'answer_key', 'inferred', 'unknown'] },
-            explanation: { type: 'STRING' },
-            multi: { type: 'BOOLEAN' }
-          },
-          required: ['question', 'options', 'correctIndex', 'answerSource']
-        }
-      };
-      const AI_EXTRACT_PROMPT = `Bạn là công cụ bóc tách đề trắc nghiệm. Hãy đọc tài liệu và trả về TẤT CẢ câu hỏi trắc nghiệm có trong đó.
-
-Quy tắc bắt buộc:
-- Giữ nguyên ngôn ngữ và nội dung gốc của câu hỏi và đáp án. Không dịch, không viết lại, không tóm tắt, không thêm câu hỏi không có trong tài liệu, không bỏ sót câu nào.
-- "question": nội dung câu hỏi, bỏ số thứ tự ("Câu 1:", "1.", "Question 1)").
-- "options": các đáp án theo đúng thứ tự trong tài liệu, bỏ nhãn "A.", "b)", "(C)" và các ký hiệu đánh dấu. Mỗi câu có từ 2 đến 6 đáp án.
-- "correctIndex": chỉ số của đáp án đúng (0 là đáp án đầu tiên). Xác định theo thứ tự ưu tiên:
-  (1) ký hiệu trong tài liệu: ✓ ✔ ✅ *, chữ in đậm, gạch chân, tô màu hoặc tô nền. Trong văn bản này định dạng được ghi bằng **chữ đậm**, __chữ gạch chân__ và {{chữ màu hoặc tô nền}}; với ảnh hoặc PDF hãy tự nhìn định dạng;
-  (2) dòng hoặc bảng "Đáp án" / "Answer key" trong tài liệu;
-  (3) nếu tài liệu hoàn toàn không cho biết đáp án đúng thì tự suy luận đáp án đúng nhất và đặt answerSource là "inferred".
-- "answerSource": "marked" (từ ký hiệu hoặc định dạng), "answer_key" (từ bảng/dòng đáp án), "inferred" (tự suy luận), "unknown" (không xác định được, khi đó đặt correctIndex là -1).
-- "explanation": lời giải thích nếu tài liệu có, nếu không thì chuỗi rỗng.
-- Nếu câu có nhiều đáp án đúng, chọn đáp án đầu tiên và đặt "multi": true.
-- Nếu một câu bị cắt dở ở đầu hoặc cuối tài liệu, bỏ qua câu đó.
-Chỉ trả về mảng JSON theo đúng schema, không thêm lời giải thích nào khác.`;
-
-      function geminiError(status, body) {
-        let detail = '';
-        try { detail = (JSON.parse(body).error || {}).message || ''; } catch { detail = String(body || '').slice(0, 160); }
-        if (status === 400 && /api key|API_KEY/i.test(detail)) return new Error('Khóa Gemini không hợp lệ. Hãy kiểm tra lại khóa trong "Cài đặt AI".');
-        if (status === 401 || status === 403) return new Error('Khóa Gemini không có quyền sử dụng hoặc đã bị chặn. Hãy tạo khóa mới tại aistudio.google.com/apikey.');
-        if (status === 429) return new Error('Đã hết lượt dùng miễn phí của Gemini trong lúc này. Hãy đợi vài phút rồi thử lại.');
-        if (status >= 500) return new Error('Máy chủ Gemini đang bận. Hãy thử lại sau ít phút.');
-        return new Error(`Lỗi Gemini (${status}): ${detail || 'không rõ nguyên nhân'}`);
+      // ----- Bóc tách bằng code. Nguồn nào không có câu hỏi thì báo "không phải câu hỏi hoặc đề bài" -----
+      const PASTED_NAME = 'Văn bản đã dán';
+      function notQuestionMsg(name) {
+        const who = name === PASTED_NAME ? 'Nội dung bạn dán' : `File "${name}"`;
+        return `${who} không phải câu hỏi hoặc đề bài.`;
+      }
+      function isRealQuestion(q) {
+        return !!String(q.question || '').trim() && (q.options || []).filter(o => String(o || '').trim()).length >= 2;
       }
 
-      async function geminiGenerate(parts, schema) {
-        if (!geminiApiKey) throw new Error('Chưa có khóa Gemini.');
-        const config = { temperature: 0.1, responseMimeType: 'application/json', responseSchema: schema, maxOutputTokens: 32768, thinkingConfig: { thinkingBudget: 0 } };
-        for (let attempt = 0; attempt < 4; attempt++) {
-          let res;
-          try {
-            res = await fetch(GEMINI_URL, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'x-goog-api-key': geminiApiKey },
-              body: JSON.stringify({ contents: [{ role: 'user', parts }], generationConfig: config })
-            });
-          } catch { throw new Error('Không kết nối được tới Gemini. Hãy kiểm tra mạng rồi thử lại.'); }
-          if (res.ok) {
-            const data = await res.json();
-            const cand = data.candidates && data.candidates[0];
-            const text = cand && cand.content && cand.content.parts ? cand.content.parts.map(p => p.text || '').join('') : '';
-            if (!text) throw new Error('AI không trả về nội dung (file có thể bị chặn hoặc quá khó đọc). Hãy thử lại hoặc đổi file.');
-            return { text, truncated: cand.finishReason === 'MAX_TOKENS' };
-          }
-          const body = await res.text();
-          if (res.status === 400 && /thinking/i.test(body) && config.thinkingConfig) { delete config.thinkingConfig; continue; }
-          if ((res.status === 429 || res.status >= 500) && attempt < 3) {
-            const m = body.match(/"retryDelay"\s*:\s*"(\d+)/);
-            await studioSleep((m ? parseInt(m[1], 10) * 1000 : 2500 * (attempt + 1)));
-            continue;
-          }
-          throw geminiError(res.status, body);
-        }
-        throw new Error('AI không phản hồi sau nhiều lần thử.');
-      }
-
-      function salvageJsonArray(text) {
-        try { return JSON.parse(text); } catch { /* thử cứu phần đầy đủ */ }
-        const cut = text.lastIndexOf('},');
-        if (cut > 0) { try { return JSON.parse(text.slice(0, cut + 1) + ']'); } catch { /* bỏ */ } }
-        return null;
-      }
-
-      function normalizeAiQuestions(arr) {
-        if (!Array.isArray(arr)) return [];
-        return arr.filter(o => o && o.question && Array.isArray(o.options)).map(o => {
-          const options = o.options.map(x => stripCorrectMarks(stripOptionLabel(String(x))).text).filter(Boolean).slice(0, 6);
-          let ci = Number.isInteger(o.correctIndex) ? o.correctIndex : -1;
-          let src = ['marked', 'answer_key', 'inferred', 'unknown'].includes(o.answerSource) ? o.answerSource : 'unknown';
-          if (ci < 0 || ci >= options.length) { ci = -1; src = 'unknown'; }
-          return { num: null, question: String(o.question).replace(/\s+/g, ' ').trim(), options, correctIndex: ci, answerSource: src, explanation: String(o.explanation || '').trim(), multi: !!o.multi };
-        });
-      }
-
-      async function aiExtractParts(extraParts, label, onStatus, pct) {
-        onStatus(label, pct);
-        const { text, truncated } = await geminiGenerate([{ text: AI_EXTRACT_PROMPT }].concat(extraParts), AI_QUESTION_SCHEMA);
-        const arr = salvageJsonArray(text);
-        if (arr === null) throw new Error('AI trả về dữ liệu không đúng định dạng. Hãy thử lại hoặc chia nhỏ file.');
-        return { questions: normalizeAiQuestions(arr), truncated };
-      }
-
-      async function aiExtractFromLines(src, onStatus, base, span) {
-        const chunks = chunkLinesForAi(src.lines, 9000);
-        const all = [];
-        let anyTruncated = false;
-        for (let i = 0; i < chunks.length; i++) {
-          const label = `AI đang đọc "${src.name}"${chunks.length > 1 ? ` (phần ${i + 1}/${chunks.length})` : ''}...`;
-          const r = await aiExtractParts([{ text: '--- NỘI DUNG ĐỀ ---\n' + linesToRichText(chunks[i]) }], label, onStatus, base + (i / chunks.length) * span);
-          r.questions.forEach(q => all.push(q));
-          if (r.truncated) anyTruncated = true;
-          if (i + 1 < chunks.length) await studioSleep(400);
-        }
-        return { questions: all, truncated: anyTruncated };
-      }
-
-      async function aiExtractFromInline(src, onStatus, base) {
-        let inline;
-        if (src.kind === 'image') inline = await prepareImageForAi(src.file);
-        else inline = { mime: 'application/pdf', data: await fileToBase64(src.file) };
-        return aiExtractParts([{ inlineData: { mimeType: inline.mime, data: inline.data } }], `AI đang đọc "${src.name}"...`, onStatus, base);
-      }
-
-      // AI điền đáp án cho các câu chưa có đáp án (đáp án do AI đoán sẽ được gắn cảnh báo để kiểm tra lại)
-      async function aiFillMissingAnswers(questions, onStatus) {
-        const targets = [];
-        questions.forEach((q, i) => {
-          const opts = (q.options || []).filter(o => String(o || '').trim());
-          if (opts.length >= 2 && String(q.question || '').trim() && !(q.correctIndex >= 0 && q.correctIndex < q.options.length)) targets.push(i);
-        });
-        if (!targets.length) return 0;
-        const schema = { type: 'ARRAY', items: { type: 'OBJECT', properties: { index: { type: 'INTEGER' }, correctIndex: { type: 'INTEGER' } }, required: ['index', 'correctIndex'] } };
-        let filled = 0;
-        for (let b = 0; b < targets.length; b += 12) {
-          const batch = targets.slice(b, b + 12);
-          onStatus(`AI đang chọn đáp án (${Math.min(b + 12, targets.length)}/${targets.length})...`, (b / targets.length) * 100);
-          const payload = batch.map(i => ({ index: i, question: questions[i].question, options: questions[i].options }));
-          const prompt = 'Với mỗi câu trắc nghiệm dưới đây, hãy chọn đáp án đúng nhất. Trả về mảng JSON gồm "index" (giữ nguyên) và "correctIndex" (0 là đáp án đầu tiên). Không bỏ sót câu nào.\n\n' + JSON.stringify(payload);
-          const { text } = await geminiGenerate([{ text: prompt }], schema);
-          const arr = salvageJsonArray(text) || [];
-          arr.forEach(r => {
-            const q = questions[r.index];
-            if (q && Number.isInteger(r.correctIndex) && r.correctIndex >= 0 && r.correctIndex < q.options.length && String(q.options[r.correctIndex] || '').trim()) {
-              q.correctIndex = r.correctIndex;
-              q.answerSource = 'inferred';
-              filled++;
-            }
-          });
-          if (b + 12 < targets.length) await studioSleep(400);
-        }
-        return filled;
-      }
-
-      // ----- Điều phối: code trước, AI khi cần -----
-      function studioRequireKey() {
-        if (!geminiApiKey) throw new Error('Phần này cần AI. Hãy bấm "Cài đặt AI" bên dưới và dán khóa Gemini (miễn phí tại aistudio.google.com/apikey).');
-      }
-
-      async function studioExtract({ files, rawText, method, onStatus }) {
-        const hasKey = !!geminiApiKey;
+      async function studioExtract({ files, rawText, onStatus }) {
         const notes = [];
         const hasText = !!(rawText && rawText.trim());
         const total = files.length + (hasText ? 1 : 0);
-        if (total === 0) throw new Error('Hãy chọn file hoặc dán nội dung đề trước.');
+        if (total === 0) throw new Error('Hãy dán nội dung đề hoặc chọn file trước.');
 
         const sources = [];
         for (let i = 0; i < files.length; i++) {
           onStatus(`Đang đọc "${files[i].name}"...`, 3 + (i / total) * 25);
           sources.push(await readStudioSource(files[i]));
         }
-        if (hasText) sources.push({ kind: 'text', name: 'Văn bản đã dán', lines: textToLines(rawText), rawText });
+        if (hasText) sources.push({ kind: 'text', name: PASTED_NAME, lines: textToLines(rawText), rawText });
 
         const out = [];
-        let usedAi = false, usedCode = false;
+        const rejected = [];
         for (let si = 0; si < sources.length; si++) {
           const src = sources[si];
-          const base = 30 + (si / sources.length) * 65;
-          const span = 65 / sources.length;
-          let qs = null;
-
-          if (src.kind === 'text') {
-            const json = src.rawText ? tryParseJsonQuestions(src.rawText) : null;
-            if (json) { qs = json; usedCode = true; }
-            else if (method !== 'ai') {
-              onStatus(`Đang tách câu hỏi trong "${src.name}" bằng code...`, base);
-              const parsed = parseQuestionsFromLines(src.lines);
-              const a = assessParse(parsed);
-              if (a.good || method === 'code' || !hasKey) {
-                qs = parsed.questions;
-                usedCode = true;
-                if (!a.good && method === 'code') notes.push(`"${src.name}": code chỉ nhận ra ${a.n} câu và có thể chưa đủ. Thử chế độ "Tự động" kèm AI.`);
-                if (!a.good && method === 'auto') notes.push(`"${src.name}": định dạng khó, code chỉ nhận ra ${a.n} câu. Thêm khóa Gemini (miễn phí) để AI đọc kỹ hơn.`);
-              } else {
-                notes.push(`"${src.name}": code chưa chắc chắn nên đã chuyển sang AI.`);
-              }
-            }
-            if (qs === null) {
-              studioRequireKey();
-              usedAi = true;
-              const r = src.file && src.mime === 'application/pdf'
-                ? await aiExtractFromInline(src, onStatus, base)
-                : await aiExtractFromLines(src, onStatus, base, span);
-              qs = r.questions;
-              if (r.truncated) notes.push(`"${src.name}": AI bị cắt giữa chừng vì file quá dài. Hãy chia nhỏ file rồi bóc tách phần còn lại.`);
-            }
-          } else {
-            if (method === 'code') throw new Error(`"${src.name}" là ảnh hoặc bản scan nên cần AI. Chọn "Tự động" hoặc "Dùng AI" và thêm khóa Gemini.`);
-            studioRequireKey();
-            usedAi = true;
-            const r = await aiExtractFromInline(src, onStatus, base);
-            qs = r.questions;
-            if (r.truncated) notes.push(`"${src.name}": AI bị cắt giữa chừng, có thể thiếu câu ở cuối.`);
-          }
+          onStatus(`Đang tách câu hỏi trong "${src.name}"...`, 30 + (si / sources.length) * 65);
+          const json = src.rawText ? tryParseJsonQuestions(src.rawText) : null;
+          const qs = json || parseQuestionsFromLines(src.lines).questions;
+          if (!qs.some(isRealQuestion)) { rejected.push(src.name); continue; }
+          if (!json && !assessParse({ questions: qs, stats: { aCount: 0 } }).good) notes.push(`"${src.name}": định dạng khó, có thể còn thiếu câu. Hãy kiểm tra kỹ.`);
           qs.forEach(q => out.push(q));
         }
 
-        // loại câu trùng giữa các file / các đoạn, gán ID
+        if (!out.length) {
+          const msg = rejected.length === 1 ? notQuestionMsg(rejected[0]) : rejected.map(notQuestionMsg).join(' ');
+          throw new Error(msg + ' Mỗi câu cần có nội dung và ít nhất 2 đáp án (A, B, C...).');
+        }
+        rejected.forEach(n => notes.push(notQuestionMsg(n) + ' Đã bỏ qua.'));
+
+        // loại câu trùng giữa các file, gán ID
         const seen = new Set();
         const questions = [];
         out.forEach(q => {
@@ -3572,7 +3272,7 @@ Chỉ trả về mảng JSON theo đúng schema, không thêm lời giải thíc
         const stamp = Date.now().toString(36);
         questions.forEach((q, i) => { q.id = `QF_${stamp}_${i + 1}`; });
         if (out.length !== questions.length) notes.push(`Đã bỏ ${out.length - questions.length} câu trùng.`);
-        return { questions, method: usedAi && usedCode ? 'code+ai' : (usedAi ? 'ai' : 'code'), notes };
+        return { questions, notes };
       }
 
       function populateStudioSubjectSelect(preferredSubj) {
@@ -3598,7 +3298,7 @@ Chỉ trả về mảng JSON theo đúng schema, không thêm lời giải thíc
       // STUDIO: GIAO DIỆN (nguồn đề, kiểm tra từng câu, AI điền đáp án)
       // ---------------------------------------------------------------------------------------------
       let studioFiles = [];
-      let studioMeta = { method: '', notes: [] };
+      let studioMeta = { notes: [] };
       let studioOnlyWarn = false;
       let studioBusy = false;
 
@@ -3610,11 +3310,6 @@ Chỉ trả về mảng JSON theo đúng schema, không thêm lời giải thíc
           document.getElementById('parse-progress-pct').textContent = `${Math.round(pct)}%`;
           document.getElementById('parse-progress-bar').style.width = `${Math.min(100, Math.max(0, pct))}%`;
         }
-      }
-
-      function updateAiKeyUI() {
-        const lbl = document.getElementById('ai-key-status-lbl');
-        if (lbl) lbl.textContent = geminiApiKey ? '✨ AI Gemini: Sẵn sàng' : 'Cài đặt AI (Gemini)';
       }
 
       function setStudioStatus(text) {
@@ -3638,8 +3333,6 @@ Chỉ trả về mảng JSON theo đúng schema, không thêm lời giải thíc
         btn.disabled = busy;
         btn.classList.toggle('opacity-60', busy);
         document.getElementById('lbl-parse-btn').textContent = busy ? 'Đang bóc tách...' : 'Bóc tách câu hỏi';
-        const fill = document.getElementById('btn-ai-fill');
-        if (fill) fill.disabled = busy;
       }
 
       // ----- file đã chọn -----
@@ -3670,7 +3363,7 @@ Chỉ trả về mảng JSON theo đúng schema, không thêm lời giải thíc
           studioFiles.push(f);
           added.push(f);
         });
-        if (rejected.length) showStudioNotes([`Chưa hỗ trợ: ${rejected.join(', ')}. Dùng Word (.docx), PDF, ảnh hoặc .txt.`], 'error');
+        if (rejected.length) showStudioNotes([`Chưa hỗ trợ: ${rejected.join(', ')}. Chỉ nhận Word (.docx) hoặc văn bản (.txt); PDF và ảnh không còn được hỗ trợ.`], 'error');
         else showStudioNotes([]);
         const titleInp = document.getElementById('cfg-exam-title');
         if (added.length && !titleInp.value.trim()) titleInp.value = added[0].name.replace(/\.[^/.]+$/, '');
@@ -3710,11 +3403,10 @@ Chỉ trả về mảng JSON theo đúng schema, không thêm lời giải thíc
 
       function renderStudioSummary() {
         const dup = dupCounts(studioDraftQuestions);
-        let warn = 0, noAnswer = 0;
+        let warn = 0;
         studioDraftQuestions.forEach(q => {
           const w = studioWarningsFor(q, dup);
           if (w.length) warn++;
-          if (w.some(x => x.code === 'noAnswer')) noAnswer++;
         });
         const total = studioDraftQuestions.length;
         document.getElementById('studio-q-count-badge').textContent = `${total} câu`;
@@ -3727,15 +3419,7 @@ Chỉ trả về mảng JSON theo đúng schema, không thêm lời giải thíc
             ? 'bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300'
             : 'bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-300');
         }
-        const methodBadge = document.getElementById('st-method-badge');
-        const labels = { code: 'Bóc tách bằng code', ai: 'Bóc tách bằng AI', 'code+ai': 'Code + AI' };
-        methodBadge.classList.toggle('hidden', !(studioMeta.method && total > 0));
-        if (studioMeta.method) methodBadge.textContent = labels[studioMeta.method] || '';
-
         document.getElementById('st-only-warn-wrap').classList.toggle('hidden', total === 0);
-        const fill = document.getElementById('btn-ai-fill');
-        fill.classList.toggle('hidden', noAnswer === 0);
-        fill.querySelector('span').textContent = `AI điền đáp án còn thiếu (${noAnswer})`;
       }
 
       function refreshStudioCard(card, qi) {
@@ -3809,7 +3493,7 @@ Chỉ trả về mảng JSON theo đúng schema, không thêm lời giải thíc
           list.innerHTML = `
             <div class="border-2 border-dashed border-slate-200 dark:border-[#34453b] rounded-2xl p-8 text-center text-slate-400 text-xs sm:text-sm space-y-2">
               <p class="font-bold text-slate-500 dark:text-slate-300">Chưa có câu hỏi nào</p>
-              <p>${studioEditingExamId ? 'Bấm "Thêm câu" để thêm câu hỏi vào đề này.' : 'Chọn file hoặc dán nội dung đề ở bên trái rồi bấm "Bóc tách câu hỏi". Bạn có thể kiểm tra và sửa từng câu trước khi lưu.'}</p>
+              <p>${studioEditingExamId ? 'Bấm "Thêm câu" để thêm câu hỏi vào đề này.' : 'Dán nội dung đề hoặc chọn file ở bên trái rồi bấm "Bóc tách câu hỏi". Bạn có thể kiểm tra và sửa từng câu trước khi lưu.'}</p>
             </div>`;
           return;
         }
@@ -3836,7 +3520,6 @@ Chỉ trả về mảng JSON theo đúng schema, không thêm lời giải thíc
             !confirm(`Bóc tách mới sẽ thay thế ${studioDraftQuestions.length} câu đang có trong danh sách. Tiếp tục?`)) return;
 
         const raw = document.getElementById('studio-raw-text').value;
-        const method = document.getElementById('st-method').value;
         setStudioBusy(true);
         showStudioNotes([]);
         setParseProgress(true, 'Đang bắt đầu...', 2);
@@ -3844,47 +3527,19 @@ Chỉ trả về mảng JSON theo đúng schema, không thêm lời giải thíc
           const res = await studioExtract({
             files: studioFiles.slice(),
             rawText: raw,
-            method,
             onStatus: (label, pct) => setParseProgress(true, label, pct)
           });
           studioDraftQuestions = res.questions.map(q => normalizeDraft(q));
-          studioMeta = { method: res.method, notes: res.notes };
+          studioMeta = { notes: res.notes };
           studioOnlyWarn = false;
           document.getElementById('st-only-warn').checked = false;
           renderStudioQuestions();
           const warn = studioDraftQuestions.filter(q => studioWarningsFor(q).length).length;
-          const notes = res.notes.slice();
-          if (res.questions.length === 0) {
-            notes.push('Không nhận ra câu hỏi nào. Hãy kiểm tra nội dung, hoặc chọn "Dùng AI" (cần khóa Gemini).');
-            setStudioStatus('Không tìm thấy câu hỏi nào.');
-          } else {
-            setStudioStatus(`Đã tìm thấy ${res.questions.length} câu${warn ? `, ${warn} câu cần kiểm tra` : ', tất cả hợp lệ'}. Kiểm tra lại rồi lưu đề.`);
-          }
-          showStudioNotes(notes, 'warn');
+          setStudioStatus(`Đã tìm thấy ${res.questions.length} câu${warn ? `, ${warn} câu cần kiểm tra` : ', tất cả hợp lệ'}. Kiểm tra lại rồi lưu đề.`);
+          showStudioNotes(res.notes, 'warn');
         } catch (err) {
           showStudioNotes([err.message || 'Không bóc tách được. Hãy thử lại.'], 'error');
-          setStudioStatus('Bóc tách chưa thành công.');
-        } finally {
-          setStudioBusy(false);
-          setParseProgress(false);
-        }
-      }
-
-      async function runStudioAiFill() {
-        if (studioBusy) return;
-        if (!geminiApiKey) {
-          showStudioNotes(['Cần khóa Gemini (miễn phí) để AI chọn đáp án. Bấm "Cài đặt AI" ở bên trái.'], 'error');
-          return;
-        }
-        setStudioBusy(true);
-        showStudioNotes([]);
-        try {
-          const n = await aiFillMissingAnswers(studioDraftQuestions, (label, pct) => setParseProgress(true, label, pct));
-          studioMeta.method = studioMeta.method === 'code' ? 'code+ai' : (studioMeta.method || 'ai');
-          renderStudioQuestions();
-          showStudioNotes([n ? `AI đã chọn đáp án cho ${n} câu. Đây chỉ là đáp án AI đoán, hãy kiểm tra lại các câu có nhãn "AI đoán đáp án".` : 'AI chưa chọn được đáp án nào.'], 'warn');
-        } catch (err) {
-          showStudioNotes([err.message || 'AI chưa chọn được đáp án.'], 'error');
+          setStudioStatus('Không bóc tách được câu hỏi nào.');
         } finally {
           setStudioBusy(false);
           setParseProgress(false);
@@ -3895,15 +3550,12 @@ Chỉ trả về mảng JSON theo đúng schema, không thêm lời giải thíc
         studioEditingExamId = null;
         studioDraftQuestions = [];
         studioFiles = [];
-        studioMeta = { method: '', notes: [] };
+        studioMeta = { notes: [] };
         studioOnlyWarn = false;
         document.getElementById('upload-modal-title').textContent = 'Thêm đề mới';
         document.getElementById('studio-source-box').classList.remove('hidden');
-        document.getElementById('ai-key-box').classList.add('hidden');
-        document.getElementById('inp-gemini-key').value = geminiApiKey;
-        document.getElementById('st-method').value = 'auto';
+        document.getElementById('upload-modal-sub').textContent = 'Dán văn bản hoặc chọn file Word (.docx) / .txt, kiểm tra từng câu rồi lưu';
         document.getElementById('st-only-warn').checked = false;
-        updateAiKeyUI();
         document.getElementById('studio-raw-text').value = '';
         document.getElementById('cfg-exam-title').value = '';
         populateStudioSubjectSelect(preferredSubject || activeSubjectName);
@@ -3911,7 +3563,7 @@ Chỉ trả về mảng JSON theo đúng schema, không thêm lời giải thíc
         showStudioNotes([]);
         setParseProgress(false);
         setStudioBusy(false);
-        setStudioStatus('Chọn file hoặc dán nội dung đề, bấm "Bóc tách câu hỏi", rồi kiểm tra từng câu trước khi lưu.');
+        setStudioStatus('Dán văn bản hoặc chọn file, bấm "Bóc tách câu hỏi", rồi kiểm tra từng câu trước khi lưu.');
         renderStudioQuestions();
 
         const modal = document.getElementById('modal-upload');
@@ -3928,9 +3580,10 @@ Chỉ trả về mảng JSON theo đúng schema, không thêm lời giải thíc
         studioEditingExamId = examId;
         studioDraftQuestions = (ex.questions || []).map(q => normalizeDraft(q, 'manual'));
         studioFiles = [];
-        studioMeta = { method: '', notes: [] };
+        studioMeta = { notes: [] };
         studioOnlyWarn = false;
         document.getElementById('upload-modal-title').textContent = `Chỉnh sửa đề: ${ex.title}`;
+        document.getElementById('upload-modal-sub').textContent = 'Sửa nội dung từng câu rồi bấm "Lưu đề"';
         document.getElementById('studio-source-box').classList.add('hidden');
         document.getElementById('cfg-exam-title').value = ex.title;
         document.getElementById('st-only-warn').checked = false;
@@ -3956,37 +3609,11 @@ Chỉ trả về mảng JSON theo đúng schema, không thêm lời giải thíc
         ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove('border-brand-500', 'bg-brand-50', 'dark:bg-[#1b2a22]'); }));
         drop.addEventListener('drop', (e) => addStudioFiles(e.dataTransfer.files));
 
-        // dán ảnh từ clipboard (Ctrl+V) khi hộp thoại đang mở
-        document.addEventListener('paste', (e) => {
-          const modal = document.getElementById('modal-upload');
-          if (modal.classList.contains('hidden') || studioEditingExamId) return;
-          const imgs = Array.from(e.clipboardData ? e.clipboardData.items : []).filter(it => it.kind === 'file' && it.type.startsWith('image/'));
-          if (!imgs.length) return;
-          e.preventDefault();
-          addStudioFiles(imgs.map((it, i) => {
-            const blob = it.getAsFile();
-            const ext = (it.type.split('/')[1] || 'png').replace('jpeg', 'jpg');
-            return new File([blob], `anh-dan-${studioFiles.length + i + 1}.${ext}`, { type: it.type });
-          }));
-        });
-
         document.getElementById('btn-parse-raw-text').addEventListener('click', runStudioExtraction);
-        document.getElementById('btn-ai-fill').addEventListener('click', runStudioAiFill);
 
         document.getElementById('st-only-warn').addEventListener('change', (e) => {
           studioOnlyWarn = e.target.checked;
           renderStudioQuestions();
-        });
-
-        document.getElementById('btn-toggle-ai-key').addEventListener('click', () => {
-          document.getElementById('ai-key-box').classList.toggle('hidden');
-        });
-        document.getElementById('btn-save-gemini-key').addEventListener('click', () => {
-          geminiApiKey = document.getElementById('inp-gemini-key').value.trim();
-          localStorage.setItem(STORAGE_KEYS.GEMINI_KEY, geminiApiKey);
-          updateAiKeyUI();
-          document.getElementById('ai-key-box').classList.add('hidden');
-          setStudioStatus(geminiApiKey ? 'Đã lưu khóa Gemini trên trình duyệt này. AI đã sẵn sàng.' : 'Đã xóa khóa Gemini.');
         });
 
         document.getElementById('btn-insert-sample-format').addEventListener('click', () => {
@@ -4257,9 +3884,9 @@ D. 60.0 ms`;
 
         // Hero Dropzone & Buttons (File drop disabled — Coming Soon)
         const heroDrop = document.getElementById('hero-dropzone');
-        document.getElementById('btn-hero-paste-text').addEventListener('click', () => openUploadStudio());
-        document.getElementById('btn-open-upload').addEventListener('click', () => openUploadStudio());
-        document.getElementById('btn-upload-into-subject').addEventListener('click', () => openUploadStudio(activeSubjectName));
+        document.getElementById('btn-hero-paste-text').addEventListener('click', () => requireLogin('Đăng nhập để thêm đề và lưu vào tài khoản của bạn.', () => openUploadStudio()));
+        document.getElementById('btn-open-upload').addEventListener('click', () => requireLogin('Đăng nhập để thêm đề và lưu vào tài khoản của bạn.', () => openUploadStudio()));
+        document.getElementById('btn-upload-into-subject').addEventListener('click', () => requireLogin('Đăng nhập để thêm đề và lưu vào tài khoản của bạn.', () => openUploadStudio(activeSubjectName)));
 
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(ev => {
           heroDrop.addEventListener(ev, (e) => e.preventDefault());
@@ -4281,12 +3908,12 @@ D. 60.0 ms`;
         // New Subject Modal
         const newSubjModal = document.getElementById('modal-new-subject');
         const closeNewSubj = () => { newSubjModal.classList.add('hidden'); newSubjModal.classList.remove('flex'); };
-        document.getElementById('btn-new-subject').addEventListener('click', () => {
+        document.getElementById('btn-new-subject').addEventListener('click', () => requireLogin('Đăng nhập để tạo môn học và lưu vào tài khoản của bạn.', () => {
           document.getElementById('new-subj-name').value = '';
           document.getElementById('new-subj-desc').value = '';
           newSubjModal.classList.remove('hidden');
           newSubjModal.classList.add('flex');
-        });
+        }));
         document.getElementById('close-new-subj-modal').addEventListener('click', closeNewSubj);
         document.getElementById('cancel-new-subj-modal').addEventListener('click', closeNewSubj);
         document.getElementById('btn-confirm-new-subj').addEventListener('click', () => {
@@ -4304,50 +3931,92 @@ D. 60.0 ms`;
           renderHomeSubjects();
         });
 
-        document.getElementById('btn-cloud-sync').addEventListener('click', () => {
-          syncFromSupabase();
+
+        // ---- Tài khoản: đăng nhập / đăng ký ----
+        const authModal = document.getElementById('modal-auth');
+        let authMode = 'login';
+        const authMsg = document.getElementById('auth-msg');
+        const showAuthMsg = (text, ok) => {
+          authMsg.textContent = text;
+          authMsg.className = 'text-xs font-bold rounded-lg px-3 py-2 ' + (ok
+            ? 'bg-brand-100 dark:bg-brand-900/50 text-brand-700 dark:text-brand-300'
+            : 'bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300');
+        };
+        const clearAuthMsg = () => { authMsg.className = 'hidden'; authMsg.textContent = ''; };
+        const setAuthMode = (mode) => {
+          authMode = mode;
+          const reg = mode === 'register';
+          document.getElementById('auth-title').textContent = reg ? 'Tạo tài khoản' : 'Đăng nhập';
+          document.getElementById('auth-submit').textContent = reg ? 'Đăng ký' : 'Đăng nhập';
+          document.getElementById('auth-name-row').classList.toggle('hidden', !reg);
+          document.getElementById('auth-pass-hint').classList.toggle('hidden', !reg);
+          document.getElementById('auth-forgot').classList.toggle('hidden', reg);
+          document.getElementById('auth-password').autocomplete = reg ? 'new-password' : 'current-password';
+          const on = 'bg-white dark:bg-[#24302a] text-brand-700 dark:text-brand-300 shadow-sm';
+          const off = 'text-slate-500 dark:text-slate-400';
+          document.getElementById('auth-tab-login').className = `flex-1 px-3 py-1.5 rounded-lg text-sm font-bold ${reg ? off : on}`;
+          document.getElementById('auth-tab-register').className = `flex-1 px-3 py-1.5 rounded-lg text-sm font-bold ${reg ? on : off}`;
+          clearAuthMsg();
+        };
+        const closeAuthModal = () => { authModal.classList.add('hidden'); authModal.classList.remove('flex'); };
+        openAuthModal = (mode = 'login', reason = '') => {
+          setAuthMode(mode);
+          document.getElementById('auth-reason').textContent = reason || 'Đăng nhập để tạo môn, thêm đề và lưu vào tài khoản của bạn.';
+          document.getElementById('auth-password').value = '';
+          authModal.classList.remove('hidden');
+          authModal.classList.add('flex');
+          setTimeout(() => document.getElementById('auth-email').focus(), 30);
+        };
+        document.getElementById('close-auth-modal').addEventListener('click', closeAuthModal);
+        authModal.addEventListener('click', (e) => { if (e.target === authModal) closeAuthModal(); });
+        document.getElementById('auth-tab-login').addEventListener('click', () => setAuthMode('login'));
+        document.getElementById('auth-tab-register').addEventListener('click', () => setAuthMode('register'));
+        document.getElementById('auth-form').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const email = document.getElementById('auth-email').value.trim();
+          const password = document.getElementById('auth-password').value;
+          const name = document.getElementById('auth-name').value.trim();
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showAuthMsg('Email không hợp lệ.', false);
+          if (authMode === 'register' && password.length < 8) return showAuthMsg('Mật khẩu cần ít nhất 8 ký tự.', false);
+          if (!password) return showAuthMsg('Vui lòng nhập mật khẩu.', false);
+          const btn = document.getElementById('auth-submit');
+          btn.disabled = true;
+          clearAuthMsg();
+          try {
+            if (authMode === 'register') {
+              const r = await QFAuth.signUp(email, password, name);
+              if (r.needsConfirm) {
+                showAuthMsg('Đã gửi thư xác nhận. Hãy mở email và bấm vào liên kết, rồi quay lại đăng nhập.', true);
+                setTimeout(() => setAuthMode('login'), 0);
+                return;
+              }
+            } else {
+              await QFAuth.signIn(email, password);
+            }
+            closeAuthModal();
+            if (pendingAfterLogin) { const fn = pendingAfterLogin; pendingAfterLogin = null; setTimeout(fn, 50); }
+          } catch (err) {
+            showAuthMsg(err.message || 'Có lỗi xảy ra.', false);
+          } finally { btn.disabled = false; }
+        });
+        document.getElementById('auth-forgot').addEventListener('click', async () => {
+          const email = document.getElementById('auth-email').value.trim();
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showAuthMsg('Nhập email của bạn ở ô phía trên trước.', false);
+          try {
+            await QFAuth.resetPassword(email);
+            showAuthMsg('Nếu email tồn tại, bạn sẽ nhận được thư đặt lại mật khẩu.', true);
+          } catch (err) { showAuthMsg(err.message, false); }
         });
 
-        // Mã đồng bộ: xem mã của máy này hoặc nhập mã từ máy khác để lấy lại môn học của bạn
-        const syncModal = document.getElementById('modal-sync-code');
-        const closeSyncModal = () => { syncModal.classList.add('hidden'); syncModal.classList.remove('flex'); };
-        document.getElementById('btn-sync-code').addEventListener('click', () => {
-          document.getElementById('sync-code-value').value = ownerKey;
-          document.getElementById('sync-code-input').value = '';
-          syncModal.classList.remove('hidden');
-          syncModal.classList.add('flex');
+        document.getElementById('auth-area').addEventListener('click', (e) => {
+          const btn = e.target.closest('[data-auth-action]');
+          if (!btn) return;
+          const act = btn.dataset.authAction;
+          if (act === 'login') openAuthModal('login');
+          else if (act === 'register') openAuthModal('register');
+          else if (act === 'logout') QFAuth.signOut();
         });
-        document.getElementById('close-sync-code-modal').addEventListener('click', closeSyncModal);
-        syncModal.addEventListener('click', (e) => { if (e.target === syncModal) closeSyncModal(); });
-        document.getElementById('btn-copy-sync-code').addEventListener('click', async () => {
-          const inp = document.getElementById('sync-code-value');
-          try {
-            await navigator.clipboard.writeText(ownerKey);
-          } catch {
-            inp.select();
-            document.execCommand('copy');
-          }
-          const btn = document.getElementById('btn-copy-sync-code');
-          btn.textContent = 'Đã chép';
-          setTimeout(() => { btn.textContent = 'Sao chép'; }, 1500);
-        });
-        document.getElementById('btn-apply-sync-code').addEventListener('click', () => {
-          const code = document.getElementById('sync-code-input').value.trim();
-          if (!OWNER_KEY_RE.test(code)) return alert('Mã không hợp lệ. Mã gồm 32 đến 64 ký tự chữ, số và dấu gạch ngang.');
-          if (code === ownerKey) return alert('Đây đang là mã của máy này.');
-          if (!confirm('Môn học của bạn trên máy này sẽ được thay bằng dữ liệu của mã vừa nhập. Bạn đã chép lại mã hiện tại chưa? Tiếp tục?')) return;
-          ownerKey = code;
-          try { localStorage.setItem(OWNER_KEY_STORAGE, code); } catch { /* bỏ qua */ }
-          customSubjects = [];
-          customExams = [];
-          syncQueue = { upSubj: [], upExam: [], delSubj: [], delExam: [] };
-          saveCustomSubjects();
-          saveCustomExams();
-          saveSyncQueue();
-          closeSyncModal();
-          renderHomeSubjects();
-          syncFromSupabase();
-        });
+        QFAuth.onChange(handleAuthChange);
 
         // Upload Studio Modal
         const uploadModal = document.getElementById('modal-upload');
@@ -4547,7 +4216,8 @@ D. 60.0 ms`;
         lucide.createIcons();
         loadBankFromSupabase();
         loadDefaultSubjects();
-        syncFromSupabase();
+        renderAuthArea();
+        QFAuth.init().then(() => handleAuthChange());
       }
 
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

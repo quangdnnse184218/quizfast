@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>QuizFast Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: { colors: { brand: { 50: '#ecfdf3', 100: '#d1fae0', 300: '#6ee7a0', 500: '#16bf62', 600: '#0fa54f', 700: '#0b8742', 900: '#0a562e' } } } }
+    };
+    try { if (localStorage.getItem('quizfast_theme_v1') === 'dark') document.documentElement.classList.add('dark'); } catch (e) {}
+  </script>
+  <style>
+    body { font-family: 'Be Vietnam Pro', system-ui, sans-serif; }
+    :focus-visible { outline: 2px solid #16bf62; outline-offset: 2px; }
+    .dark .text-slate-400, .dark .text-slate-500 { color: #bccac2; }
+    .inp { width: 100%; border-radius: .75rem; border: 1px solid #e2e8f0; background: #fff; padding: .5rem .75rem; font-size: .875rem; }
+    .dark .inp { background: #0f1512; border-color: #46594e; color: #f0f6f2; }
+    .btn { border-radius: .75rem; padding: .45rem .85rem; font-size: .8125rem; font-weight: 700; transition: background .15s; }
+    .btn-primary { background: #0b8742; color: #fff; } .btn-primary:hover { background: #0fa54f; }
+    .btn-ghost { background: #f1f5f9; color: #334155; } .btn-ghost:hover { background: #e2e8f0; }
+    .dark .btn-ghost { background: #24302a; color: #e2e8f0; } .dark .btn-ghost:hover { background: #3b4e44; }
+    .btn-danger { background: #fee2e2; color: #b91c1c; } .btn-danger:hover { background: #fecaca; }
+    .dark .btn-danger { background: rgba(244,63,94,.2); color: #fda4af; }
+    .btn:disabled { opacity: .55; cursor: not-allowed; }
+    th { text-align: left; font-size: .6875rem; text-transform: uppercase; letter-spacing: .04em; }
+  </style>
+</head>
+<body class="bg-[#f1f9f4] dark:bg-[#0f1512] text-slate-900 dark:text-[#f0f6f2] min-h-screen">
+
+  <header class="bg-white dark:bg-[#19211d] border-b border-slate-200 dark:border-[#34453b]">
+    <div class="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="text-sm font-bold text-brand-700 dark:text-brand-300 hover:underline">&larr; Về QuizFast</a>
+        <span class="font-extrabold">Quản trị</span>
+      </div>
+      <div id="who" class="flex items-center gap-2 text-xs"></div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-6">
+    <div id="gate" class="max-w-sm mx-auto"></div>
+    <div id="app" class="hidden space-y-5">
+      <nav id="tabs" class="flex flex-wrap gap-1 bg-white dark:bg-[#19211d] border border-slate-200 dark:border-[#34453b] rounded-xl p-1 w-fit"></nav>
+      <p id="toast" role="status" class="hidden text-sm font-bold rounded-xl px-4 py-2"></p>
+      <section id="panel"></section>
+    </div>
+  </main>
+
+  <!-- Hộp thoại dùng chung -->
+  <div id="dlg" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/60">
+    <div id="dlg-box" class="bg-white dark:bg-[#19211d] border border-slate-200 dark:border-[#46594e] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-5 space-y-4"></div>
+  </div>
+
+  <script src="qf-auth.js"></script>
+  <script>
+  (function () {
+    'use strict';
+    const $ = (id) => document.getElementById(id);
+    const esc = (t) => String(t == null ? '' : t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const fmtDate = (d) => { try { return new Date(d).toLocaleString('vi-VN'); } catch { return d || ''; } };
+    const enc = encodeURIComponent;
+
+    // Lấy hết các dòng (PostgREST giới hạn 1000 dòng mỗi lần)
+    async function fetchAll(path) {
+      const out = [];
+      for (let off = 0; off < 100000; off += 1000) {
+        const sep = path.includes('?') ? '&' : '?';
+        const rows = await QFAuth.rest(`${path}${sep}limit=1000&offset=${off}`);
+        if (!Array.isArray(rows)) break;
+        out.push(...rows);
+        if (rows.length < 1000) break;
+      }
+      return out;
+    }
+
+    let toastTimer;
+    function toast(text, ok = true) {
+      const el = $('toast');
+      el.textContent = text;
+      el.className = 'text-sm font-bold rounded-xl px-4 py-2 ' + (ok ? 'bg-brand-100 text-brand-900 dark:bg-brand-900/50 dark:text-brand-300' : 'bg-rose-100 text-rose-800 dark:bg-rose-500/20 dark:text-rose-200');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { el.className = 'hidden'; }, 5000);
+    }
+    const fail = (e) => { console.error(e); toast('Lỗi: ' + (e && e.message ? e.message : e), false); };
+
+    function openDlg(html) { $('dlg-box').innerHTML = html; $('dlg').classList.remove('hidden'); $('dlg').classList.add('flex'); }
+    function closeDlg() { $('dlg').classList.add('hidden'); $('dlg').classList.remove('flex'); $('dlg-box').innerHTML = ''; }
+    $('dlg').addEventListener('click', (e) => { if (e.target === $('dlg')) closeDlg(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDlg(); });
+
+    // ---------------- Cổng đăng nhập ----------------
+    function renderWho() {
+      const st = QFAuth.state();
+      $('who').innerHTML = st.user
+        ? `<span class="hidden sm:inline text-slate-500">${esc(st.user.email)}</span><button id="btn-logout" class="btn btn-ghost">Đăng xuất</button>`
+        : '';
+      const lo = $('btn-logout');
+      if (lo) lo.onclick = () => QFAuth.signOut();
+    }
+
+    function renderGate(state) {
+      if (state === 'ok') { $('gate').innerHTML = ''; $('gate').classList.add('hidden'); $('app').classList.remove('hidden'); return; }
+      $('app').classList.add('hidden');
+      $('gate').classList.remove('hidden');
+      if (state === 'denied') {
+        $('gate').innerHTML = `<div class="bg-white dark:bg-[#19211d] border border-slate-200 dark:border-[#34453b] rounded-2xl p-6 space-y-2 text-center">
+          <h1 class="text-lg font-extrabold">Không có quyền truy cập</h1>
+          <p class="text-sm text-slate-500">Tài khoản này không phải quản trị viên. Hãy đăng nhập bằng tài khoản admin.</p>
+        </div>`;
+        return;
+      }
+      $('gate').innerHTML = `<form id="f-login" class="bg-white dark:bg-[#19211d] border border-slate-200 dark:border-[#34453b] rounded-2xl p-6 space-y-3" novalidate>
+        <h1 class="text-lg font-extrabold">Đăng nhập quản trị</h1>
+        <div><label class="text-xs font-bold" for="a-email">Email</label><input id="a-email" type="email" autocomplete="email" class="inp mt-1" /></div>
+        <div><label class="text-xs font-bold" for="a-pass">Mật khẩu</label><input id="a-pass" type="password" autocomplete="current-password" class="inp mt-1" /></div>
+        <p id="a-err" role="alert" class="hidden text-xs font-bold text-rose-600"></p>
+        <button class="btn btn-primary w-full" type="submit">Đăng nhập</button>
+      </form>`;
+      $('f-login').onsubmit = async (e) => {
+        e.preventDefault();
+        const err = $('a-err'); err.className = 'hidden';
+        try { await QFAuth.signIn($('a-email').value.trim(), $('a-pass').value); }
+        catch (x) { err.textContent = x.message; err.className = 'text-xs font-bold text-rose-600'; }
+      };
+    }
+
+    // ---------------- Các tab ----------------
+    const TABS = [
+      ['overview', 'Tổng quan'], ['users', 'Người dùng'], ['subjects', 'Môn mặc định'],
+      ['questions', 'Câu hỏi'], ['exams', 'Đề của người dùng']
+    ];
+    let tab = 'overview';
+    function renderTabs() {
+      $('tabs').innerHTML = TABS.map(([k, label]) =>
+        `<button data-tab="${k}" class="btn ${k === tab ? 'btn-primary' : 'btn-ghost'}">${label}</button>`).join('');
+      $('tabs').querySelectorAll('button').forEach(b => b.onclick = () => { tab = b.dataset.tab; renderTabs(); loadTab(); });
+    }
+    async function loadTab() {
+      $('panel').innerHTML = '<p class="text-sm text-slate-500">Đang tải...</p>';
+      try { await ({ overview: tabOverview, users: tabUsers, subjects: tabSubjects, questions: tabQuestions, exams: tabExams })[tab](); }
+      catch (e) { $('panel').innerHTML = ''; fail(e); }
+    }
+    const card = (inner) => `<div class="bg-white dark:bg-[#19211d] border border-slate-200 dark:border-[#34453b] rounded-2xl p-4">${inner}</div>`;
+    const tableWrap = (inner) => `<div class="overflow-x-auto bg-white dark:bg-[#19211d] border border-slate-200 dark:border-[#34453b] rounded-2xl"><table class="w-full text-sm">${inner}</table></div>`;
+    const td = 'px-3 py-2 align-top';
+
+    // --- Tổng quan
+    async function tabOverview() {
+      const [profiles, exams, qs, subj, defs] = await Promise.all([
+        fetchAll('/quizfast_profiles?select=user_id,role'),
+        fetchAll('/quizfast_exams?select=id'),
+        fetchAll('/quizfast_questions?select=id,subject'),
+        fetchAll('/quizfast_subjects?select=name'),
+        fetchAll('/quizfast_default_subjects?select=name,is_published')
+      ]);
+      const stat = (n, l) => card(`<div class="text-3xl font-extrabold">${n}</div><div class="text-xs text-slate-500 mt-1">${l}</div>`);
+      const bySubj = {};
+      qs.forEach(q => { bySubj[q.subject] = (bySubj[q.subject] || 0) + 1; });
+      $('panel').innerHTML = `<div class="grid grid-cols-2 lg:grid-cols-5 gap-3">
+        ${stat(profiles.length, 'Tài khoản')}
+        ${stat(profiles.filter(p => p.role === 'admin').length, 'Quản trị viên')}
+        ${stat(defs.filter(d => d.is_published).length + '/' + defs.length, 'Môn mặc định (hiện/tổng)')}
+        ${stat(qs.length, 'Câu hỏi trong ngân hàng')}
+        ${stat(exams.length + ' đề / ' + subj.length + ' môn', 'Do người dùng tạo')}
+      </div>
+      <div class="mt-4">${tableWrap(`<thead><tr><th class="${td}">Môn</th><th class="${td}">Số câu</th></tr></thead><tbody>${
+        Object.keys(bySubj).sort().map(s => `<tr class="border-t border-slate-100 dark:border-[#34453b]"><td class="${td}">${esc(s)}</td><td class="${td}">${bySubj[s]}</td></tr>`).join('')
+      }</tbody>`)}</div>`;
+    }
+
+    // --- Người dùng
+    async function tabUsers() {
+      const [profiles, exams] = await Promise.all([
+        fetchAll('/quizfast_profiles?select=user_id,email,display_name,role,created_at&order=created_at.desc'),
+        fetchAll('/quizfast_exams?select=id,owner_id')
+      ]);
+      const cnt = {};
+      exams.forEach(e => { cnt[e.owner_id] = (cnt[e.owner_id] || 0) + 1; });
+      const me = QFAuth.user.id;
+      $('panel').innerHTML = tableWrap(`<thead><tr><th class="${td}">Email</th><th class="${td}">Tên</th><th class="${td}">Quyền</th><th class="${td}">Số đề</th><th class="${td}">Ngày tạo</th></tr></thead><tbody>${
+        profiles.map(p => `<tr class="border-t border-slate-100 dark:border-[#34453b]">
+          <td class="${td} break-all">${esc(p.email)}</td><td class="${td}">${esc(p.display_name)}</td>
+          <td class="${td}"><select data-uid="${esc(p.user_id)}" class="inp !w-auto !py-1" ${p.user_id === me ? 'disabled title="Không thể tự đổi quyền của mình"' : ''}>
+            <option value="user" ${p.role === 'user' ? 'selected' : ''}>Người dùng</option><option value="admin" ${p.role === 'admin' ? 'selected' : ''}>Admin</option></select></td>
+          <td class="${td}">${cnt[p.user_id] || 0}</td><td class="${td} whitespace-nowrap">${esc(fmtDate(p.created_at))}</td></tr>`).join('')
+      }</tbody>`);
+      $('panel').querySelectorAll('select[data-uid]').forEach(sel => sel.onchange = async () => {
+        if (!confirm(`Đổi quyền thành "${sel.value}"?`)) { loadTab(); return; }
+        try {
+          await QFAuth.rest(`/quizfast_profiles?user_id=eq.${enc(sel.dataset.uid)}`, { method: 'PATCH', headers: { Prefer: 'return=minimal' }, body: JSON.stringify({ role: sel.value }) });
+          toast('Đã cập nhật quyền.');
+        } catch (e) { fail(e); loadTab(); }
+      });
+    }
+
+    // --- Môn mặc định
+    async function tabSubjects() {
+      const [defs, qs] = await Promise.all([
+        fetchAll('/quizfast_default_subjects?select=*&order=position.asc'),
+        fetchAll('/quizfast_questions?select=subject')
+      ]);
+      const cnt = {};
+      qs.forEach(q => { cnt[q.subject] = (cnt[q.subject] || 0) + 1; });
+      const defNames = new Set(defs.map(d => d.name));
+      const orphan = Object.keys(cnt).filter(n => !defNames.has(n));
+      $('panel').innerHTML = `<div class="flex justify-between items-center mb-3"><p class="text-sm text-slate-500">Môn không bật "Hiển thị" sẽ không xuất hiện với người học.</p><button id="s-add" class="btn btn-primary">+ Thêm môn</button></div>
+      ${tableWrap(`<thead><tr><th class="${td}">Tên môn</th><th class="${td}">Mô tả</th><th class="${td}">Thứ tự</th><th class="${td}">Số câu</th><th class="${td}">Hiển thị</th><th class="${td}"></th></tr></thead><tbody>${
+        defs.map(d => `<tr class="border-t border-slate-100 dark:border-[#34453b]">
+          <td class="${td} font-bold">${esc(d.name)}</td><td class="${td}">${esc(d.description)}</td><td class="${td}">${d.position}</td><td class="${td}">${cnt[d.name] || 0}</td>
+          <td class="${td}"><input type="checkbox" data-pub="${esc(d.name)}" ${d.is_published ? 'checked' : ''} aria-label="Hiển thị ${esc(d.name)}" /></td>
+          <td class="${td} whitespace-nowrap"><button data-edit="${esc(d.name)}" class="btn btn-ghost">Sửa</button> <button data-del="${esc(d.name)}" class="btn btn-danger">Xóa</button></td></tr>`).join('')
+      }</tbody>`)}
+      ${orphan.length ? `<p class="text-xs text-amber-700 dark:text-amber-300 mt-3">Có câu hỏi thuộc môn chưa nằm trong danh sách: ${orphan.map(esc).join(', ')}. Bấm "Thêm môn" với đúng tên đó để hiển thị.</p>` : ''}`;
+
+      const form = (d) => {
+        openDlg(`<h2 class="text-lg font-extrabold">${d ? 'Sửa môn' : 'Thêm môn mặc định'}</h2>
+          <div><label class="text-xs font-bold" for="d-name">Tên môn (trùng với cột subject của câu hỏi)</label><input id="d-name" class="inp mt-1" value="${esc(d ? d.name : '')}" ${d ? 'disabled' : ''} list="d-orphans" /><datalist id="d-orphans">${orphan.map(o => `<option value="${esc(o)}">`).join('')}</datalist></div>
+          <div><label class="text-xs font-bold" for="d-desc">Mô tả</label><input id="d-desc" class="inp mt-1" value="${esc(d ? d.description : '')}" /></div>
+          <div><label class="text-xs font-bold" for="d-pos">Thứ tự</label><input id="d-pos" type="number" class="inp mt-1" value="${d ? d.position : defs.length + 1}" /></div>
+          <label class="flex items-center gap-2 text-sm"><input id="d-pub" type="checkbox" ${!d || d.is_published ? 'checked' : ''} /> Hiển thị cho người học</label>
+          <div class="flex justify-end gap-2"><button id="d-cancel" class="btn btn-ghost">Hủy</button><button id="d-save" class="btn btn-primary">Lưu</button></div>`);
+        $('d-cancel').onclick = closeDlg;
+        $('d-save').onclick = async () => {
+          const name = $('d-name').value.trim();
+          if (!name) return toast('Nhập tên môn.', false);
+          const row = { name, description: $('d-desc').value.trim(), position: parseInt($('d-pos').value, 10) || 0, is_published: $('d-pub').checked };
+          try {
+            if (d) await QFAuth.rest(`/quizfast_default_subjects?name=eq.${enc(d.name)}`, { method: 'PATCH', headers: { Prefer: 'return=minimal' }, body: JSON.stringify(row) });
+            else await QFAuth.rest('/quizfast_default_subjects', { method: 'POST', headers: { Prefer: 'return=minimal' }, body: JSON.stringify(row) });
+            closeDlg(); toast('Đã lưu môn.'); loadTab();
+          } catch (e) { fail(e); }
+        };
+      };
+      $('s-add').onclick = () => form(null);
+      $('panel').querySelectorAll('[data-edit]').forEach(b => b.onclick = () => form(defs.find(x => x.name === b.dataset.edit)));
+      $('panel').querySelectorAll('[data-pub]').forEach(c => c.onchange = async () => {
+        try { await QFAuth.rest(`/quizfast_default_subjects?name=eq.${enc(c.dataset.pub)}`, { method: 'PATCH', headers: { Prefer: 'return=minimal' }, body: JSON.stringify({ is_published: c.checked }) }); toast('Đã cập nhật.'); }
+        catch (e) { fail(e); loadTab(); }
+      });
+      $('panel').querySelectorAll('[data-del]').forEach(b => b.onclick = async () => {
+        if (!confirm(`Xóa môn "${b.dataset.del}" khỏi danh sách môn mặc định? (Câu hỏi không bị xóa.)`)) return;
+        try { await QFAuth.rest(`/quizfast_default_subjects?name=eq.${enc(b.dataset.del)}`, { method: 'DELETE' }); toast('Đã xóa môn.'); loadTab(); } catch (e) { fail(e); }
+      });
+    }
+
+    // --- Câu hỏi
+    let qFilter = { subject: '', text: '' };
+    const LETTERS = 'ABCDEF';
+    async function tabQuestions() {
+      const [rows, defs] = await Promise.all([
+        fetchAll('/quizfast_questions?select=id,subject,position,question,options,correct_index,keyword_anchor,explanation&order=subject.asc,position.asc'),
+        fetchAll('/quizfast_default_subjects?select=name&order=position.asc')
+      ]);
+      const subjects = [...new Set([...defs.map(d => d.name), ...rows.map(r => r.subject)])];
+      const shown = () => rows.filter(r => (!qFilter.subject || r.subject === qFilter.subject) &&
+        (!qFilter.text || (r.question + ' ' + r.id).toLowerCase().includes(qFilter.text.toLowerCase())));
+      $('panel').innerHTML = `<div class="flex flex-wrap items-center gap-2 mb-3">
+        <select id="q-subj" class="inp !w-auto"><option value="">Tất cả môn</option>${subjects.map(s => `<option ${s === qFilter.subject ? 'selected' : ''}>${esc(s)}</option>`).join('')}</select>
+        <input id="q-text" class="inp !w-64" placeholder="Tìm trong câu hỏi hoặc ID" value="${esc(qFilter.text)}" />
+        <span id="q-count" class="text-xs text-slate-500"></span>
+        <span class="flex-1"></span>
+        <button id="q-import" class="btn btn-ghost">Nhập JSON</button>
+        <button id="q-add" class="btn btn-primary">+ Thêm câu hỏi</button></div><div id="q-list"></div>`;
+
+      const draw = () => {
+        const list = shown();
+        $('q-count').textContent = `${list.length} câu`;
+        $('q-list').innerHTML = tableWrap(`<thead><tr><th class="${td}">ID</th><th class="${td}">Môn</th><th class="${td}">Câu hỏi</th><th class="${td}">Đáp án</th><th class="${td}"></th></tr></thead><tbody>${
+          list.slice(0, 200).map(r => `<tr class="border-t border-slate-100 dark:border-[#34453b]">
+            <td class="${td} font-mono text-xs whitespace-nowrap">${esc(r.id)}</td><td class="${td} whitespace-nowrap">${esc(r.subject)}</td>
+            <td class="${td}">${esc(r.question.length > 140 ? r.question.slice(0, 140) + '…' : r.question)}</td>
+            <td class="${td} font-bold">${LETTERS[r.correct_index] || '?'}</td>
+            <td class="${td} whitespace-nowrap"><button data-e="${esc(r.id)}" class="btn btn-ghost">Sửa</button> <button data-d="${esc(r.id)}" class="btn btn-danger">Xóa</button></td></tr>`).join('')
+        }</tbody>`) + (list.length > 200 ? '<p class="text-xs text-slate-500 mt-2">Chỉ hiển thị 200 câu đầu. Dùng bộ lọc để thu hẹp.</p>' : '');
+        $('q-list').querySelectorAll('[data-e]').forEach(b => b.onclick = () => qForm(rows.find(r => r.id === b.dataset.e)));
+        $('q-list').querySelectorAll('[data-d]').forEach(b => b.onclick = async () => {
+          if (!confirm(`Xóa câu ${b.dataset.d}? Tiến độ học gắn với ID này sẽ không còn khớp.`)) return;
+          try { await QFAuth.rest(`/quizfast_questions?id=eq.${enc(b.dataset.d)}`, { method: 'DELETE' }); toast('Đã xóa câu hỏi.'); loadTab(); } catch (e) { fail(e); }
+        });
+      };
+      $('q-subj').onchange = () => { qFilter.subject = $('q-subj').value; draw(); };
+      $('q-text').oninput = () => { qFilter.text = $('q-text').value; draw(); };
+      draw();
+
+      function qForm(r) {
+        const opts = r ? [...r.options] : ['', '', '', ''];
+        const render = () => {
+          openDlg(`<h2 class="text-lg font-extrabold">${r ? 'Sửa câu hỏi' : 'Thêm câu hỏi'}</h2>
+            <div class="grid grid-cols-2 gap-3">
+              <div><label class="text-xs font-bold" for="f-subj">Môn</label><input id="f-subj" list="f-subjs" class="inp mt-1" value="${esc(r ? r.subject : qFilter.subject)}" /><datalist id="f-subjs">${subjects.map(s => `<option value="${esc(s)}">`).join('')}</datalist></div>
+              <div><label class="text-xs font-bold" for="f-id">ID</label><input id="f-id" class="inp mt-1" value="${esc(r ? r.id : '')}" placeholder="để trống = tự tạo" ${r ? 'disabled' : ''} /></div>
+            </div>
+            <div><label class="text-xs font-bold" for="f-q">Câu hỏi</label><textarea id="f-q" rows="3" class="inp mt-1">${esc(r ? r.question : '')}</textarea></div>
+            <div class="space-y-2"><p class="text-xs font-bold">Đáp án (chọn nút tròn cho đáp án đúng)</p>${opts.map((o, i) => `
+              <div class="flex items-center gap-2"><input type="radio" name="f-correct" value="${i}" ${(r ? r.correct_index : 0) === i ? 'checked' : ''} aria-label="Đáp án đúng ${LETTERS[i]}" />
+              <span class="font-bold w-5">${LETTERS[i]}</span><input data-opt="${i}" class="inp" value="${esc(o)}" />
+              ${opts.length > 2 ? `<button data-rm="${i}" class="btn btn-danger" type="button" aria-label="Xóa đáp án ${LETTERS[i]}">×</button>` : ''}</div>`).join('')}
+              ${opts.length < 6 ? '<button id="f-addopt" class="btn btn-ghost" type="button">+ Thêm đáp án</button>' : ''}</div>
+            <div><label class="text-xs font-bold" for="f-kw">Từ khóa gợi ý (tùy chọn)</label><input id="f-kw" class="inp mt-1" value="${esc(r ? r.keyword_anchor : '')}" /></div>
+            <div><label class="text-xs font-bold" for="f-ex">Giải thích (tùy chọn)</label><textarea id="f-ex" rows="2" class="inp mt-1">${esc(r ? r.explanation : '')}</textarea></div>
+            <div class="flex justify-end gap-2"><button id="f-cancel" class="btn btn-ghost" type="button">Hủy</button><button id="f-save" class="btn btn-primary" type="button">Lưu</button></div>`);
+          $('f-cancel').onclick = closeDlg;
+          const sync = () => document.querySelectorAll('[data-opt]').forEach(i => { opts[+i.dataset.opt] = i.value; });
+          if ($('f-addopt')) $('f-addopt').onclick = () => { sync(); opts.push(''); keepAndRender(); };
+          document.querySelectorAll('[data-rm]').forEach(b => b.onclick = () => { sync(); opts.splice(+b.dataset.rm, 1); keepAndRender(); });
+          function keepAndRender() {
+            const keep = { subj: $('f-subj').value, id: $('f-id').value, q: $('f-q').value, kw: $('f-kw').value, ex: $('f-ex').value };
+            const c = document.querySelector('input[name=f-correct]:checked');
+            const ci = c ? Math.min(+c.value, opts.length - 1) : 0;
+            render();
+            $('f-subj').value = keep.subj; $('f-id').value = keep.id; $('f-q').value = keep.q; $('f-kw').value = keep.kw; $('f-ex').value = keep.ex;
+            const radios = document.querySelectorAll('input[name=f-correct]'); if (radios[ci]) radios[ci].checked = true;
+          }
+          $('f-save').onclick = async () => {
+            sync();
+            const options = opts.map(o => o.trim());
+            const subject = $('f-subj').value.trim();
+            const question = $('f-q').value.trim();
+            const c = document.querySelector('input[name=f-correct]:checked');
+            if (!subject) return toast('Nhập tên môn.', false);
+            if (!question) return toast('Nhập nội dung câu hỏi.', false);
+            if (options.some(o => !o)) return toast('Mọi đáp án phải có nội dung (xóa đáp án trống).', false);
+            const body = { subject, question, options, correct_index: c ? +c.value : 0, keyword_anchor: $('f-kw').value.trim(), explanation: $('f-ex').value.trim(), updated_at: new Date().toISOString() };
+            try {
+              if (r) await QFAuth.rest(`/quizfast_questions?id=eq.${enc(r.id)}`, { method: 'PATCH', headers: { Prefer: 'return=minimal' }, body: JSON.stringify(body) });
+              else {
+                const maxPos = rows.filter(x => x.subject === subject).reduce((m, x) => Math.max(m, x.position || 0), 0);
+                const id = $('f-id').value.trim() || 'ADM_' + Date.now().toString(36).toUpperCase();
+                await QFAuth.rest('/quizfast_questions', { method: 'POST', headers: { Prefer: 'return=minimal' }, body: JSON.stringify({ ...body, id, position: maxPos + 1 }) });
+              }
+              closeDlg(); toast('Đã lưu câu hỏi.'); loadTab();
+            } catch (e) { fail(e); }
+          };
+        };
+        render();
+      }
+      $('q-add').onclick = () => qForm(null);
+
+      $('q-import').onclick = () => {
+        openDlg(`<h2 class="text-lg font-extrabold">Nhập câu hỏi từ JSON</h2>
+          <p class="text-xs text-slate-500">Dán một mảng: <code>[{"question":"...","options":["A","B","C","D"],"correctIndex":0}]</code>. Mỗi câu 2 đến 6 đáp án; <code>correctIndex</code> tính từ 0. Có thể thêm <code>id</code>, <code>keyword_anchor</code>, <code>explanation</code>.</p>
+          <div><label class="text-xs font-bold" for="i-subj">Môn</label><input id="i-subj" list="i-subjs" class="inp mt-1" value="${esc(qFilter.subject)}" /><datalist id="i-subjs">${subjects.map(s => `<option value="${esc(s)}">`).join('')}</datalist></div>
+          <textarea id="i-json" rows="10" class="inp font-mono text-xs" aria-label="JSON câu hỏi"></textarea>
+          <div class="flex justify-end gap-2"><button id="i-cancel" class="btn btn-ghost">Hủy</button><button id="i-go" class="btn btn-primary">Nhập</button></div>`);
+        $('i-cancel').onclick = closeDlg;
+        $('i-go').onclick = async () => {
+          const subject = $('i-subj').value.trim();
+          if (!subject) return toast('Nhập tên môn.', false);
+          let arr;
+          try { arr = JSON.parse($('i-json').value); } catch { return toast('JSON không hợp lệ.', false); }
+          if (!Array.isArray(arr) || !arr.length) return toast('Cần một mảng có ít nhất 1 câu.', false);
+          let pos = rows.filter(x => x.subject === subject).reduce((m, x) => Math.max(m, x.position || 0), 0);
+          const stamp = Date.now().toString(36).toUpperCase();
+          const out = [];
+          for (let i = 0; i < arr.length; i++) {
+            const q = arr[i] || {};
+            const options = Array.isArray(q.options) ? q.options.map(o => String(o).trim()) : [];
+            const ci = q.correctIndex ?? q.correct_index;
+            if (!q.question || options.length < 2 || options.length > 6 || options.some(o => !o) || !Number.isInteger(ci) || ci < 0 || ci >= options.length)
+              return toast(`Câu thứ ${i + 1} không hợp lệ (thiếu nội dung, đáp án 2-6, hoặc correctIndex sai).`, false);
+            out.push({ id: q.id ? String(q.id) : `ADM_${stamp}_${i + 1}`, subject, position: ++pos, question: String(q.question).trim(), options, correct_index: ci, keyword_anchor: q.keyword_anchor || '', explanation: q.explanation || '' });
+          }
+          if (new Set(out.map(o => o.id)).size !== out.length) return toast('Có ID trùng nhau trong dữ liệu nhập.', false);
+          if (out.some(o => rows.some(r => r.id === o.id))) return toast('Có ID đã tồn tại trong ngân hàng.', false);
+          try {
+            for (let i = 0; i < out.length; i += 100)
+              await QFAuth.rest('/quizfast_questions', { method: 'POST', headers: { Prefer: 'return=minimal' }, body: JSON.stringify(out.slice(i, i + 100)) });
+            closeDlg(); toast(`Đã nhập ${out.length} câu.`); loadTab();
+          } catch (e) { fail(e); }
+        };
+      };
+    }
+
+    // --- Đề của người dùng
+    async function tabExams() {
+      const [exams, profiles] = await Promise.all([
+        fetchAll('/quizfast_exams?select=id,owner_id,subject,title,created_at&order=created_at.desc'),
+        fetchAll('/quizfast_profiles?select=user_id,email')
+      ]);
+      const mail = Object.fromEntries(profiles.map(p => [p.user_id, p.email]));
+      $('panel').innerHTML = exams.length ? tableWrap(`<thead><tr><th class="${td}">Người tạo</th><th class="${td}">Môn</th><th class="${td}">Đề</th><th class="${td}">Ngày tạo</th><th class="${td}"></th></tr></thead><tbody>${
+        exams.map(e => `<tr class="border-t border-slate-100 dark:border-[#34453b]">
+          <td class="${td} break-all">${esc(mail[e.owner_id] || e.owner_id)}</td><td class="${td}">${esc(e.subject)}</td><td class="${td}">${esc(e.title)}</td>
+          <td class="${td} whitespace-nowrap">${esc(fmtDate(e.created_at))}</td>
+          <td class="${td} whitespace-nowrap"><button data-v="${esc(e.id)}" class="btn btn-ghost">Xem</button> <button data-x="${esc(e.id)}" class="btn btn-danger">Xóa</button></td></tr>`).join('')
+      }</tbody>`) : card('<p class="text-sm text-slate-500">Chưa có đề nào do người dùng tạo.</p>');
+      $('panel').querySelectorAll('[data-v]').forEach(b => b.onclick = async () => {
+        try {
+          const r = await QFAuth.rest(`/quizfast_exams?select=title,questions&id=eq.${enc(b.dataset.v)}`);
+          const ex = r && r[0]; if (!ex) return;
+          openDlg(`<div class="flex justify-between items-start gap-3"><h2 class="text-lg font-extrabold">${esc(ex.title)} (${(ex.questions || []).length} câu)</h2><button id="v-close" class="btn btn-ghost">Đóng</button></div>
+            <ol class="list-decimal pl-5 space-y-3 text-sm">${(ex.questions || []).map(q => `<li><p class="font-semibold">${esc(q.question)}</p><ul class="mt-1 space-y-0.5">${(q.options || []).map((o, i) =>
+              `<li class="${i === q.correctIndex ? 'text-brand-700 dark:text-brand-300 font-bold' : ''}">${LETTERS[i]}. ${esc(o)}</li>`).join('')}</ul></li>`).join('')}</ol>`);
+          $('v-close').onclick = closeDlg;
+        } catch (e) { fail(e); }
+      });
+      $('panel').querySelectorAll('[data-x]').forEach(b => b.onclick = async () => {
+        if (!confirm('Xóa đề này của người dùng? Không thể hoàn tác.')) return;
+        try { await QFAuth.rest(`/quizfast_exams?id=eq.${enc(b.dataset.x)}`, { method: 'DELETE' }); toast('Đã xóa đề.'); loadTab(); } catch (e) { fail(e); }
+      });
+    }
+
+    // ---------------- Khởi động ----------------
+    let shown = null;
+    function onAuth() {
+      renderWho();
+      const st = QFAuth.state();
+      const next = !st.user ? 'login' : (st.isAdmin ? 'ok' : 'denied');
+      renderGate(next);
+      if (next === 'ok' && shown !== 'ok') { renderTabs(); loadTab(); }
+      shown = next;
+    }
+    QFAuth.onChange(onAuth);
+    QFAuth.init().then(onAuth);
+  })();
+  </script>
+</body>
+</html>
