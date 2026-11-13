@@ -3,7 +3,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q1",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What information belongs on the \"Monetization + Production\" slide of a standard pitch deck?",
     options: [
       "a. The full credits roll",
@@ -19,7 +19,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q2",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "Why is balancing a game by gut feeling described as fragile?",
     options: [
       "a. Because only professional mathematicians are allowed to balance games",
@@ -35,7 +35,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q3",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What is a \"Progression Loop\"?",
     options: [
       "a. A loop used only for multiplayer matchmaking",
@@ -51,7 +51,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q4",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What is the central problem this module addresses about pitching a game idea?",
     options: [
       "a. A poorly delivered pitch can kill a genuinely good idea within the first few minutes",
@@ -67,7 +67,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q5",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What is the risk of pitching for the very first time in front of a real audience?",
     options: [
       "a. It guarantees a lower grade regardless of content",
@@ -83,7 +83,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q6",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What is a \"Sink\" in an economy system?",
     options: [
       "a. A tutorial popup explaining how to earn resources",
@@ -99,7 +99,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q7",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What happens in the Trading Island example if the sink is removed?",
     options: [
       "a. The ship becomes permanently unusable",
@@ -115,7 +115,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q8",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What does \"Hidden Interactions\" refer to as a balancing risk?",
     options: [
       "a. Changing one number can unexpectedly break a completely different system",
@@ -131,7 +131,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q9",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What happens if the \"unlock new content\" branch is missing from a Progression Loop?",
     options: [
       "a. The player gets stronger but has nothing new to do, and the sense of progress disappears",
@@ -147,7 +147,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q10",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "In the Systems Design Workshop process, what is the first recommended step before writing any code?",
     options: [
       "a. Record a gameplay trailer showing the system in action",
@@ -163,7 +163,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q11",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "Why is asking \"What do you think?\" after a rehearsal considered a weak question?",
     options: [
       "a. It always results in overly harsh criticism",
@@ -179,7 +179,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q12",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What is the risk of talking too much about the game engine and code during a pitch?",
     options: [
       "a. It automatically increases the perceived production budget",
@@ -195,7 +195,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q13",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "How does a \"System\" differ from a \"Core Loop\" as covered in Module 1?",
     options: [
       "a. A System only applies to multiplayer games, while Core Loop only applies to single-player games",
@@ -211,7 +211,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q14",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "According to the module, what warning sign in player data suggests a system is degenerating?",
     options: [
       "a. Players are spending equal time in every game mode",
@@ -227,7 +227,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q15",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "According to the module, how does one sentence describing a situation compare to five sentences listing features?",
     options: [
       "a. Both approaches are always equally effective",
@@ -243,7 +243,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q16",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What is the problem with having \"one dominant weapon\" in a game's system?",
     options: [
       "a. It automatically increases replayability",
@@ -259,7 +259,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q17",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What information belongs on the \"Title + Team\" slide of a standard pitch deck?",
     options: [
       "a. The complete list of every bug found in testing",
@@ -275,7 +275,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q18",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What is a \"Degenerate Loop\"?",
     options: [
       "a. A loop that only appears in poorly optimized code",
@@ -291,7 +291,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q19",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What is an \"Incentive\" in an economy system?",
     options: [
       "a. A penalty applied when the player makes a mistake",
@@ -307,7 +307,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q20",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "In the \"Trading Island\" example, what serves as the Sink?",
     options: [
       "a. A daily ship maintenance fee",
@@ -323,7 +323,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q21",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "Why is asking \"What do you remember most?\" considered a stronger feedback question?",
     options: [
       "a. It forces the listener to recall what stuck, revealing which parts were unclear",
@@ -339,7 +339,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q22",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "According to the module, what is a \"System\" in game design?",
     options: [
       "a. Rules and variables interacting to create emergent behavior, rather than being hardcoded",
@@ -355,7 +355,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q23",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "Why does saying \"15 weapon types, 8 maps, a crafting system\" tend to fail as a pitch opener?",
     options: [
       "a. Feature lists are against Moodle's academic policy",
@@ -371,7 +371,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q24",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What is the goal of \"Rock-Paper-Scissors\" style balancing?",
     options: [
       "a. Removing all player choice from combat",
@@ -387,7 +387,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q25",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What is the purpose of the \"Hook\" beat at the very start of a pitch?",
     options: [
       "a. To spark curiosity in about ten seconds",
@@ -403,7 +403,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q26",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "In the \"Trading Island\" (Đảo Thương Nhân) example, what serves as the Incentive?",
     options: [
       "a. A tax applied when entering the harbor",
@@ -419,7 +419,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q27",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What should a team do with the standard pitch deck slides if presentation time is short?",
     options: [
       "a. Remove the Hook entirely to save time",
@@ -435,7 +435,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q28",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What is the risk of not preparing for hard questions such as \"Who are your competitors?\"",
     options: [
       "a. It only matters for mobile games, not PC or console titles",
@@ -451,7 +451,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q29",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What does the \"Differentiator\" beat in a pitch explain?",
     options: [
       "a. Why someone should choose this game over similar alternatives",
@@ -467,7 +467,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q30",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What information belongs on the \"Story + Gameplay\" slide of a standard pitch deck?",
     options: [
       "a. A list of every sound effect used in the game",
@@ -483,7 +483,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q31",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What does \"Resource Inflation\" describe in an uncontrolled game economy?",
     options: [
       "a. A bug that causes the game to crash on startup",
@@ -499,7 +499,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q32",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "In the \"Weapon Durability System\" example, how does pressure to manage resources emerge?",
     options: [
       "a. The designer writes a separate script that directly forces the player to feel pressure",
@@ -515,7 +515,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q33",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What information belongs on the \"Target Specs\" slide of a standard pitch deck?",
     options: [
       "a. The full list of competitor company addresses",
@@ -531,7 +531,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q34",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What does the \"Problem\" beat in a pitch explain?",
     options: [
       "a. Why this game is needed or what gap it fills",
@@ -547,7 +547,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q35",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "Which sequence best matches a Progression Loop as described in the module?",
     options: [
       "a. Playtest, patch, re-release",
@@ -563,7 +563,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q36",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "Why is \"gut feeling\" about balance considered unreliable?",
     options: [
       "a. Because Moodle cannot grade gut-feeling decisions",
@@ -579,7 +579,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q37",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "If a pitch only has thirty seconds available, which two beats should be kept according to the module?",
     options: [
       "a. Hook and Gameplay",
@@ -595,7 +595,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q38",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What method is suggested for catching filler words like \"um\" and \"uh\" during rehearsal?",
     options: [
       "a. Reading the pitch silently without speaking aloud",
@@ -611,7 +611,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q39",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What do listeners tend to remember most after hearing a pitch?",
     options: [
       "a. The precise file size of the build",
@@ -627,7 +627,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M34_Q40",
     subject: "FE GDC",
-    module: "Module 34: Systems, Balancing & Pitching",
+    module: "Module 3 & 4 – Systems, Balancing & Pitching",
     question: "What are the five beats of an effective pitch, in order?",
     options: [
       "a. Hook, Problem, Gameplay, Differentiator, Call to action",
@@ -645,7 +645,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q1",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What causes players to get lost in a level, according to the module?",
     options: [
       "a. Too much dialogue between checkpoints",
@@ -661,7 +661,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q2",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "How can a landmark guide a player without using UI?",
     options: [
       "a. By placing an identical marker in every single room",
@@ -677,7 +677,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q3",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What is the risk of introducing a strange world, a new language, and unfamiliar combat rules all at the same time?",
     options: [
       "a. Nothing feels familiar for the player to hold onto, making the game hard to approach",
@@ -693,7 +693,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q4",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What is the problem with including large amounts of lore that do not affect current gameplay?",
     options: [
       "a. It tells history that has no impact on what the player is actually doing right now",
@@ -709,7 +709,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q5",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "Why does a gate requiring a two-tile jump work well if that jump was already practiced earlier in the same level?",
     options: [
       "a. Because it uses a skill the player has already been taught, so there is always a way through",
@@ -725,7 +725,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q6",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What is the core idea behind the \"Triangle of Weirdness\" principle?",
     options: [
       "a. Strangeness should only ever apply to level geometry, never to story",
@@ -741,7 +741,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q7",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What does the \"Technical Section\" of a GDD typically contain?",
     options: [
       "a. The full voice-over script for every NPC",
@@ -757,7 +757,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q8",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What does \"Theme\" refer to in this framework?",
     options: [
       "a. The platform the game will be released on",
@@ -773,7 +773,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q9",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What happens during the \"Peak\" step of challenge pacing?",
     options: [
       "a. The player faces the hardest challenge or boss of the section",
@@ -789,7 +789,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q10",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "According to the module, what should color and architecture in an area ideally do?",
     options: [
       "a. Be chosen purely for concept art competitions",
@@ -805,7 +805,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q11",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What is a \"Story Beat Sheet\" designed to capture?",
     options: [
       "a. The rhythm of the story, not a full script",
@@ -821,7 +821,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q12",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "Which three elements must stay aligned with each other according to the module?",
     options: [
       "a. Hook, Problem, and Call to action",
@@ -837,7 +837,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q13",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "In the \"Lighthouse Keeper\" example, what is the stated Theme?",
     options: [
       "a. Open-world exploration with no story",
@@ -853,7 +853,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q14",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "In the dark hallway example leading to a single red neon light, what does the player do without needing any text description?",
     options: [
       "a. Open the pause menu to check a map",
@@ -869,7 +869,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q15",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What does \"Premise\" refer to in this framework?",
     options: [
       "a. The name of the composer hired for the soundtrack",
@@ -885,7 +885,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q16",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What does \"Player Experience\" refer to in this framework?",
     options: [
       "a. What the player is meant to feel while playing",
@@ -901,7 +901,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q17",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "Which self-check question helps evaluate whether an area serves the Core Loop?",
     options: [
       "a. What is the file size of this area's textures?",
@@ -917,7 +917,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q18",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "How can light or color guide a player without using UI?",
     options: [
       "a. By using color only in the game's main menu",
@@ -933,7 +933,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q19",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "According to the Triangle of Weirdness, what should happen if the world is strange?",
     options: [
       "a. The language and combat rules should also be made unfamiliar",
@@ -949,7 +949,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q20",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "According to the module, how does level design mainly teach rules to the player?",
     options: [
       "a. Only through long written tutorials",
@@ -965,7 +965,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q21",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What is the risk of fully texturing and lighting a level before testing movement flow?",
     options: [
       "a. It has no risk since art assets can be swapped instantly at no cost",
@@ -981,7 +981,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q22",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What does \"Gray before pretty\" mean in level blockout theory?",
     options: [
       "a. Detail and texturing should always come before any blockout",
@@ -997,7 +997,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q23",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What happens if the \"Rest\" step is removed from the challenge pacing sequence?",
     options: [
       "a. The Peak challenge becomes impossible to design",
@@ -1013,7 +1013,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q24",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What is the golden rule for gating in level design?",
     options: [
       "a. Always require the player to search for a hidden key with no hints",
@@ -1029,7 +1029,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q25",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "How should the Narrative and Technical sections of a GDD stay connected?",
     options: [
       "a. They should be written by completely different teams with no communication",
@@ -1045,7 +1045,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q26",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What is a \"softlock\" as described in this module?",
     options: [
       "a. A difficulty setting that cannot be changed after starting",
@@ -1061,7 +1061,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q27",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What analogy does the module use to describe challenge pacing?",
     options: [
       "a. The rhythm of music",
@@ -1077,7 +1077,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q28",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What does the \"Narrative Section\" of a GDD typically contain?",
     options: [
       "a. Systems, architecture, and API details for programmers",
@@ -1093,7 +1093,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q29",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What test does the module suggest for checking whether an area still matters after removing all decoration?",
     options: [
       "a. Ask whether the area can be sold as paid downloadable content",
@@ -1109,7 +1109,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q30",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What is a \"Visual Goal\" in level design?",
     options: [
       "a. A goal that is hidden behind an invisible wall",
@@ -1125,7 +1125,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q31",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "How can architectural composition guide a player without using UI?",
     options: [
       "a. By using architecture only for cosmetic purposes",
@@ -1141,7 +1141,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q32",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "How does Level Blockout Theory relate to the Unity Graybox concept from Module 2?",
     options: [
       "a. It applies the same philosophy, but at the scale of a whole level",
@@ -1157,7 +1157,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q33",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What is the problem with a key hidden in a spot with no hint at all?",
     options: [
       "a. It has no real downside since players enjoy exploring",
@@ -1173,7 +1173,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q34",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What is the main advantage of a one-page Beat Sheet over a twenty-page script written in advance?",
     options: [
       "a. A full script must always be written before any prototyping begins",
@@ -1189,7 +1189,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q35",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What is the recommended challenge pacing sequence within a level?",
     options: [
       "a. Peak, then Rest, then Easy, then Harder",
@@ -1205,7 +1205,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q36",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What must world building ultimately serve, according to the module?",
     options: [
       "a. The voice actor casting process",
@@ -1221,7 +1221,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q37",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "Why can a game have a great story but still feel boring to play?",
     options: [
       "a. Because great stories always require more polygons",
@@ -1237,7 +1237,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q38",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What is the benefit of testing movement, camera, and pacing with simple blocks first?",
     options: [
       "a. It automatically balances the game's economy",
@@ -1253,7 +1253,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q39",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What is the risk of revealing a major secret too early in the story?",
     options: [
       "a. It has no effect on player motivation",
@@ -1269,7 +1269,7 @@ window.GDC_DATA = [
   {
     id: "GDC_M56_Q40",
     subject: "FE GDC",
-    module: "Module 56: Narrative, World & Level Design",
+    module: "Module 5 & 6 – Narrative, World & Level Design",
     question: "What happens during the \"Easy\" step of challenge pacing?",
     options: [
       "a. The player is punished for making any mistake",
@@ -1281,5 +1281,1112 @@ window.GDC_DATA = [
     keyword_anchor: "Easy step = Player learns a new skill",
     highlight_words: ["Easy", "challenge pacing", "learns a new skill"],
     explanation: "Bước Easy (dễ) ở đầu nhịp độ thử thách là lúc người chơi làm quen và học một kỹ năng mới."
-  }
+  },
+
+  // ================= MODULE 78: VERTICAL SLICE, INTEGRATION SPRINT & GAME BALANCING (40 QUESTIONS) =================
+  {
+    id: "GDC_M78_Q1",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What is the problem with changing damage, speed, and range together before playtesting?",
+    options: [
+          "a. It has no downside since all three variables are always related",
+          "b. It guarantees a crash during the playtest",
+          "c. If the result improves, the team will not know which specific variable caused the improvement",
+          "d. It always makes the weapon underpowered"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M78_Q2",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What should be prioritized when selecting which section becomes the Vertical Slice?",
+    options: [
+          "a. The section that requires the least art",
+          "b. The section with the shortest total playtime",
+          "c. The section that was built first, regardless of content",
+          "d. The section that most clearly represents the core loop, a combat encounter, and a pillar-driven decision"
+    ],
+    correctIndex: 3
+  },
+  {
+    id: "GDC_M78_Q3",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "How does integrating early help avoid integration hell?",
+    options: [
+          "a. It only works for single-person teams",
+          "b. It removes the need for a Cut-list entirely",
+          "c. It guarantees the game will need no further testing",
+          "d. It surfaces conflicts between pieces early, while there is still time to fix them"
+    ],
+    correctIndex: 3
+  },
+  {
+    id: "GDC_M78_Q4",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What risk comes from each team member working separately until the deadline with no test-assembly?",
+    options: [
+          "a. The team runs into integration hell right at the end of the sprint",
+          "b. It guarantees a smoother final playtest",
+          "c. It removes the need for acceptance criteria",
+          "d. The team automatically finishes ahead of schedule"
+    ],
+    correctIndex: 0
+  },
+  {
+    id: "GDC_M78_Q5",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "In the three-weapon spreadsheet example, what were the Sword's approximate DPS and TTK values?",
+    options: [
+          "a. DPS 10, TTK 10.0 seconds",
+          "b. DPS 40, TTK 3.0 seconds",
+          "c. DPS 90, TTK 1.1 seconds",
+          "d. DPS 35, TTK 3.4 seconds"
+    ],
+    correctIndex: 3
+  },
+  {
+    id: "GDC_M78_Q6",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What does \"DPS\" stand for in the balancing spreadsheet example?",
+    options: [
+          "a. Damage per second",
+          "b. Design pillar score",
+          "c. Difficulty progression setting",
+          "d. Dynamic player statistics"
+    ],
+    correctIndex: 0
+  },
+  {
+    id: "GDC_M78_Q7",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What is the main purpose of putting all balance-related numbers into one spreadsheet?",
+    options: [
+          "a. To replace the need for any playtesting whatsoever",
+          "b. To make the numbers harder for the team to access",
+          "c. To compare values quickly and catch balance problems from the numbers alone",
+          "d. To automatically generate the game's marketing copy"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M78_Q8",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What is the fourth and final step of the Integration Sprint process?",
+    options: [
+          "a. Polish and fix bugs",
+          "b. Playtest the slice to evaluate its final quality",
+          "c. Replace placeholders with real assets",
+          "d. Assemble the skeleton so every part runs"
+    ],
+    correctIndex: 1
+  },
+  {
+    id: "GDC_M78_Q9",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What is the benefit of changing one variable, logging the result, and repeating?",
+    options: [
+          "a. It is the only reliable way to know exactly which number determines the outcome",
+          "b. It is always faster than changing multiple variables at once",
+          "c. It guarantees the weapon will become overpowered",
+          "d. It removes the need to log any results"
+    ],
+    correctIndex: 0
+  },
+  {
+    id: "GDC_M78_Q10",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What does \"TTK\" stand for in the balancing spreadsheet example?",
+    options: [
+          "a. Total tile count",
+          "b. Tutorial tracking key",
+          "c. Time to kill",
+          "d. Target tier knowledge"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M78_Q11",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What is the main problem described at the midpoint of a project, before a vertical slice exists?",
+    options: [
+          "a. The team has already finished the entire game",
+          "b. The publisher has already rejected the pitch",
+          "c. Many pieces are unfinished, so no one can play a complete experience to judge if the game is fun",
+          "d. The team has run out of funding entirely"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M78_Q12",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What is \"Acceptance Criteria\" in vertical slice planning?",
+    options: [
+          "a. A marketing slogan used in the pitch deck",
+          "b. A list of assets to be cut if time runs out",
+          "c. A specific checklist defining when the slice counts as \"done,\" such as running at 30 FPS with no crashes",
+          "d. A legal document signed by the publisher"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M78_Q13",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What is the third step of the four-step Integration Sprint process?",
+    options: [
+          "a. Polish and fix bugs, tuning the feel",
+          "b. Playtest the finished slice",
+          "c. Assemble the skeleton so every part runs",
+          "d. Replace placeholders with real assets"
+    ],
+    correctIndex: 0
+  },
+  {
+    id: "GDC_M78_Q14",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What is a \"Vertical Slice\"?",
+    options: [
+          "a. A build that only contains placeholder art with no code",
+          "b. A slice of the game's revenue given to investors",
+          "c. A build that only contains audio with no visuals",
+          "d. A small but complete section of the game, finished at every layer, such as art, code, sound, and UI"
+    ],
+    correctIndex: 3
+  },
+  {
+    id: "GDC_M78_Q15",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "Which of these is given as an example symptom of the mid-project problem?",
+    options: [
+          "a. The marketing trailer has already gone viral",
+          "b. The publisher has already signed a sequel deal",
+          "c. The game has already shipped to every platform",
+          "d. Combat code runs, but only on a box-shaped placeholder character with no animation"
+    ],
+    correctIndex: 3
+  },
+  {
+    id: "GDC_M78_Q16",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What is the first step of the four-step Integration Sprint process?",
+    options: [
+          "a. Replace all placeholders with final assets",
+          "b. Polish and fix bugs",
+          "c. Assemble the skeleton so every part runs, even if it looks ugly",
+          "d. Playtest the finished slice"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M78_Q17",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "How does this module's Progression and Economy Design topic relate to the Progression Loop from Module 3?",
+    options: [
+          "a. It has no connection to the Progression Loop at all",
+          "b. It only applies to multiplayer games, unlike the Progression Loop",
+          "c. It replaces the Progression Loop concept entirely",
+          "d. It looks at the same idea from a numerical, spreadsheet-driven angle"
+    ],
+    correctIndex: 3
+  },
+  {
+    id: "GDC_M78_Q18",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What problem arises from changing several variables at once before playtesting?",
+    options: [
+          "a. It becomes impossible to know which variable actually caused the observed effect",
+          "b. It guarantees a perfectly balanced result",
+          "c. It always makes the game crash immediately",
+          "d. It removes the need for a spreadsheet entirely"
+    ],
+    correctIndex: 0
+  },
+  {
+    id: "GDC_M78_Q19",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What is the downside of a difficulty curve that increases in a perfectly straight line with no rest points?",
+    options: [
+          "a. It removes the need for a Core Loop",
+          "b. The player will always find the game too easy",
+          "c. The player gradually tires out with no clear sense of progress",
+          "d. It guarantees the game ships faster"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M78_Q20",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What problem does a \"wrong-rhythm difficulty curve\" describe?",
+    options: [
+          "a. A curve that is always too easy from start to finish",
+          "b. A curve that cannot be drawn on a spreadsheet",
+          "c. Difficulty that increases in a straight line or a chaotic sawtooth, instead of having a rhythm with rest points",
+          "d. A curve that only appears in multiplayer games"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M78_Q21",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "Why does the module warn that \"feels balanced\" is not the same as \"is actually balanced\"?",
+    options: [
+          "a. Because playtesting is not a valid balancing method",
+          "b. Because feelings are never allowed in professional game design",
+          "c. Because when a system has many interacting variables, gut feeling is very likely to be wrong",
+          "d. Because only spreadsheets can be shown to a publisher"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M78_Q22",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What is the main weakness of a Horizontal Slice compared to a Vertical Slice?",
+    options: [
+          "a. It always takes longer to build than a Vertical Slice",
+          "b. It cannot include any placeholder assets at all",
+          "c. No one can see the game's true final quality since nothing is fully complete",
+          "d. It requires more programmers than a Vertical Slice"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M78_Q23",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "In the three-weapon spreadsheet example, why did the Axe's numbers reveal a balance problem?",
+    options: [
+          "a. It had no numbers recorded in the spreadsheet at all",
+          "b. Its TTK of 1.1 seconds was abnormally low, showing it was overpowered just from the numbers, without needing to playtest yet",
+          "c. Its DPS was too low compared to the Sword",
+          "d. Its TTK matched the Sword and Bow exactly"
+    ],
+    correctIndex: 1
+  },
+  {
+    id: "GDC_M78_Q24",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What is a \"Cut-list\" in vertical slice planning?",
+    options: [
+          "a. A prioritized list of features to cut first if the team falls behind schedule",
+          "b. A list of team members allowed to approve final art",
+          "c. A list of every bug found during QA testing",
+          "d. A list of checkpoints placed throughout the level"
+    ],
+    correctIndex: 0
+  },
+  {
+    id: "GDC_M78_Q25",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What must \"power gained\" match, according to this module?",
+    options: [
+          "a. The studio's marketing budget",
+          "b. The rate at which difficulty increases",
+          "c. The exact file size of the game build",
+          "d. The number of playable characters"
+    ],
+    correctIndex: 1
+  },
+  {
+    id: "GDC_M78_Q26",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "When should Acceptance Criteria and a Cut-list be written, according to the module?",
+    options: [
+          "a. Only after the deadline has already passed",
+          "b. Before starting work, while the team is calm",
+          "c. Never; cut-lists are discouraged entirely",
+          "d. Only while the team is panicking near the deadline"
+    ],
+    correctIndex: 1
+  },
+  {
+    id: "GDC_M78_Q27",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What is a \"Horizontal Slice\"?",
+    options: [
+          "a. A slice used only for marketing screenshots",
+          "b. Ten placeholder levels with none of them fully complete",
+          "c. One level that is fully complete at every layer",
+          "d. A slice that only contains the game's audio design"
+    ],
+    correctIndex: 1
+  },
+  {
+    id: "GDC_M78_Q28",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What problem does \"scattered numbers\" describe in balancing?",
+    options: [
+          "a. Numbers that are too large to fit in a spreadsheet cell",
+          "b. Damage and HP values are hard-coded in many places, making quick comparison impossible",
+          "c. Numbers that are randomly generated every time the game launches",
+          "d. Numbers that only appear in the credits screen"
+    ],
+    correctIndex: 1
+  },
+  {
+    id: "GDC_M78_Q29",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "In the three-weapon spreadsheet example, what were the Bow's approximate DPS and TTK values?",
+    options: [
+          "a. DPS 35, TTK 3.4 seconds",
+          "b. DPS 0, TTK 0 seconds",
+          "c. DPS 40, TTK 3.0 seconds",
+          "d. DPS 90, TTK 1.1 seconds"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M78_Q30",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What is the central principle of an \"Integration Sprint\"?",
+    options: [
+          "a. Integrate only the audio and ignore the rest",
+          "b. Integrate only once, right before the final deadline",
+          "c. Integrate early, integrate often",
+          "d. Never integrate different team members' work"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M78_Q31",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "According to the module, what do judges and investors generally want to see?",
+    options: [
+          "a. A full legal contract before seeing any gameplay",
+          "b. A Vertical Slice, not a list of unfinished features",
+          "c. A Horizontal Slice with ten unfinished levels",
+          "d. Only the game's marketing budget spreadsheet"
+    ],
+    correctIndex: 1
+  },
+  {
+    id: "GDC_M78_Q32",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What is \"integration hell\" as warned about in this module?",
+    options: [
+          "a. Conflicts between different pieces of work that surface only when combined very late in the schedule",
+          "b. A marketing term used to describe a delayed release",
+          "c. A difficulty setting that cannot be changed",
+          "d. A bug that only appears in multiplayer matches"
+    ],
+    correctIndex: 0
+  },
+  {
+    id: "GDC_M78_Q33",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What happens if the player's power curve rises slower than the difficulty curve?",
+    options: [
+          "a. The middle of the game becomes too easy",
+          "b. The player automatically receives a difficulty-skip option",
+          "c. The game becomes too hard and players are likely to quit",
+          "d. Nothing changes since difficulty and power are unrelated"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M78_Q34",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What happens if the player's power curve rises faster than the difficulty curve?",
+    options: [
+          "a. The Core Loop stops functioning entirely",
+          "b. The game becomes impossible to complete",
+          "c. The player will always quit before finishing the tutorial",
+          "d. The middle of the game becomes too easy and boring"
+    ],
+    correctIndex: 3
+  },
+  {
+    id: "GDC_M78_Q35",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What is the risk of choosing the easiest section of the game as the Vertical Slice?",
+    options: [
+          "a. It guarantees a lower grade regardless of quality",
+          "b. It has no risk since easy sections are always representative",
+          "c. No one can imagine how the game actually plays if it lacks combat or other key systems",
+          "d. It always takes longer to complete than a harder section"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M78_Q36",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What is the second step of the four-step Integration Sprint process?",
+    options: [
+          "a. Assemble the skeleton so every part runs",
+          "b. Gradually replace placeholder assets with real ones",
+          "c. Write the final marketing pitch",
+          "d. Playtest the finished slice"
+    ],
+    correctIndex: 1
+  },
+  {
+    id: "GDC_M78_Q37",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What does the module's cake-tasting analogy illustrate about a Vertical Slice?",
+    options: [
+          "a. Only the frosting matters when judging a cake",
+          "b. Cake and games have no meaningful relationship in design",
+          "c. Tasting one complete slice tells you whether the whole cake is good",
+          "d. Eating the whole cake is required before judging any part of it"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M78_Q38",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What is the central rule for running an effective balance workshop session?",
+    options: [
+          "a. Change one variable at a time, rather than changing several at once",
+          "b. Only change variables that affect the game's art style",
+          "c. Never change any variable once it has been set",
+          "d. Change as many variables as possible in a single pass to save time"
+    ],
+    correctIndex: 0
+  },
+  {
+    id: "GDC_M78_Q39",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What is the main benefit of calculating DPS and TTK directly within the spreadsheet from base stats?",
+    options: [
+          "a. It replaces the need for a Design Pillar",
+          "b. It automatically generates 3D models for each weapon",
+          "c. It guarantees the numbers will never need to change again",
+          "d. Balance issues can be spotted before ever running a playtest"
+    ],
+    correctIndex: 3
+  },
+  {
+    id: "GDC_M78_Q40",
+    subject: "FE GDC",
+    module: "Module 7 & 8 – Vertical Slice, Integration Sprint & Game Balancing",
+    question: "What does the module recommend for pacing difficulty across a longer stretch of the game?",
+    options: [
+          "a. Randomize difficulty with no intentional pattern",
+          "b. After every three or four hard challenges, insert one easier section so players feel their growing strength",
+          "c. Keep difficulty perfectly flat for the entire game",
+          "d. Make every single section harder than the last with no exceptions"
+    ],
+    correctIndex: 1
+  },
+
+  // ================= MODULE 910: GAME ART, CHARACTER DESIGN, COMBAT FEEL & UNITY ASSET PIPELINE (45 QUESTIONS) =================
+  {
+    id: "GDC_M910_Q1",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What is the benefit of giving all interactive objects a consistent glowing outline or color?",
+    options: [
+          "a. It removes the need for a Unity import pipeline",
+          "b. It only matters for objects that deal damage",
+          "c. Players recognize interactive objects from a distance without needing to test them",
+          "d. It automatically reduces the game's file size"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M910_Q2",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "In the \"spin slash\" example, what happens during the 0.3 second Recovery beat?",
+    options: [
+          "a. The character stands still and can be countered if they react too slowly",
+          "b. The character's weapon disappears permanently",
+          "c. The character automatically dodges any incoming attack",
+          "d. The character becomes fully invincible"
+    ],
+    correctIndex: 0
+  },
+  {
+    id: "GDC_M910_Q3",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "Is the following statement true or false? \"Leaving LOD and texture compression settings at their defaults when importing assets is a safe practice that will not affect performance later in development.\"",
+    options: [
+          "a. True",
+          "b. False"
+    ],
+    correctIndex: 1
+  },
+  {
+    id: "GDC_M910_Q4",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What happens during the \"Anticipation\" beat of an attack?",
+    options: [
+          "a. The character's animation ends completely",
+          "b. The character prepares to attack, with enough visible buildup for the player to notice",
+          "c. The character deals damage instantly",
+          "d. The character becomes vulnerable to a counter-attack"
+    ],
+    correctIndex: 1
+  },
+  {
+    id: "GDC_M910_Q5",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "Which sequence best matches the animator states described in this module?",
+    options: [
+          "a. Easy, Harder, Peak, Rest",
+          "b. Anticipation, Recovery, Idle, Attack",
+          "c. Idle, Move, Attack, Hit or Death",
+          "d. Hook, Problem, Gameplay, Differentiator"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M910_Q6",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What does \"LOD\" help achieve in a Unity project?",
+    options: [
+          "a. Reduced detail for objects farther from the camera, improving performance",
+          "b. Louder audio output for background music",
+          "c. Longer loading times for higher visual fidelity",
+          "d. Lower difficulty for boss encounters"
+    ],
+    correctIndex: 0
+  },
+  {
+    id: "GDC_M910_Q7",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "One of the three questions to ask before accepting an asset is about performance budget. What does it check?",
+    options: [
+          "a. Whether the asset matches the studio's official font",
+          "b. Whether the asset has been translated into every supported language",
+          "c. Whether the asset includes a hidden Easter egg",
+          "d. Whether the polygon count and texture size fit the target frame rate"
+    ],
+    correctIndex: 3
+  },
+  {
+    id: "GDC_M910_Q8",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "According to the module summary, what is the role of \"Environment Silhouette\"?",
+    options: [
+          "a. Environment silhouette has no connection to Module 9",
+          "b. Only characters need a readable silhouette",
+          "c. Environment silhouette only matters for boss arenas",
+          "d. Interactive objects need a consistent visual language"
+    ],
+    correctIndex: 3
+  },
+  {
+    id: "GDC_M910_Q9",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "One of the three questions to ask before accepting an asset is about function. What does it check?",
+    options: [
+          "a. Whether a dangerous item actually looks dangerous, and a climbable object looks climbable",
+          "b. Whether the asset was made using the most expensive software",
+          "c. Whether the asset includes a hidden watermark",
+          "d. Whether the asset's file name is spelled correctly"
+    ],
+    correctIndex: 0
+  },
+  {
+    id: "GDC_M910_Q10",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What does the module say a designer needs to be able to do with art assets, even without being able to draw well?",
+    options: [
+          "a. Read and organize assets correctly",
+          "b. Ignore all art considerations and focus only on code",
+          "c. Personally paint every texture used in the game",
+          "d. Replace the art team entirely"
+    ],
+    correctIndex: 0
+  },
+  {
+    id: "GDC_M910_Q11",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "Why must an environment asset serve gameplay, not just look impressive?",
+    options: [
+          "a. Impressive visuals alone do not tell the player how to interact with the space",
+          "b. Gameplay and visuals are always unrelated concerns",
+          "c. Only enemy character models need to serve gameplay",
+          "d. Impressive visuals always guarantee good frame rate"
+    ],
+    correctIndex: 0
+  },
+  {
+    id: "GDC_M910_Q12",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What is the main problem addressed at the start of this module about character design?",
+    options: [
+          "a. Character design has no connection to gameplay",
+          "b. Characters always need more polygons to look appealing",
+          "c. Only villains need a readable silhouette",
+          "d. A character can look attractive but still fail to communicate its role to the player instantly"
+    ],
+    correctIndex: 3
+  },
+  {
+    id: "GDC_M910_Q13",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What does the Midterm Demo evaluate, according to this module?",
+    options: [
+          "a. A Vertical Slice from Module 8, shown as a genuinely playable experience",
+          "b. A Horizontal Slice with ten unfinished levels",
+          "c. Only the game's audio design",
+          "d. Only the game's marketing pitch deck"
+    ],
+    correctIndex: 0
+  },
+  {
+    id: "GDC_M910_Q14",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "According to the module summary, what is the role of \"LOD and compression\"?",
+    options: [
+          "a. Only relevant for audio assets, not visual ones",
+          "b. Only relevant after the game has already shipped",
+          "c. Always disable them completely for best visual quality",
+          "d. Do not leave them at default; configure them based on camera distance and target platform"
+    ],
+    correctIndex: 3
+  },
+  {
+    id: "GDC_M910_Q15",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What is the risk of leaving LOD and texture compression at their default settings?",
+    options: [
+          "a. Textures automatically compress themselves over time",
+          "b. Full-size textures are used even at a distance, causing the game to slow down as more assets are added",
+          "c. The game automatically becomes smaller in file size",
+          "d. It has no effect on performance whatsoever"
+    ],
+    correctIndex: 1
+  },
+  {
+    id: "GDC_M910_Q16",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "How does the module extend the silhouette principle from Module 9 to environments?",
+    options: [
+          "a. Environment silhouettes should always be identical to character silhouettes",
+          "b. Interactive objects need a visual language that is just as readable as a character's silhouette",
+          "c. Environments should never use color to communicate meaning",
+          "d. Silhouette principles only apply to characters, never to environments"
+    ],
+    correctIndex: 1
+  },
+  {
+    id: "GDC_M910_Q17",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "Which silhouette traits are associated with an \"Assassin\" character in the module's example?",
+    options: [
+          "a. No distinguishing silhouette traits at all",
+          "b. Slim body, flying accessories, and a leaning posture forming a compact, dynamic silhouette",
+          "c. Big, square shoulders with thick limbs",
+          "d. A perfectly symmetrical, motionless stance"
+    ],
+    correctIndex: 1
+  },
+  {
+    id: "GDC_M910_Q18",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What is the quick \"silhouette test\" described in the module?",
+    options: [
+          "a. Fill the entire character in black and check whether the role is still recognizable",
+          "b. Ask a focus group to rate the character's outfit color",
+          "c. Render the character in 4K resolution and compare file sizes",
+          "d. Remove the character from the game entirely and observe player reactions"
+    ],
+    correctIndex: 0
+  },
+  {
+    id: "GDC_M910_Q19",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What is the benefit of properly configuring LOD and compression instead of leaving defaults?",
+    options: [
+          "a. It replaces the need for a Vertical Slice",
+          "b. Models reduce detail with camera distance and textures compress appropriately per platform, giving much more stable performance",
+          "c. It removes the need for import settings entirely",
+          "d. It automatically fixes any incorrect object scale"
+    ],
+    correctIndex: 1
+  },
+  {
+    id: "GDC_M910_Q20",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What should be prioritized when choosing what to show during the Midterm Demo?",
+    options: [
+          "a. A section that is genuinely playable, over one that looks pretty but is unfinished",
+          "b. The section that took the least time to build",
+          "c. The section with the most expensive-looking assets, regardless of playability",
+          "d. The section with the most placeholder art"
+    ],
+    correctIndex: 0
+  },
+  {
+    id: "GDC_M910_Q21",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What common mistake involves a hitbox that is much larger than the character's visual?",
+    options: [
+          "a. It always makes the character too weak",
+          "b. It has no effect on player experience",
+          "c. It makes the player feel cheated when a dodge that looked successful still results in damage",
+          "d. It automatically improves the animator state machine"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M910_Q22",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What problem arises if a climbable wall, a breakable crate, and pure decoration all use the same material and look?",
+    options: [
+          "a. It has no effect on player experience",
+          "b. It always improves the game's frame rate",
+          "c. Players must physically test collision with every object just to learn what is interactive",
+          "d. The game automatically becomes easier to optimize"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M910_Q23",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "According to the module summary, what is the role of \"Art Direction for Designers\"?",
+    options: [
+          "a. A replacement for the Unity import pipeline",
+          "b. A tool used only for marketing screenshots",
+          "c. A checklist used only by professional concept artists",
+          "d. Three questions covering function, consistency, and performance budget"
+    ],
+    correctIndex: 3
+  },
+  {
+    id: "GDC_M910_Q24",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "One of the three questions to ask before accepting an asset is about style consistency. What does it check?",
+    options: [
+          "a. Whether the asset was approved by the marketing department",
+          "b. Whether the asset has the highest possible polygon count",
+          "c. Whether the asset shares the same color palette and level of detail as the rest of the game",
+          "d. Whether the asset can be sold separately as downloadable content"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M910_Q25",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What does \"A-A-R\" stand for in the context of Combat Feel?",
+    options: [
+          "a. Attack, Aim, Reload",
+          "b. Aesthetics, Art, Rendering",
+          "c. Assign, Allocate, Release",
+          "d. Anticipation, Action, Recovery"
+    ],
+    correctIndex: 3
+  },
+  {
+    id: "GDC_M910_Q26",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What must a character's overall silhouette communicate, even before color is visible?",
+    options: [
+          "a. Its voice actor's name",
+          "b. Its exact HP value as a number",
+          "c. Its functional role, such as tank or assassin",
+          "d. The exact material used for its armor"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M910_Q27",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What common mistake involves beautiful animations but poor state transitions?",
+    options: [
+          "a. Combat feel is broken because the transitions are not smooth, even if individual animations look good",
+          "b. It removes the need for telegraphing",
+          "c. It has no effect on how combat feels",
+          "d. It always improves the game's frame rate"
+    ],
+    correctIndex: 0
+  },
+  {
+    id: "GDC_M910_Q28",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What self-check question helps determine whether an environment area is more than just decoration?",
+    options: [
+          "a. Does this area still have gameplay meaning if all decoration is stripped away?",
+          "b. Does this area appear in the launch trailer?",
+          "c. Does this area use the studio's most expensive texture pack?",
+          "d. Does this area contain the most NPCs in the game?"
+    ],
+    correctIndex: 0
+  },
+  {
+    id: "GDC_M910_Q29",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What are \"i-frames\" as described in the module?",
+    options: [
+          "a. Frames that increase a character's damage output permanently",
+          "b. A few invincibility frames during an action like a roll, creating a feeling of skillful play",
+          "c. Frames that are intentionally corrupted to create a glitch effect",
+          "d. Frames used only in the game's introduction cutscene"
+    ],
+    correctIndex: 1
+  },
+  {
+    id: "GDC_M910_Q30",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What does the module recommend about the relationship between a hitbox and its visual?",
+    options: [
+          "a. The hitbox should always be larger than the visual",
+          "b. The damage-dealing area should be narrower than the visual to feel fair",
+          "c. The hitbox should be exactly the size of the screen",
+          "d. The hitbox should be removed entirely for melee attacks"
+    ],
+    correctIndex: 1
+  },
+  {
+    id: "GDC_M910_Q31",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "According to the module's application exercise, what should a team check for at least three main assets?",
+    options: [
+          "a. Their marketing release dates",
+          "b. Their in-game currency prices",
+          "c. Their voice actor casting sheets",
+          "d. Their import settings, including correct scale and reasonable LOD"
+    ],
+    correctIndex: 3
+  },
+  {
+    id: "GDC_M910_Q32",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "According to the module's application exercise, what should a team set up for interactive objects?",
+    options: [
+          "a. No convention at all, relying purely on player intuition",
+          "b. A consistent color or outline convention applied across every area",
+          "c. A convention that changes based on the player's chosen difficulty",
+          "d. A different convention for every single level"
+    ],
+    correctIndex: 1
+  },
+  {
+    id: "GDC_M910_Q33",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "According to the module's application exercise, what should a team prepare before the demo?",
+    options: [
+          "a. A legal contract for the publisher",
+          "b. A complete rewrite of the entire game",
+          "c. A list of two or three known issues to mention proactively",
+          "d. A new marketing trailer"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M910_Q34",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What does the module recommend doing about issues the team already knows about before the demo?",
+    options: [
+          "a. Blame another team member for the issue during the demo",
+          "b. Proactively mention them, such as noting that a section is missing sound, before the judges ask",
+          "c. Remove the section entirely rather than mention the issue",
+          "d. Hide them and hope the judges do not notice"
+    ],
+    correctIndex: 1
+  },
+  {
+    id: "GDC_M910_Q35",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "Why does proactively mentioning known issues create a good impression?",
+    options: [
+          "a. It replaces the need for a Vertical Slice entirely",
+          "b. It guarantees a perfect score regardless of the demo's quality",
+          "c. It is required by Moodle's academic integrity policy",
+          "d. It signals professionalism and self-awareness about the project's current state"
+    ],
+    correctIndex: 3
+  },
+  {
+    id: "GDC_M910_Q36",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What is the third step in the four-step Unity import pipeline?",
+    options: [
+          "a. Packaging the asset into a Prefab for reuse",
+          "b. Adjusting import settings like scale and LOD",
+          "c. The source file exported from 3D software",
+          "d. Placing the asset into the scene"
+    ],
+    correctIndex: 0
+  },
+  {
+    id: "GDC_M910_Q37",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "In the module's example, what happens during a \"0.5 second telegraph\" before an enemy attacks?",
+    options: [
+          "a. The player's controls are locked for the full duration",
+          "b. The enemy tenses up and shows a glowing effect, giving enough time to dodge with good reflexes",
+          "c. The enemy instantly disappears from the screen",
+          "d. The enemy's HP bar is hidden from view"
+    ],
+    correctIndex: 1
+  },
+  {
+    id: "GDC_M910_Q38",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What happens during the \"Recovery\" beat of an attack?",
+    options: [
+          "a. The telegraph for the next attack begins immediately with no gap",
+          "b. The character becomes completely invincible",
+          "c. The character's next attack becomes automatically stronger",
+          "d. A gap after the attack during which the character can be countered"
+    ],
+    correctIndex: 3
+  },
+  {
+    id: "GDC_M910_Q39",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "Why should a visual convention for interactive objects stay consistent across the entire game?",
+    options: [
+          "a. Consistency across levels is only relevant for multiplayer games",
+          "b. Different levels are always made by completely separate teams",
+          "c. Changing what a color or outline means between levels will confuse players",
+          "d. It has no effect on player understanding"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M910_Q40",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What is the fourth and final step in the Unity import pipeline?",
+    options: [
+          "a. The source file exported from 3D software",
+          "b. Adjusting import settings like scale and LOD",
+          "c. Placing the prefab into the scene, the actual play space",
+          "d. Packaging the asset into a prefab"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M910_Q41",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "According to the module summary, what is the role of the \"Import Pipeline\"?",
+    options: [
+          "a. Only two steps: Source file and Scene",
+          "b. Source file, then Import Settings, then Prefab, then Scene",
+          "c. Scene, then Prefab, then Import Settings, then Source file",
+          "d. Import Settings only, with no other steps required"
+    ],
+    correctIndex: 1
+  },
+  {
+    id: "GDC_M910_Q42",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What happens if the scale is set incorrectly during the import settings step?",
+    options: [
+          "a. The asset's texture compression improves automatically",
+          "b. The character can collide incorrectly with every other object in the scene",
+          "c. The asset automatically gains extra polygons",
+          "d. Nothing changes since scale has no effect on collisions"
+    ],
+    correctIndex: 1
+  },
+  {
+    id: "GDC_M910_Q43",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What is the second step in the four-step Unity import pipeline?",
+    options: [
+          "a. Placing the asset into the scene",
+          "b. The source file exported from 3D software",
+          "c. Packaging the asset into a prefab",
+          "d. Import Settings, including scale, LOD, and texture compression"
+    ],
+    correctIndex: 3
+  },
+  {
+    id: "GDC_M910_Q44",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "According to the module's application exercise, what should a team do with their main character's silhouette?",
+    options: [
+          "a. Skip silhouette testing and rely only on final colored art",
+          "b. Only test the silhouette after the game has shipped",
+          "c. Sketch it and ask a friend to guess the character's role just from the black silhouette",
+          "d. Replace the silhouette test with a spreadsheet of DPS values"
+    ],
+    correctIndex: 2
+  },
+  {
+    id: "GDC_M910_Q45",
+    subject: "FE GDC",
+    module: "Module 9 & 10 – Game Art, Character Design, Combat Feel & Unity Asset Pipeline",
+    question: "What is the first step in the four-step Unity import pipeline?",
+    options: [
+          "a. Adjusting import settings like scale and LOD",
+          "b. The source file, such as an FBX or PNG exported from 3D software",
+          "c. Packaging the asset into a prefab",
+          "d. Placing the asset into the scene"
+    ],
+    correctIndex: 1
+  },
 ];

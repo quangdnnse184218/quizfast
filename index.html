@@ -1306,35 +1306,60 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0b100d] border border-slate-200 dar
           });
         });
 
-        // 2. Built-in 60-question / 50-minute slices for this subject (if any built-in questions exist)
+        // 2. Built-in papers for this subject (if any built-in questions exist)
         const bPool = builtinQuestions.filter(q => q.subject === subjName);
         if (bPool.length > 0) {
-          const totalSlices = Math.ceil(bPool.length / DEFAULT_QUESTIONS_PER_PAPER);
-          for (let p = 0; p < totalSlices; p++) {
-            const start = p * DEFAULT_QUESTIONS_PER_PAPER;
-            const end = Math.min(start + DEFAULT_QUESTIONS_PER_PAPER, bPool.length);
-            let slice = bPool.slice(start, end);
-            let rangeLabel = `Câu ${start + 1} – ${end}`;
+          const distinctModules = [];
+          bPool.forEach(q => {
+            if (q.module && !distinctModules.includes(q.module)) distinctModules.push(q.module);
+          });
 
-            if (slice.length < DEFAULT_QUESTIONS_PER_PAPER && bPool.length >= DEFAULT_QUESTIONS_PER_PAPER) {
-              const needed = DEFAULT_QUESTIONS_PER_PAPER - slice.length;
-              slice = [...slice, ...bPool.slice(0, needed)];
-              rangeLabel = `Câu ${start + 1} – ${end} (+${needed} câu tổng hợp)`;
-            }
-
-            papers.push({
-              key: `${subjName}_BUILTIN_${p + 1}`,
-              title: `${subjName} — Đề số ${p + 1}`,
-              shortTitle: `Đề số ${p + 1}`,
-              rangeLabel,
-              questions: slice,
-              minutes: DEFAULT_MINUTES_PER_PAPER,
-              passPct: 70,
-              shuffleQ: false,
-              shuffleOpt: true,
-              isCustom: false,
-              isRandom: false
+          if (subjName === 'FE GDC' && distinctModules.length > 1) {
+            distinctModules.forEach((modName, p) => {
+              const modQs = bPool.filter(q => q.module === modName);
+              const short = modName.replace(/–.*$/, '').trim();
+              papers.push({
+                key: `${subjName}_MOD_${p + 1}`,
+                title: `${subjName} — ${modName}`,
+                shortTitle: short || `Đề ${p + 1}`,
+                rangeLabel: `${modQs.length} câu trắc nghiệm chuẩn`,
+                questions: modQs,
+                minutes: Math.ceil(modQs.length * 1.25),
+                passPct: 40,
+                shuffleQ: false,
+                shuffleOpt: true,
+                isCustom: false,
+                isRandom: false
+              });
             });
+          } else {
+            const totalSlices = Math.ceil(bPool.length / DEFAULT_QUESTIONS_PER_PAPER);
+            for (let p = 0; p < totalSlices; p++) {
+              const start = p * DEFAULT_QUESTIONS_PER_PAPER;
+              const end = Math.min(start + DEFAULT_QUESTIONS_PER_PAPER, bPool.length);
+              let slice = bPool.slice(start, end);
+              let rangeLabel = `Câu ${start + 1} – ${end}`;
+
+              if (slice.length < DEFAULT_QUESTIONS_PER_PAPER && bPool.length >= DEFAULT_QUESTIONS_PER_PAPER) {
+                const needed = DEFAULT_QUESTIONS_PER_PAPER - slice.length;
+                slice = [...slice, ...bPool.slice(0, needed)];
+                rangeLabel = `Câu ${start + 1} – ${end} (+${needed} câu tổng hợp)`;
+              }
+
+              papers.push({
+                key: `${subjName}_BUILTIN_${p + 1}`,
+                title: `${subjName} — Đề số ${p + 1}`,
+                shortTitle: `Đề số ${p + 1}`,
+                rangeLabel,
+                questions: slice,
+                minutes: DEFAULT_MINUTES_PER_PAPER,
+                passPct: 40,
+                shuffleQ: false,
+                shuffleOpt: true,
+                isCustom: false,
+                isRandom: false
+              });
+            }
           }
         }
 
