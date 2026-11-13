@@ -6,6 +6,7 @@ Web luyện đề trắc nghiệm cho sinh viên (môn FE GDC, FE AGU, và đề
 - `index.html`: toàn bộ giao diện và logic (Tailwind CDN, không có bước build).
 - `data-gdc.js`, `data-agu-1.js`, `data-agu-2.js`: ngân hàng câu hỏi có sẵn (375 câu), chỉ còn là **bản dự phòng**. Nguồn chính là bảng `quizfast_questions` trên Supabase.
 - Chạy thử: `python -m http.server 8765 --bind 127.0.0.1` rồi mở http://127.0.0.1:8765/index.html (đã có cấu hình `.claude/launch.json`, tên `quizfast`).
+- Deploy: **Vercel** (project `quizfast`, team `quang-5d6e`, id `prj_UWX1VjAswXbnrNm0wOg2t93p5cDa`), nối repo `quangdnnse184218/quizfast`. Trang tĩnh, không build. Đẩy lên `main` là tự lên bản chính thức https://quizfast-xi.vercel.app ; mỗi nhánh khác tự có link xem trước. (Trước đây dùng GitHub Pages `quangdnnse184218.github.io/quizfast`.)
 
 ## Quy tắc đề thi (cố định, không cho người dùng chỉnh)
 - Điểm đạt: **trên 4/10**.
