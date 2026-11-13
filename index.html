@@ -202,37 +202,45 @@
     <section id="view-home" class="space-y-8 max-w-6xl mx-auto">
 
       <!-- 1A. MÀN HÌNH TỔNG QUAN CÁC MÔN & KHU VỰC UPLOAD ĐỀ -->
-      <div id="home-subjects-screen" class="space-y-8">
+      <div id="home-subjects-screen" class="space-y-12">
 
-        <!-- Subjects Section -->
-        <div class="space-y-4">
-          <div class="flex flex-wrap items-center justify-between gap-3">
+        <!-- Môn mặc định: do quản trị viên thêm vào, người dùng chỉ học -->
+        <section class="space-y-4" aria-labelledby="home-default-title">
+          <div>
+            <h1 id="home-default-title" class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Môn mặc định</h1>
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Bộ đề có sẵn do QuizFast biên soạn. Chọn một môn để xem các đề và bắt đầu làm bài.</p>
+          </div>
+          <div id="default-subjects-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        </section>
+
+        <!-- Môn học của bạn: do chính người dùng thêm, lưu trên cloud theo mã đồng bộ -->
+        <section class="space-y-4" aria-labelledby="home-user-title">
+          <div id="hero-dropzone" class="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Các môn học của bạn</h1>
-              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Chọn một môn để xem các đề và bắt đầu làm bài</p>
+              <h2 id="home-user-title" class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Môn học của bạn</h2>
+              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Môn và đề do chính bạn thêm. Dữ liệu được lưu trên cloud theo mã đồng bộ của bạn.</p>
             </div>
-            <button id="btn-new-subject" class="px-4 py-2 rounded-xl bg-white dark:bg-[#19211d] hover:bg-slate-50 dark:hover:bg-[#24302a] border border-slate-200 dark:border-[#34453b] text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 shadow-sm transition-all">
-              <i data-lucide="folder-plus" class="w-4 h-4 text-brand-600 dark:text-brand-400"></i>
-              <span>Tạo môn mới</span>
-            </button>
+            <div class="flex flex-wrap items-center gap-2">
+              <button id="btn-sync-code" type="button" class="px-3.5 py-2 rounded-xl bg-white dark:bg-[#19211d] hover:bg-slate-50 dark:hover:bg-[#24302a] border border-slate-200 dark:border-[#34453b] text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 shadow-sm transition-all" title="Xem hoặc nhập mã để dùng môn học của bạn trên máy khác">
+                <i data-lucide="key-round" class="w-4 h-4 text-brand-600 dark:text-brand-400"></i>
+                <span>Mã đồng bộ</span>
+              </button>
+              <button id="btn-new-subject" type="button" class="px-3.5 py-2 rounded-xl bg-white dark:bg-[#19211d] hover:bg-slate-50 dark:hover:bg-[#24302a] border border-slate-200 dark:border-[#34453b] text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 shadow-sm transition-all">
+                <i data-lucide="folder-plus" class="w-4 h-4 text-brand-600 dark:text-brand-400"></i>
+                <span>Tạo môn mới</span>
+              </button>
+              <button id="btn-hero-paste-text" type="button" class="px-3.5 py-2 rounded-xl bg-brand-700 hover:bg-brand-600 text-white text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-colors active:scale-95">
+                <i data-lucide="clipboard-paste" class="w-4 h-4"></i>
+                <span>Thêm đề</span>
+              </button>
+            </div>
           </div>
-
-          <div id="subjects-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            <!-- Populated dynamically -->
+          <div id="user-subjects-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+          <div id="user-subjects-empty" class="hidden rounded-2xl border-2 border-dashed border-slate-200 dark:border-[#34453b] bg-white/60 dark:bg-[#19211d]/60 px-6 py-10 text-center space-y-1">
+            <p class="text-sm font-bold text-slate-700 dark:text-slate-200">Bạn chưa có môn học nào</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400">Bấm "Tạo môn mới" để tạo môn, rồi "Thêm đề" để dán nội dung đề của riêng bạn.</p>
           </div>
-        </div>
-
-        <!-- Thêm đề mới -->
-        <div id="hero-dropzone" class="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-brand-200 dark:border-brand-800/50 bg-brand-50/70 dark:bg-[#17261e] px-5 py-4 sm:px-6">
-          <div class="min-w-0 space-y-0.5">
-            <h2 class="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white">Có đề mới cần luyện?</h2>
-            <p class="text-sm text-slate-600 dark:text-slate-400">Dán nội dung đề từ Word, Google Docs hoặc PDF, kiểm tra lại câu hỏi rồi lưu lên cloud để dùng ở mọi máy.</p>
-          </div>
-          <button id="btn-hero-paste-text" class="px-5 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-600 text-white text-sm font-bold flex items-center justify-center gap-2 transition-colors active:scale-95">
-            <i data-lucide="clipboard-paste" class="w-4 h-4"></i>
-            <span>Thêm đề mới</span>
-          </button>
-        </div>
+        </section>
       </div>
 
       <!-- 1B. MÀN HÌNH CHI TIẾT MÔN HỌC (DANH SÁCH ĐỀ TRONG MÔN) -->
@@ -326,15 +334,18 @@
               </div>
 
               <div class="flex flex-wrap items-center gap-1.5">
-                <div class="inline-flex items-center rounded-xl border border-slate-200 dark:border-[#46594e] overflow-hidden" role="group" aria-label="Tô màu từ khóa">
-                  <button type="button" class="hl-btn-auto flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-bold transition-all" title="Tự động tô từ khóa (H)">
-                    <i data-lucide="highlighter" class="w-3.5 h-3.5"></i>
-                    <span class="hidden sm:inline">Tự động</span>
-                  </button>
-                  <button type="button" class="hl-btn-user border-l flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-bold transition-all" title="Hiện phần bạn tự tô (bôi đen chữ để tô)">
-                    <i data-lucide="pen-line" class="w-3.5 h-3.5"></i>
-                    <span class="hidden sm:inline">Của tôi</span>
-                  </button>
+                <div class="inline-flex flex-col gap-0.5">
+                  <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-none px-0.5">Highlight</span>
+                  <div class="inline-flex items-center rounded-xl border border-slate-200 dark:border-[#46594e] overflow-hidden" role="group" aria-label="Highlight">
+                    <button type="button" class="hl-btn-auto flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-bold transition-all" title="Tự động tô từ khóa (phím H)">
+                      <i data-lucide="highlighter" class="w-3.5 h-3.5"></i>
+                      <span>Tự động</span>
+                    </button>
+                    <button type="button" class="hl-btn-user border-l flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-bold transition-all" title="Thủ công: bôi đen chữ để tự tô màu">
+                      <i data-lucide="pen-line" class="w-3.5 h-3.5"></i>
+                      <span>Thủ công</span>
+                    </button>
+                  </div>
                 </div>
                 <div class="h-5 w-px bg-slate-200 dark:bg-[#3b4e44] mx-0.5"></div>
                 <button id="btn-star-exam-q" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border text-xs font-bold transition-all" title="Gắn sao (S)">
@@ -360,7 +371,7 @@
             <h2 id="eq-question" class="text-base sm:text-xl font-bold text-slate-900 dark:text-white leading-relaxed"></h2>
 
             <div id="eq-options" class="space-y-3"></div>
-            <p id="hl-hint" class="text-xs text-slate-500 dark:text-slate-400">Mẹo: bôi đen một đoạn chữ để tô màu và lưu lại cho câu này. Bấm vào chữ đã tô để xóa.</p>
+            <p id="hl-hint" class="text-xs text-slate-500 dark:text-slate-400">Highlight thủ công: bôi đen một đoạn chữ để tô màu và lưu lại cho câu này. Bấm vào chữ đã tô để xóa.</p>
           </div>
 
           <!-- Palette -->
@@ -405,15 +416,18 @@
         <div class="flex flex-wrap items-center justify-between gap-3">
           <h3 class="text-base sm:text-lg font-extrabold">Xem lại bài làm</h3>
           <div class="flex flex-wrap items-center gap-2">
-            <div class="inline-flex items-center rounded-xl border border-slate-200 dark:border-[#46594e] overflow-hidden" role="group" aria-label="Tô màu từ khóa">
-                  <button type="button" class="hl-btn-auto flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-bold transition-all" title="Tự động tô từ khóa (H)">
-                    <i data-lucide="highlighter" class="w-3.5 h-3.5"></i>
-                    <span class="hidden sm:inline">Tự động</span>
-                  </button>
-                  <button type="button" class="hl-btn-user border-l flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-bold transition-all" title="Hiện phần bạn tự tô (bôi đen chữ để tô)">
-                    <i data-lucide="pen-line" class="w-3.5 h-3.5"></i>
-                    <span class="hidden sm:inline">Của tôi</span>
-                  </button>
+            <div class="inline-flex flex-col gap-0.5">
+                  <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-none px-0.5">Highlight</span>
+                  <div class="inline-flex items-center rounded-xl border border-slate-200 dark:border-[#46594e] overflow-hidden" role="group" aria-label="Highlight">
+                    <button type="button" class="hl-btn-auto flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-bold transition-all" title="Tự động tô từ khóa (phím H)">
+                      <i data-lucide="highlighter" class="w-3.5 h-3.5"></i>
+                      <span>Tự động</span>
+                    </button>
+                    <button type="button" class="hl-btn-user border-l flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-bold transition-all" title="Thủ công: bôi đen chữ để tự tô màu">
+                      <i data-lucide="pen-line" class="w-3.5 h-3.5"></i>
+                      <span>Thủ công</span>
+                    </button>
+                  </div>
                 </div>
             <button data-review-filter="WRONG" class="exam-review-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all">Chỉ câu Sai / Chưa làm</button>
             <button data-review-filter="ALL" class="exam-review-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all">Tất cả câu</button>
@@ -453,15 +467,18 @@
         </div>
 
         <div class="flex flex-wrap items-center gap-2">
-          <div class="inline-flex items-center rounded-xl border border-slate-200 dark:border-[#46594e] overflow-hidden" role="group" aria-label="Tô màu từ khóa">
-                  <button type="button" class="hl-btn-auto flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-bold transition-all" title="Tự động tô từ khóa (H)">
-                    <i data-lucide="highlighter" class="w-3.5 h-3.5"></i>
-                    <span class="hidden sm:inline">Tự động</span>
-                  </button>
-                  <button type="button" class="hl-btn-user border-l flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-bold transition-all" title="Hiện phần bạn tự tô (bôi đen chữ để tô)">
-                    <i data-lucide="pen-line" class="w-3.5 h-3.5"></i>
-                    <span class="hidden sm:inline">Của tôi</span>
-                  </button>
+          <div class="inline-flex flex-col gap-0.5">
+                  <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-none px-0.5">Highlight</span>
+                  <div class="inline-flex items-center rounded-xl border border-slate-200 dark:border-[#46594e] overflow-hidden" role="group" aria-label="Highlight">
+                    <button type="button" class="hl-btn-auto flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-bold transition-all" title="Tự động tô từ khóa (phím H)">
+                      <i data-lucide="highlighter" class="w-3.5 h-3.5"></i>
+                      <span>Tự động</span>
+                    </button>
+                    <button type="button" class="hl-btn-user border-l flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-bold transition-all" title="Thủ công: bôi đen chữ để tự tô màu">
+                      <i data-lucide="pen-line" class="w-3.5 h-3.5"></i>
+                      <span>Thủ công</span>
+                    </button>
+                  </div>
                 </div>
           <select id="nb-subject-filter" class="bg-white dark:bg-[#19211d] border border-slate-200 dark:border-[#34453b] rounded-xl px-3.5 py-2 text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-brand-500">
           <option value="ALL">Tất cả môn</option>
@@ -738,6 +755,36 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0f1512] border border-slate-200 dar
       <div class="flex justify-end gap-2 pt-2">
         <button id="cancel-new-subj-modal" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-[#24302a] text-sm font-bold">Hủy</button>
         <button id="btn-confirm-new-subj" class="px-5 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-sm font-extrabold text-white">Tạo môn</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: MÃ ĐỒNG BỘ ==================== -->
+  <div id="modal-sync-code" class="fixed inset-0 z-50 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#19211d] border border-slate-200 dark:border-[#46594e] rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <h3 class="text-lg font-extrabold">Mã đồng bộ</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Môn và đề bạn tạo gắn với mã này. Chép mã sang máy khác để dùng lại, và đừng chia sẻ cho người bạn không muốn họ xem hoặc sửa.</p>
+        </div>
+        <button id="close-sync-code-modal" class="p-1.5 rounded-lg bg-slate-100 dark:bg-[#24302a] text-slate-500" aria-label="Đóng">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <div class="space-y-2">
+        <label class="text-xs font-bold text-slate-600 dark:text-slate-300" for="sync-code-value">Mã của máy này</label>
+        <div class="flex gap-2">
+          <input id="sync-code-value" type="text" readonly class="flex-1 min-w-0 bg-slate-50 dark:bg-[#0f1512] border border-slate-200 dark:border-[#46594e] rounded-xl px-3 py-2 text-xs font-mono-code focus:outline-none" />
+          <button id="btn-copy-sync-code" type="button" class="px-3.5 py-2 rounded-xl bg-brand-700 hover:bg-brand-600 text-white text-xs font-bold whitespace-nowrap">Sao chép</button>
+        </div>
+      </div>
+      <div class="space-y-2 pt-4 border-t border-slate-200 dark:border-[#34453b]">
+        <label class="text-xs font-bold text-slate-600 dark:text-slate-300" for="sync-code-input">Dùng mã từ máy khác</label>
+        <div class="flex gap-2">
+          <input id="sync-code-input" type="text" placeholder="Dán mã vào đây" autocomplete="off" class="flex-1 min-w-0 bg-white dark:bg-[#0f1512] border border-slate-200 dark:border-[#46594e] rounded-xl px-3 py-2 text-xs font-mono-code focus:outline-none focus:ring-2 focus:ring-brand-500" />
+          <button id="btn-apply-sync-code" type="button" class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-[#24302a] hover:bg-slate-200 dark:hover:bg-[#3b4e44] text-xs font-bold whitespace-nowrap">Dùng mã này</button>
+        </div>
+        <p class="text-[11px] text-slate-500 dark:text-slate-400">Môn học trên máy này sẽ được thay bằng dữ liệu của mã vừa nhập. Hãy chép lại mã hiện tại trước nếu muốn quay lại.</p>
       </div>
     </div>
   </div>
@@ -1030,6 +1077,24 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0f1512] border border-slate-200 dar
       const SUPABASE_KEY = 'sb_publishable_uyBM4WsSz16ie7pnpNJtfA_jsYw882Q';
       const SYNC_QUEUE_KEY = 'quizfast_sync_queue_v1';
 
+      // Mã riêng của mỗi trình duyệt: gắn môn và đề của người dùng với dữ liệu trên cloud.
+      // Gửi kèm header x-owner-id; chính sách RLS trên DB chỉ cho đọc/ghi các dòng có đúng mã này.
+      const OWNER_KEY_STORAGE = 'quizfast_owner_key_v1';
+      const OWNER_KEY_RE = /^[A-Za-z0-9-]{32,64}$/;
+      function newOwnerKey() {
+        if (window.crypto && typeof crypto.randomUUID === 'function') return crypto.randomUUID();
+        return (Date.now().toString(16) + Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2) + '0123456789abcdef0123456789abcdef').slice(0, 36);
+      }
+      let ownerKey = (() => {
+        try {
+          const saved = localStorage.getItem(OWNER_KEY_STORAGE);
+          if (saved && OWNER_KEY_RE.test(saved)) return saved;
+          const created = newOwnerKey();
+          localStorage.setItem(OWNER_KEY_STORAGE, created);
+          return created;
+        } catch { return newOwnerKey(); }
+      })();
+
       // Hàng đợi thay đổi chưa đẩy lên cloud (lưu trong máy, để không mất khi lỗi mạng hoặc tải lại trang)
       let syncQueue = { upSubj: [], upExam: [], delSubj: [], delExam: [] };
       try {
@@ -1062,6 +1127,8 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0f1512] border border-slate-200 dar
           'Content-Type': 'application/json',
           ...(options.headers || {})
         };
+        // Chỉ các bảng của người dùng cần mã; bảng câu hỏi và môn mặc định là dữ liệu công khai
+        if (path.startsWith('/quizfast_subjects') || path.startsWith('/quizfast_exams')) headers['x-owner-id'] = ownerKey;
         const res = await fetch(`${SUPABASE_REST_URL}${path}`, { ...options, headers });
         if (!res.ok) {
           const errText = await res.text();
@@ -1104,27 +1171,40 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0f1512] border border-slate-200 dar
         }
       }
 
+      // Danh sách môn mặc định do quản trị viên quản lý trong bảng quizfast_default_subjects
+      async function loadDefaultSubjects() {
+        try {
+          const rows = await sbFetch('/quizfast_default_subjects?select=name,description,position&is_published=eq.true&order=position.asc');
+          if (!Array.isArray(rows)) return;
+          defaultMeta = new Map(rows.map(r => [r.name, { description: r.description || '', position: Number(r.position) || 0 }]));
+          defaultMetaLoaded = rows.length > 0;
+          refreshHomeView();
+        } catch (err) {
+          console.warn('Không tải được danh sách môn mặc định, dùng môn có trong ngân hàng câu hỏi:', err);
+        }
+      }
+
       let flushing = false;
       async function flushQueue() {
         if (flushing) return true;
         flushing = true;
         try {
           for (const name of [...syncQueue.delSubj]) {
-            await sbFetch(`/quizfast_exams?subject=eq.${encodeURIComponent(name)}`, { method: 'DELETE' });
-            await sbFetch(`/quizfast_subjects?name=eq.${encodeURIComponent(name)}`, { method: 'DELETE' });
+            await sbFetch(`/quizfast_exams?owner_id=eq.${ownerKey}&subject=eq.${encodeURIComponent(name)}`, { method: 'DELETE' });
+            await sbFetch(`/quizfast_subjects?owner_id=eq.${ownerKey}&name=eq.${encodeURIComponent(name)}`, { method: 'DELETE' });
             qDrop('delSubj', name);
           }
           for (const id of [...syncQueue.delExam]) {
-            await sbFetch(`/quizfast_exams?id=eq.${encodeURIComponent(id)}`, { method: 'DELETE' });
+            await sbFetch(`/quizfast_exams?owner_id=eq.${ownerKey}&id=eq.${encodeURIComponent(id)}`, { method: 'DELETE' });
             qDrop('delExam', id);
           }
 
           const subs = syncQueue.upSubj.map(n => customSubjects.find(x => x.name === n)).filter(Boolean);
           if (subs.length) {
-            await sbFetch('/quizfast_subjects?on_conflict=name', {
+            await sbFetch('/quizfast_subjects?on_conflict=owner_id,name', {
               method: 'POST',
               headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
-              body: JSON.stringify(subs.map(x => ({ name: x.name, description: x.description || '' })))
+              body: JSON.stringify(subs.map(x => ({ owner_id: ownerKey, name: x.name, description: x.description || '' })))
             });
           }
           syncQueue.upSubj = [];
@@ -1135,6 +1215,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0f1512] border border-slate-200 dar
               method: 'POST',
               headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
               body: JSON.stringify(exs.map(ex => ({
+                owner_id: ownerKey,
                 id: ex.id,
                 subject: ex.subject,
                 title: ex.title,
@@ -1172,12 +1253,12 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0f1512] border border-slate-200 dar
 
           // 2. Tải về
           const [subjRows, examRows] = await Promise.all([
-            sbFetch('/quizfast_subjects?select=*&order=created_at.asc'),
-            sbFetch('/quizfast_exams?select=*&order=created_at.asc')
+            sbFetch(`/quizfast_subjects?select=*&owner_id=eq.${ownerKey}&order=created_at.asc`),
+            sbFetch(`/quizfast_exams?select=*&owner_id=eq.${ownerKey}&order=created_at.asc`)
           ]);
 
           if (Array.isArray(subjRows) && Array.isArray(examRows)) {
-            const cloudSubjects = subjRows.map(r => ({ name: r.name, description: r.description || 'Môn học chia sẻ trên Cloud' }));
+            const cloudSubjects = subjRows.map(r => ({ name: r.name, description: r.description || 'Môn học của bạn' }));
             const cloudExams = examRows.map(r => ({
               id: r.id,
               subject: r.subject,
@@ -1296,32 +1377,40 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0f1512] border border-slate-200 dar
         return Array.from(map.values());
       }
 
+      // Môn mặc định do quản trị viên thêm (bảng quizfast_default_subjects + ngân hàng câu hỏi);
+      // môn học của bạn do chính người dùng tạo và lưu theo mã đồng bộ.
+      const SUBJECT_INFO = { 'FE GDC': 'Game Design Concepts', 'FE AGU': 'Advanced Game Unity' };
+      let defaultMeta = new Map();
+      let defaultMetaLoaded = false;
+
+      function getDefaultSubjectList() {
+        if (defaultMetaLoaded) {
+          return Array.from(defaultMeta.entries())
+            .map(([name, m]) => ({ name, description: m.description || SUBJECT_INFO[name] || 'Bộ đề có sẵn', position: m.position }))
+            .sort((a, b) => (a.position - b.position) || a.name.localeCompare(b.name));
+        }
+        // Chưa tải được danh sách từ DB: dùng các môn có trong ngân hàng câu hỏi
+        const names = [];
+        builtinQuestions.forEach(q => { const n = q.subject || 'Khác'; if (!names.includes(n)) names.push(n); });
+        return names.map((name, i) => ({ name, description: SUBJECT_INFO[name] || 'Bộ đề có sẵn', position: i }));
+      }
+
       function getAllSubjects() {
-        const subjMap = new Map();
-        // Built-in subjects
-        builtinQuestions.forEach(q => {
-          const name = q.subject || 'Khác';
-          if (!subjMap.has(name)) {
-            subjMap.set(name, {
-              name,
-              description: name === 'FE GDC' ? 'Game Design Concepts' : (name === 'FE AGU' ? 'Advanced Game Unity' : 'Bộ đề có sẵn'),
-              isBuiltin: true
-            });
-          }
-        });
-        // Custom subjects
+        const defaults = getDefaultSubjectList().map(s => ({ name: s.name, description: s.description, isBuiltin: true }));
+        const defaultNames = new Set(defaults.map(s => s.name));
+        const userMap = new Map();
         customSubjects.forEach(s => {
-          if (!subjMap.has(s.name)) {
-            subjMap.set(s.name, { name: s.name, description: s.description || 'Môn học tự tải lên', isBuiltin: false });
-          }
+          if (!defaultNames.has(s.name) && !userMap.has(s.name)) userMap.set(s.name, { name: s.name, description: s.description || 'Môn học của bạn', isBuiltin: false });
         });
-        // Subjects referenced by custom exams
         customExams.forEach(ex => {
-          if (ex.subject && !subjMap.has(ex.subject)) {
-            subjMap.set(ex.subject, { name: ex.subject, description: 'Môn học tự tải lên', isBuiltin: false });
-          }
+          if (ex.subject && !defaultNames.has(ex.subject) && !userMap.has(ex.subject)) userMap.set(ex.subject, { name: ex.subject, description: 'Môn học của bạn', isBuiltin: false });
         });
-        return Array.from(subjMap.values());
+        return [...defaults, ...Array.from(userMap.values())];
+      }
+
+      function subjectNameTaken(name) {
+        const key = String(name || '').trim().toLowerCase();
+        return getAllSubjects().some(s => s.name.toLowerCase() === key);
       }
 
       function getPapersForSubject(subjName) {
@@ -1352,7 +1441,7 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0f1512] border border-slate-200 dar
         // 3. Đề Xáo Trộn: bốc 60 câu từ cả môn, ưu tiên câu hay sai và câu chưa làm (bốc lúc bắt đầu làm bài)
         const all = getAllQuestionsFlat().filter(q => q.subject === subjName);
         if (all.length >= 10) {
-          papers.unshift({
+          papers.push({
             key: `${subjName}_SHUFFLE`,
             title: `${subjName} — Đề Xáo Trộn`,
             shortTitle: 'Đề Xáo Trộn',
@@ -1435,10 +1524,10 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0f1512] border border-slate-200 dar
       const HL_NEG_RE = /\b(?:not|never|always|only|none|cannot|without|except|entirely|completely|solely|exactly|nothing|neither|no longer)\b/gi;
       const HL_NUM_RE = /\b\d+(?:[.,]\d+)?(?:\s?(?:%|percent|ms|milliseconds?|seconds?|minutes?|hours?|weeks?|days?|fps|frames?|kb|mb|gb|px))?(?![A-Za-z0-9])/gi;
 
-      let hlPrefs = { auto: true, user: true };
+      let hlPrefs = { auto: false, user: false };
       try {
         const sp = JSON.parse(localStorage.getItem(STORAGE_KEYS.HL_PREFS) || 'null');
-        if (sp && typeof sp === 'object') hlPrefs = { auto: sp.auto !== false, user: sp.user !== false };
+        if (sp && typeof sp === 'object') hlPrefs = { auto: sp.auto === true, user: sp.user === true };
       } catch { /* dùng mặc định */ }
       let userHl = {};
       try { userHl = JSON.parse(localStorage.getItem(STORAGE_KEYS.USER_HL) || '{}') || {}; } catch { userHl = {}; }
@@ -1875,6 +1964,66 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0f1512] border border-slate-200 dar
       }
 
       // --- RENDER HOME (SUBJECTS) ---
+      function buildSubjectCard(subj, allQs) {
+        const qs = allQs.filter(q => q.subject === subj.name);
+        const papers = getPapersForSubject(subj.name);
+        let mastered = 0;
+        qs.forEach(q => {
+          if (progressMap[q.id] && progressMap[q.id].status === 'green') mastered++;
+        });
+        const pct = qs.length ? Math.round((mastered / qs.length) * 100) : 0;
+
+        const card = document.createElement('div');
+        card.className = 'group bg-white dark:bg-[#19211d] border border-slate-200/90 dark:border-[#34453b] hover:border-brand-500 dark:hover:border-brand-500 rounded-2xl p-5 flex flex-col justify-between gap-5 shadow-sm hover:shadow-md transition-all cursor-pointer';
+        card.innerHTML = `
+          <div class="space-y-3">
+            <div class="flex items-start justify-between gap-2">
+              <div class="w-11 h-11 rounded-xl bg-brand-100 dark:bg-brand-900/40 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+                <i data-lucide="${subj.name === 'FE GDC' ? 'gamepad-2' : (subj.name === 'FE AGU' ? 'cpu' : 'book-open')}" class="w-5 h-5"></i>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="px-2.5 py-1 rounded-full text-xs font-extrabold bg-slate-100 dark:bg-[#24302a] text-slate-600 dark:text-slate-300">${qs.length} câu</span>
+                ${!subj.isBuiltin ? `<button class="btn-del-subj p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10" title="Xóa môn học này" aria-label="Xóa môn học này"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-extrabold text-slate-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">${escapeHtml(subj.name)}</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-1">${escapeHtml(subj.description)}</p>
+            </div>
+          </div>
+
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-slate-500 dark:text-slate-400 font-semibold">${papers.length} đề thi sẵn sàng</span>
+              <span class="font-extrabold text-brand-600 dark:text-brand-400">Thuộc ${pct}%</span>
+            </div>
+            <div class="w-full h-2 bg-slate-100 dark:bg-[#24302a] rounded-full overflow-hidden">
+              <div class="bg-brand-500 h-full transition-all duration-300" style="width: ${pct}%"></div>
+            </div>
+          </div>
+        `;
+
+        const delBtn = card.querySelector('.btn-del-subj');
+        if (delBtn) {
+          delBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (!confirm(`Xóa môn "${subj.name}" và toàn bộ đề đã tải lên thuộc môn này?`)) return;
+            customSubjects = customSubjects.filter(s => s.name !== subj.name);
+            customExams = customExams.filter(ex => ex.subject !== subj.name);
+            saveCustomSubjects();
+            saveCustomExams();
+            sbDeleteSubject(subj.name);
+            renderHomeSubjects();
+          });
+        }
+
+        card.addEventListener('click', () => {
+          renderSubjectDetail(subj.name);
+        });
+        return card;
+      }
+
       function renderHomeSubjects() {
         activeSubjectName = null;
         document.getElementById('home-subjects-screen').classList.remove('hidden');
@@ -1886,69 +2035,15 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0f1512] border border-slate-200 dar
 
         const subjects = getAllSubjects();
         const allQs = getAllQuestionsFlat();
-        const grid = document.getElementById('subjects-grid');
-        grid.innerHTML = '';
+        const defaultGrid = document.getElementById('default-subjects-grid');
+        const userGrid = document.getElementById('user-subjects-grid');
+        defaultGrid.innerHTML = '';
+        userGrid.innerHTML = '';
 
-        subjects.forEach(subj => {
-          const qs = allQs.filter(q => q.subject === subj.name);
-          const papers = getPapersForSubject(subj.name);
-          let mastered = 0;
-          qs.forEach(q => {
-            if (progressMap[q.id] && progressMap[q.id].status === 'green') mastered++;
-          });
-          const pct = qs.length ? Math.round((mastered / qs.length) * 100) : 0;
-
-          const card = document.createElement('div');
-          card.className = 'group bg-white dark:bg-[#19211d] border border-slate-200/90 dark:border-[#34453b] hover:border-brand-500 dark:hover:border-brand-500 rounded-2xl p-5 flex flex-col justify-between gap-5 shadow-sm hover:shadow-md transition-all cursor-pointer';
-          card.innerHTML = `
-            <div class="space-y-3">
-              <div class="flex items-start justify-between gap-2">
-                <div class="w-11 h-11 rounded-xl bg-brand-100 dark:bg-brand-900/40 text-brand-600 dark:text-brand-400 flex items-center justify-center">
-                  <i data-lucide="${subj.name === 'FE GDC' ? 'gamepad-2' : (subj.name === 'FE AGU' ? 'cpu' : 'book-open')}" class="w-5 h-5"></i>
-                </div>
-                <div class="flex items-center gap-1.5">
-                  <span class="px-2.5 py-1 rounded-full text-xs font-extrabold bg-slate-100 dark:bg-[#24302a] text-slate-600 dark:text-slate-300">${qs.length} câu</span>
-                  ${!subj.isBuiltin ? `<button class="btn-del-subj p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10" title="Xóa môn học này"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
-                </div>
-              </div>
-
-              <div>
-                <h3 class="text-lg font-extrabold text-slate-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">${escapeHtml(subj.name)}</h3>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-1">${escapeHtml(subj.description)}</p>
-              </div>
-            </div>
-
-            <div class="space-y-2.5">
-              <div class="flex items-center justify-between text-xs">
-                <span class="text-slate-500 dark:text-slate-400 font-semibold">${papers.length} đề thi sẵn sàng</span>
-                <span class="font-extrabold text-brand-600 dark:text-brand-400">Thuộc ${pct}%</span>
-              </div>
-              <div class="w-full h-2 bg-slate-100 dark:bg-[#24302a] rounded-full overflow-hidden">
-                <div class="bg-brand-500 h-full transition-all duration-300" style="width: ${pct}%"></div>
-              </div>
-            </div>
-          `;
-
-          const delBtn = card.querySelector('.btn-del-subj');
-          if (delBtn) {
-            delBtn.addEventListener('click', (e) => {
-              e.stopPropagation();
-              if (!confirm(`Xóa môn "${subj.name}" và toàn bộ đề đã tải lên thuộc môn này?`)) return;
-              customSubjects = customSubjects.filter(s => s.name !== subj.name);
-              customExams = customExams.filter(ex => ex.subject !== subj.name);
-              saveCustomSubjects();
-              saveCustomExams();
-              sbDeleteSubject(subj.name);
-              renderHomeSubjects();
-            });
-          }
-
-          card.addEventListener('click', () => {
-            renderSubjectDetail(subj.name);
-          });
-
-          grid.appendChild(card);
-        });
+        subjects.filter(s => s.isBuiltin).forEach(subj => defaultGrid.appendChild(buildSubjectCard(subj, allQs)));
+        const userSubjects = subjects.filter(s => !s.isBuiltin);
+        userSubjects.forEach(subj => userGrid.appendChild(buildSubjectCard(subj, allQs)));
+        document.getElementById('user-subjects-empty').classList.toggle('hidden', userSubjects.length > 0);
 
         lucide.createIcons();
       }
@@ -1967,7 +2062,8 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0f1512] border border-slate-200 dar
 
         document.getElementById('detail-subj-name').textContent = subjName;
         document.getElementById('detail-subj-badge').textContent = `${subjQs.length} câu • ${papers.length} đề`;
-        document.getElementById('detail-subj-desc').textContent = subjMeta.description || 'Chọn đề để bắt đầu làm bài hoặc tải thêm đề mới';
+        document.getElementById('detail-subj-desc').textContent = subjMeta.description || 'Chọn đề để bắt đầu làm bài';
+        document.getElementById('btn-upload-into-subject').classList.toggle('hidden', !!subjMeta.isBuiltin);
 
         // Stats
         let red = 0, yellow = 0, green = 0;
@@ -1995,10 +2091,11 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0f1512] border border-slate-200 dar
           grid.innerHTML = `
             <div class="col-span-full bg-white dark:bg-[#19211d] border-2 border-dashed border-slate-200 dark:border-[#34453b] rounded-2xl p-10 text-center space-y-3">
               <p class="text-sm font-bold text-slate-500 dark:text-slate-400">Môn học này chưa có đề thi nào.</p>
-              <button id="btn-empty-add-paper" class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-extrabold">+ Tải đề lên ngay</button>
+              ${subjMeta.isBuiltin ? '' : '<button id="btn-empty-add-paper" class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-extrabold">+ Tải đề lên ngay</button>'}
             </div>
           `;
-          grid.querySelector('#btn-empty-add-paper').addEventListener('click', () => openUploadStudio(subjName));
+          const emptyBtn = grid.querySelector('#btn-empty-add-paper');
+          if (emptyBtn) emptyBtn.addEventListener('click', () => openUploadStudio(subjName));
         } else {
           papers.forEach(paper => {
             const qCount = paper.isShuffle ? paper.size : paper.questions.length;
@@ -2649,7 +2746,8 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0f1512] border border-slate-200 dar
 
       function populateStudioSubjectSelect(preferredSubj) {
         const sel = document.getElementById('cfg-subject-select');
-        const subjects = getAllSubjects();
+        const newInp = document.getElementById('cfg-new-subject-input');
+        const subjects = getAllSubjects().filter(s => !s.isBuiltin); // chỉ môn của bạn; môn mặc định do quản trị viên quản lý
         sel.innerHTML = '';
         subjects.forEach(s => {
           const opt = document.createElement('option');
@@ -2660,8 +2758,9 @@ D. Ruby" class="w-full bg-slate-50 dark:bg-[#0f1512] border border-slate-200 dar
         if (preferredSubj && subjects.some(s => s.name === preferredSubj)) {
           sel.value = preferredSubj;
         }
-        document.getElementById('cfg-new-subject-input').classList.add('hidden');
-        document.getElementById('cfg-new-subject-input').value = '';
+        sel.disabled = subjects.length === 0;
+        newInp.value = '';
+        newInp.classList.toggle('hidden', subjects.length > 0); // chưa có môn nào: bắt buộc nhập tên môn mới
       }
 
       function renderStudioQuestions() {
@@ -2909,6 +3008,10 @@ YÊU CẦU BẮT BUỘC:
           alert('Vui lòng chọn hoặc nhập tên môn học.');
           return;
         }
+        if (getAllSubjects().some(s => s.isBuiltin && s.name.toLowerCase() === subjName.toLowerCase())) {
+          alert('Tên môn này trùng với một môn mặc định. Hãy chọn tên khác.');
+          return;
+        }
 
         // Làm sạch câu hỏi: bỏ đáp án rỗng, đảm bảo đáp án đúng còn nguyên sau khi bỏ
         const validQs = [];
@@ -2932,7 +3035,7 @@ YÊU CẦU BẮT BUỘC:
         }
 
         // Ensure subject exists if new
-        if (!getAllSubjects().some(s => s.name === subjName)) {
+        if (!getAllSubjects().some(s => !s.isBuiltin && s.name === subjName)) {
           const newSubj = { name: subjName, description: 'Môn học tự tạo' };
           customSubjects.push(newSubj);
           saveCustomSubjects();
@@ -2957,7 +3060,7 @@ YÊU CẦU BẮT BUỘC:
         } else {
           // Tự chia mỗi đề 60 câu (đề cuối có thể ít hơn)
           const chunks = Math.ceil(validQs.length / PAPER_SIZE);
-          const stamp = Date.now();
+          const stamp = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
           for (let c = 0; c < chunks; c++) {
             const slice = validQs.slice(c * PAPER_SIZE, (c + 1) * PAPER_SIZE);
             const exId = `CUSTOM_EX_${stamp}_${c + 1}`;
@@ -3177,6 +3280,47 @@ YÊU CẦU BẮT BUỘC:
           syncFromSupabase();
         });
 
+        // Mã đồng bộ: xem mã của máy này hoặc nhập mã từ máy khác để lấy lại môn học của bạn
+        const syncModal = document.getElementById('modal-sync-code');
+        const closeSyncModal = () => { syncModal.classList.add('hidden'); syncModal.classList.remove('flex'); };
+        document.getElementById('btn-sync-code').addEventListener('click', () => {
+          document.getElementById('sync-code-value').value = ownerKey;
+          document.getElementById('sync-code-input').value = '';
+          syncModal.classList.remove('hidden');
+          syncModal.classList.add('flex');
+        });
+        document.getElementById('close-sync-code-modal').addEventListener('click', closeSyncModal);
+        syncModal.addEventListener('click', (e) => { if (e.target === syncModal) closeSyncModal(); });
+        document.getElementById('btn-copy-sync-code').addEventListener('click', async () => {
+          const inp = document.getElementById('sync-code-value');
+          try {
+            await navigator.clipboard.writeText(ownerKey);
+          } catch {
+            inp.select();
+            document.execCommand('copy');
+          }
+          const btn = document.getElementById('btn-copy-sync-code');
+          btn.textContent = 'Đã chép';
+          setTimeout(() => { btn.textContent = 'Sao chép'; }, 1500);
+        });
+        document.getElementById('btn-apply-sync-code').addEventListener('click', () => {
+          const code = document.getElementById('sync-code-input').value.trim();
+          if (!OWNER_KEY_RE.test(code)) return alert('Mã không hợp lệ. Mã gồm 32 đến 64 ký tự chữ, số và dấu gạch ngang.');
+          if (code === ownerKey) return alert('Đây đang là mã của máy này.');
+          if (!confirm('Môn học của bạn trên máy này sẽ được thay bằng dữ liệu của mã vừa nhập. Bạn đã chép lại mã hiện tại chưa? Tiếp tục?')) return;
+          ownerKey = code;
+          try { localStorage.setItem(OWNER_KEY_STORAGE, code); } catch { /* bỏ qua */ }
+          customSubjects = [];
+          customExams = [];
+          syncQueue = { upSubj: [], upExam: [], delSubj: [], delExam: [] };
+          saveCustomSubjects();
+          saveCustomExams();
+          saveSyncQueue();
+          closeSyncModal();
+          renderHomeSubjects();
+          syncFromSupabase();
+        });
+
         // Upload Studio Modal
         const uploadModal = document.getElementById('modal-upload');
         const closeUpload = () => { uploadModal.classList.add('hidden'); uploadModal.classList.remove('flex'); };
@@ -3248,6 +3392,8 @@ D. 60.0 ms`;
 
         document.getElementById('btn-toggle-new-subj-input').addEventListener('click', () => {
           const inp = document.getElementById('cfg-new-subject-input');
+          const sel = document.getElementById('cfg-subject-select');
+          if (sel.disabled) { inp.classList.remove('hidden'); inp.focus(); return; } // chưa có môn nào: luôn nhập tên mới
           inp.classList.toggle('hidden');
           if (!inp.classList.contains('hidden')) inp.focus();
         });
@@ -3461,6 +3607,7 @@ D. 60.0 ms`;
         switchMode('home');
         lucide.createIcons();
         loadBankFromSupabase();
+        loadDefaultSubjects();
         syncFromSupabase();
       }
 
