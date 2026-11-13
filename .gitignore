@@ -1,0 +1,8 @@
+# Thư mục worktree và cài đặt riêng của máy
+.claude/worktrees/
+.claude/settings.local.json
+
+# Tệp hệ thống / trình soạn thảo
+.DS_Store
+Thumbs.db
+*.log
