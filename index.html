@@ -10,7 +10,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script>
-    try { if (localStorage.getItem('quizfast_skin_v1') === 'pink') document.documentElement.setAttribute('data-skin', 'pink'); } catch (e) {}
+    try { var sk = localStorage.getItem('quizfast_skin_v1'); if (sk === 'pink' || sk === 'blue' || sk === 'violet') document.documentElement.setAttribute('data-skin', sk); } catch (e) {}
   </script>
   <script>
     // Icon màu (Fluent Emoji Flat, MIT; Twemoji cho cờ). Icon điều khiển (đóng, mũi tên, thêm) vẫn dùng nét đơn giản.
@@ -102,6 +102,24 @@
     :root { --b50: 237 248 242; --b100: 213 240 225; --b200: 174 225 199; --b300: 122 203 166; --b400: 67 175 132; --b500: 31 148 104; --b600: 15 125 86; --b700: 11 102 72; --b800: 10 81 58; --b900: 10 66 47; --b950: 5 38 27; --s50: 245 248 246; --s100: 235 240 237; --s200: 220 228 223; --s300: 195 206 200; --s400: 147 163 154; --s500: 107 124 115; --s600: 81 97 90; --s700: 59 73 67; --s800: 38 50 45; --s900: 23 33 28; --s950: 13 21 17; --acc: 52 211 153; }
     html[data-skin="pink"] { --b50: 255 241 247; --b100: 255 224 238; --b200: 255 194 220; --b300: 255 154 196; --b400: 248 114 171; --b500: 236 79 147; --b600: 214 58 127; --b700: 184 43 105; --b800: 143 34 83; --b900: 110 29 68; --b950: 67 16 42; --s50: 253 247 250; --s100: 249 237 243; --s200: 240 220 231; --s300: 226 195 212; --s400: 180 143 165; --s500: 138 106 126; --s600: 108 80 98; --s700: 82 59 75; --s800: 58 39 53; --s900: 40 26 36; --s950: 23 14 20; --acc: 192 132 252; }
 
+    html[data-skin="blue"] { --b50: 239 246 255; --b100: 219 234 254; --b200: 191 219 254; --b300: 147 197 253; --b400: 96 165 250; --b500: 59 130 246; --b600: 37 99 235; --b700: 29 78 216; --b800: 30 64 175; --b900: 30 58 138; --b950: 23 37 84; --s50: 246 248 252; --s100: 237 241 248; --s200: 221 228 240; --s300: 195 206 227; --s400: 147 163 196; --s500: 106 124 160; --s600: 80 96 127; --s700: 59 72 98; --s800: 39 49 71; --s900: 25 32 47; --s950: 14 19 29; --acc: 56 189 248; }
+    html[data-skin="violet"] { --b50: 245 243 255; --b100: 237 233 254; --b200: 221 214 254; --b300: 196 181 253; --b400: 167 139 250; --b500: 139 92 246; --b600: 124 58 237; --b700: 109 40 217; --b800: 91 33 182; --b900: 76 29 149; --b950: 46 16 101; --s50: 248 247 252; --s100: 240 238 248; --s200: 226 223 240; --s300: 203 198 224; --s400: 157 150 189; --s500: 116 109 150; --s600: 90 84 120; --s700: 67 62 92; --s800: 46 42 66; --s900: 30 27 46; --s950: 18 16 28; --acc: 232 121 249; }
+    html[data-skin="blue"] body { background-color: #f1f6ff !important; }
+    html[data-skin="violet"] body { background-color: #f6f3ff !important; }
+    html[data-skin="blue"] .qf-bg { background:
+        radial-gradient(55% 38% at 8% 0%, rgba(59,130,246,.30), transparent 70%),
+        radial-gradient(48% 36% at 100% 18%, rgba(56,189,248,.26), transparent 70%),
+        radial-gradient(60% 46% at 28% 100%, rgba(129,140,248,.26), transparent 70%); }
+    html[data-skin="violet"] .qf-bg { background:
+        radial-gradient(55% 38% at 8% 0%, rgba(139,92,246,.30), transparent 70%),
+        radial-gradient(48% 36% at 100% 18%, rgba(232,121,249,.26), transparent 70%),
+        radial-gradient(60% 46% at 28% 100%, rgba(99,102,241,.24), transparent 70%); }
+    html[data-skin="blue"] .glass, html[data-skin="blue"] .glass-bar { box-shadow: 0 12px 32px -10px rgba(37,99,235,.30), inset 0 1.5px 1px rgba(255,255,255,.95), inset 0 -1px 1px rgba(255,255,255,.25); }
+    html[data-skin="violet"] .glass, html[data-skin="violet"] .glass-bar { box-shadow: 0 12px 32px -10px rgba(109,40,217,.30), inset 0 1.5px 1px rgba(255,255,255,.95), inset 0 -1px 1px rgba(255,255,255,.25); }
+    html[data-skin="blue"] .glass-lite { box-shadow: 0 8px 22px -12px rgba(37,99,235,.30), inset 0 1px 0 rgba(255,255,255,.95); }
+    html[data-skin="violet"] .glass-lite { box-shadow: 0 8px 22px -12px rgba(109,40,217,.30), inset 0 1px 0 rgba(255,255,255,.95); }
+    html[data-skin="blue"] #btn-open-upload, html[data-skin="violet"] #btn-open-upload { color: #fff; background: rgb(var(--b600)); }
+
     /* ===== Giao diện hồng pastel (chỉ chế độ sáng) ===== */
     html[data-skin="pink"] body {
       background-color: #fff4f9 !important;
@@ -111,19 +129,75 @@
     html[data-skin="pink"] h1, html[data-skin="pink"] h2, html[data-skin="pink"] h3, html[data-skin="pink"] .font-display {
       font-family: 'Baloo 2', 'Be Vietnam Pro', system-ui, sans-serif; letter-spacing: 0;
     }
-    html[data-skin="pink"] header {
-      background: linear-gradient(90deg, #ffb8d9 0%, #ffd1e6 45%, #dcc8ff 100%) !important;
-      color: #7a1f4d; box-shadow: 0 8px 24px rgba(236,79,147,.18);
-    }
-    html[data-skin="pink"] header .hdr-title { color: #7a1f4d; }
-    html[data-skin="pink"] header .hdr-nav { background: rgba(255,255,255,.6); border-color: rgba(255,255,255,.9); }
-    html[data-skin="pink"] header .hdr-tab-off { color: #8f2253; }
-    html[data-skin="pink"] header .hdr-btn { background: rgba(255,255,255,.7); border-color: #fff; color: #7a1f4d; }
-    html[data-skin="pink"] header .hdr-cta { background: #ec4f93; color: #fff; }
     html[data-skin="pink"] .shadow-sm { box-shadow: 0 4px 14px rgba(236,79,147,.12); }
     html[data-skin="pink"] .rounded-2xl { border-radius: 1.5rem; }
     html[data-skin="pink"] .rounded-xl { border-radius: 1.1rem; }
-    html[data-skin="pink"] header button, html[data-skin="pink"] #app-main button.rounded-xl { border-radius: 9999px; }
+    html[data-skin="pink"] #app-main button.rounded-xl { border-radius: 9999px; }
+    html[data-skin="pink"] #btn-open-upload { background: #ec4f93; color: #fff; }
+
+
+    /* ===== Kính lỏng (liquid glass): nền mờ + viền sáng + vệt sáng bên trong ===== */
+    .qf-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(55% 38% at 8% 0%, rgba(52,211,153,.38), transparent 70%),
+        radial-gradient(48% 36% at 100% 18%, rgba(251,191,36,.26), transparent 70%),
+        radial-gradient(60% 46% at 28% 100%, rgba(45,212,191,.30), transparent 70%); }
+    .dark .qf-bg { background:
+        radial-gradient(55% 38% at 8% 0%, rgba(16,185,129,.28), transparent 70%),
+        radial-gradient(48% 36% at 100% 18%, rgba(245,158,11,.12), transparent 70%),
+        radial-gradient(60% 46% at 28% 100%, rgba(13,148,136,.24), transparent 70%); }
+    html[data-skin="pink"] .qf-bg { background:
+        radial-gradient(55% 38% at 8% 0%, rgba(244,114,182,.38), transparent 70%),
+        radial-gradient(48% 36% at 100% 18%, rgba(192,132,252,.32), transparent 70%),
+        radial-gradient(60% 46% at 28% 100%, rgba(253,186,116,.30), transparent 70%); }
+
+    .glass, .glass-bar, .glass-lite { border-style: solid; border-width: 1px; }
+    .glass, .glass-bar {
+      background: linear-gradient(135deg, rgba(255,255,255,.66), rgba(255,255,255,.40));
+      -webkit-backdrop-filter: blur(22px) saturate(180%); backdrop-filter: blur(22px) saturate(180%);
+      border-color: rgba(255,255,255,.75);
+      box-shadow: 0 12px 32px -10px rgba(10,60,45,.28), inset 0 1.5px 1px rgba(255,255,255,.95), inset 0 -1px 1px rgba(255,255,255,.25);
+    }
+    .glass-bar { border-width: 0 0 1px 0; border-radius: 0; box-shadow: 0 8px 28px -14px rgba(10,60,45,.35), inset 0 -1px 0 rgba(255,255,255,.5); }
+    .glass-lite {
+      background: linear-gradient(135deg, rgba(255,255,255,.80), rgba(255,255,255,.58));
+      border-color: rgba(255,255,255,.85);
+      box-shadow: 0 8px 22px -12px rgba(10,60,45,.28), inset 0 1px 0 rgba(255,255,255,.95);
+    }
+    .dark .glass, .dark .glass-bar {
+      background: linear-gradient(135deg, rgba(34,54,45,.62), rgba(14,24,19,.44));
+      border-color: rgba(255,255,255,.13);
+      box-shadow: 0 12px 32px -10px rgba(0,0,0,.65), inset 0 1.5px 1px rgba(255,255,255,.16), inset 0 -1px 1px rgba(255,255,255,.04);
+    }
+    .dark .glass-bar { box-shadow: 0 8px 28px -14px rgba(0,0,0,.7), inset 0 -1px 0 rgba(255,255,255,.08); }
+    .dark .glass-lite {
+      background: linear-gradient(135deg, rgba(30,48,40,.72), rgba(18,30,24,.55));
+      border-color: rgba(255,255,255,.10);
+      box-shadow: 0 8px 22px -12px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.10);
+    }
+    html[data-skin="pink"] .glass, html[data-skin="pink"] .glass-bar {
+      background: linear-gradient(135deg, rgba(255,255,255,.72), rgba(255,226,240,.48));
+      box-shadow: 0 12px 32px -10px rgba(236,79,147,.30), inset 0 1.5px 1px rgba(255,255,255,.95), inset 0 -1px 1px rgba(255,255,255,.3);
+    }
+    html[data-skin="pink"] .glass-lite {
+      background: linear-gradient(135deg, rgba(255,255,255,.82), rgba(255,238,246,.62));
+      box-shadow: 0 8px 22px -12px rgba(236,79,147,.32), inset 0 1px 0 rgba(255,255,255,.95);
+    }
+    /* Hộp thoại và ngăn kéo cũng là kính (đậm hơn một chút để dễ đọc) */
+    #modal-theme > div, #modal-exam-setup > div, #modal-upload > div, #modal-new-subject > div, #modal-shortcuts > div, #exam-palette-card.sheet-open {
+      background: linear-gradient(135deg, rgba(255,255,255,.86), rgba(255,255,255,.70)) !important;
+      -webkit-backdrop-filter: blur(26px) saturate(180%); backdrop-filter: blur(26px) saturate(180%);
+      border-color: rgba(255,255,255,.8) !important;
+    }
+    .dark #modal-theme > div, .dark #modal-exam-setup > div, .dark #modal-upload > div, .dark #modal-new-subject > div, .dark #modal-shortcuts > div, .dark #exam-palette-card.sheet-open {
+      background: linear-gradient(135deg, rgba(28,44,37,.86), rgba(14,24,19,.78)) !important; border-color: rgba(255,255,255,.12) !important;
+    }
+    html[data-skin="pink"] #modal-theme > div, html[data-skin="pink"] #modal-exam-setup > div, html[data-skin="pink"] #modal-upload > div, html[data-skin="pink"] #modal-new-subject > div, html[data-skin="pink"] #modal-shortcuts > div, html[data-skin="pink"] #exam-palette-card.sheet-open {
+      background: linear-gradient(135deg, rgba(255,255,255,.88), rgba(255,236,246,.76)) !important;
+    }
+    body.exam-active #tabbar { display: none; }
+    #tabbar { margin-bottom: env(safe-area-inset-bottom); }
+    .tab-item .qf-ico { width: 1.6rem; height: 1.6rem; }
 
     button { -webkit-tap-highlight-color: transparent; }
     .qf-ico { display: inline-block; flex-shrink: 0; object-fit: contain; user-select: none; }
@@ -138,7 +212,7 @@
         padding-bottom: calc(1.25rem + env(safe-area-inset-bottom));
       }
       #exam-palette { max-height: 44vh !important; }
-      #exam-bottom-bar { padding-bottom: calc(.6rem + env(safe-area-inset-bottom)); }
+      #exam-bottom-bar { margin-bottom: env(safe-area-inset-bottom); }
     }
     #eq-image { max-height: 320px; object-fit: contain; }
 
@@ -226,49 +300,40 @@
   </style>
 </head>
 <body class="bg-[#f3f6f4] dark:bg-[#0b1210] text-slate-900 dark:text-[#f0f6f2] h-[100dvh] overflow-hidden flex flex-col transition-colors duration-200 selection:bg-brand-500/30">
+  <div class="qf-bg" aria-hidden="true"></div>
 
   <!-- ==================== TOP HEADER ==================== -->
-  <header class="sticky top-0 z-30 text-white bg-gradient-to-r from-brand-800 via-brand-700 to-brand-600 dark:from-[#08201a] dark:via-[#0a2e22] dark:to-[#0d3a2a] shadow-lg shadow-brand-900/25">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
-      <!-- Brand Logo -->
-      <div class="flex items-center gap-3">
-        <button id="btn-logo-home" type="button" class="w-10 h-10 rounded-xl bg-white/15 ring-1 ring-white/30 text-white flex items-center justify-center hover:bg-white/25 transition-colors shrink-0" title="Về trang chủ">
-          <i data-lucide="zap" class="w-6 h-6"></i>
-        </button>
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="hidden sm:inline hdr-title font-display font-extrabold text-lg sm:text-xl tracking-tight text-white">QuizFast</span>
-          </div>
-        </div>
-      </div>
+  <header class="glass-bar sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-3">
+      <button id="btn-logo-home" type="button" class="flex items-center gap-2.5 shrink-0 rounded-xl" title="Về trang chủ">
+        <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-400 to-brand-700 shadow-md shadow-brand-700/30 ring-1 ring-white/40 flex items-center justify-center">
+          <i data-lucide="zap" class="w-5 h-5"></i>
+        </span>
+        <span class="font-display font-extrabold text-lg sm:text-xl tracking-tight text-slate-900 dark:text-white">QuizFast</span>
+      </button>
 
-      <!-- Main Navigation -->
-      <nav class="hdr-nav flex items-center gap-1 bg-black/20 p-1 rounded-xl border border-white/10">
-        <button data-mode="home" aria-label="Môn và đề" title="Môn và đề" class="nav-tab flex items-center gap-2 whitespace-nowrap px-3 sm:px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all">
+      <!-- Điều hướng trên máy tính; điện thoại dùng thanh tab ở đáy -->
+      <nav class="hidden sm:flex items-center gap-1 glass-lite rounded-full p-1">
+        <button data-mode="home" class="nav-tab flex items-center gap-2 whitespace-nowrap px-4 py-1.5 rounded-full text-sm font-bold transition-all">
           <i data-lucide="folder-kanban" class="w-4 h-4"></i>
-          <span class="hidden sm:inline">Môn &amp; Đề</span>
+          <span>Môn &amp; Đề</span>
         </button>
-        <button data-mode="mistakes" aria-label="Câu hay sai" title="Câu hay sai" class="nav-tab flex items-center gap-2 whitespace-nowrap px-3 sm:px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all">
+        <button data-mode="mistakes" class="nav-tab flex items-center gap-2 whitespace-nowrap px-4 py-1.5 rounded-full text-sm font-bold transition-all">
           <i data-lucide="flame" class="w-4 h-4"></i>
-          <span class="hidden md:inline">Câu hay sai</span>
+          <span>Câu hay sai</span>
           <span id="nav-red-count" class="px-1.5 py-0.5 rounded-full text-[11px] leading-none bg-rose-500 text-white font-extrabold">0</span>
-        </button>
-        <button data-mode="flashcards" aria-label="Flashcards" title="Flashcards" class="nav-tab flex items-center gap-2 whitespace-nowrap px-3 sm:px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all">
-          <i data-lucide="layers" class="w-4 h-4"></i>
-          <span class="hidden md:inline">Flashcards</span>
         </button>
       </nav>
 
-      <!-- Header Actions -->
       <div class="flex items-center gap-2">
-        <button id="btn-open-upload" aria-label="Tải đề lên" class="hdr-cta whitespace-nowrap flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-brand-950 text-xs sm:text-sm font-extrabold shadow-sm shadow-black/20 transition-all active:scale-95">
+        <button id="btn-open-upload" aria-label="Tải đề lên" class="hidden sm:flex whitespace-nowrap items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-amber-400 to-amber-300 text-brand-950 text-sm font-extrabold shadow-md shadow-amber-500/25 ring-1 ring-white/50 transition-all active:scale-95">
           <i data-lucide="upload-cloud" class="w-4 h-4"></i>
-          <span class="hidden sm:inline">Tải đề lên</span>
+          <span>Tải đề lên</span>
         </button>
-        <button id="btn-theme-toggle" class="hdr-btn p-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white border border-white/20 transition-all" title="Đổi giao diện" aria-label="Đổi giao diện">
+        <button id="btn-theme-toggle" class="w-10 h-10 rounded-full glass-lite flex items-center justify-center transition-all active:scale-95" title="Đổi giao diện" aria-label="Đổi giao diện">
           <i data-lucide="palette" class="w-5 h-5"></i>
         </button>
-        <button id="btn-shortcuts-help" class="hdr-btn hidden lg:flex p-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white border border-white/20 transition-all" title="Phím tắt bàn phím">
+        <button id="btn-shortcuts-help" class="hidden lg:flex w-10 h-10 rounded-full glass-lite items-center justify-center transition-all" title="Phím tắt bàn phím" aria-label="Phím tắt bàn phím">
           <i data-lucide="keyboard" class="w-4 h-4"></i>
         </button>
       </div>
@@ -276,7 +341,7 @@
   </header>
 
   <!-- ==================== MAIN CONTENT ==================== -->
-  <main id="app-main" class="flex-1 min-h-0 max-w-7xl w-full mx-auto px-4 sm:px-6 py-5 sm:py-6 overflow-y-auto">
+  <main id="app-main" class="relative z-10 flex-1 min-h-0 max-w-7xl w-full mx-auto px-4 sm:px-6 py-5 sm:py-6 pb-28 sm:pb-6 overflow-y-auto">
 
     <!-- ==================== VIEW 1: HOME (SUBJECTS + SMART UPLOAD) ==================== -->
     <section id="view-home" class="flex flex-col gap-6 max-w-6xl mx-auto lg:h-full">
@@ -291,6 +356,23 @@
             <p id="resume-banner-text" class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white truncate"></p>
           </div>
           <button id="btn-resume-banner" type="button" class="px-5 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-600 text-white text-sm font-extrabold">Làm tiếp</button>
+        </div>
+
+        <!-- Mục tiêu hôm nay -->
+        <div id="daily-card" class="glass-lite rounded-3xl p-4 sm:p-5 flex items-center gap-4">
+          <div class="relative w-16 h-16 shrink-0">
+            <svg viewBox="0 0 36 36" class="w-16 h-16 -rotate-90" aria-hidden="true">
+              <circle cx="18" cy="18" r="15.5" fill="none" stroke-width="3.5" style="stroke: rgb(var(--s200))"></circle>
+              <circle id="daily-ring" cx="18" cy="18" r="15.5" fill="none" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="97.4" stroke-dashoffset="97.4" style="stroke: rgb(var(--b500)); transition: stroke-dashoffset .6s ease"></circle>
+            </svg>
+            <div id="daily-pct" class="absolute inset-0 flex items-center justify-center text-sm font-extrabold text-slate-800 dark:text-white">0%</div>
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="text-xs font-bold text-slate-500 dark:text-slate-400">Mục tiêu hôm nay</p>
+            <p class="text-lg font-extrabold text-slate-900 dark:text-white"><span id="daily-count">0</span> / <span id="daily-goal">20</span> câu</p>
+            <p id="daily-streak" class="text-xs font-bold text-amber-600 dark:text-amber-400 truncate"></p>
+          </div>
+          <button id="btn-quick-10" type="button" class="shrink-0 px-4 py-2.5 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 text-white text-sm font-extrabold leading-tight text-center shadow-md shadow-brand-700/25 ring-1 ring-white/30 active:scale-95 transition-all">Ôn nhanh<br>10 câu</button>
         </div>
 
         <!-- Môn mặc định: do quản trị viên thêm vào, người dùng chỉ học -->
@@ -331,7 +413,7 @@
       <!-- 1B. MÀN HÌNH CHI TIẾT MÔN HỌC (DANH SÁCH ĐỀ TRONG MÔN) -->
       <div id="subject-detail-screen" class="hidden space-y-6">
         <!-- Tiêu đề môn + độ thông thạo -->
-        <div class="bg-white dark:bg-[#121c17] border border-slate-200/90 dark:border-[#2a3b33] rounded-3xl overflow-hidden shadow-sm divide-y divide-slate-200/80 dark:divide-[#2a3b33]">
+        <div class="glass-lite rounded-3xl overflow-hidden divide-y divide-slate-200/80 dark:divide-[#2a3b33]">
           <div id="detail-accent" class="h-2 bg-gradient-to-r from-brand-700 to-accent"></div>
           <div class="p-5 sm:p-6 flex flex-wrap items-center justify-between gap-4">
             <div class="flex items-center gap-3.5 min-w-0">
@@ -383,7 +465,7 @@
 
       <!-- 1C. MÀN HÌNH ĐANG LÀM ĐỀ (ACTIVE EXAM WORKSPACE) -->
       <div id="exam-running" class="hidden !mt-0 lg:h-full flex-col gap-4 pb-24 lg:pb-0">
-        <div class="shrink-0 bg-white dark:bg-[#121c17] border border-slate-200/90 dark:border-[#2a3b33] rounded-2xl p-3.5 sm:p-4 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+        <div class="shrink-0 glass-lite rounded-2xl p-3.5 sm:p-4 flex flex-wrap items-center justify-between gap-3">
           <div class="flex items-center gap-3 min-w-0 flex-1">
             <button id="btn-exit-exam" class="whitespace-nowrap flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#1b2822] hover:bg-slate-200 dark:hover:bg-[#2f4238] text-slate-700 dark:text-slate-200 text-xs sm:text-sm font-bold transition-all">
               <i data-lucide="arrow-left" class="w-4 h-4"></i>
@@ -414,7 +496,7 @@
 
         <div class="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 lg:grid-rows-[minmax(0,1fr)] gap-5 items-start">
           <!-- Question Card -->
-          <div id="exam-q-card" class="lg:col-span-8 lg:max-h-full lg:overflow-y-auto bg-white dark:bg-[#121c17] border border-slate-200/90 dark:border-[#2a3b33] rounded-2xl p-5 sm:p-7 space-y-5 shadow-sm">
+          <div id="exam-q-card" class="lg:col-span-8 lg:max-h-full lg:overflow-y-auto glass-lite rounded-2xl p-5 sm:p-7 space-y-5">
             <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-slate-200/80 dark:border-[#2a3b33]">
               <div class="flex flex-wrap items-center gap-2">
                 <span id="eq-number-badge" class="px-3 py-1 rounded-lg text-xs font-extrabold bg-brand-600 text-white">Câu 1 / 60</span>
@@ -461,12 +543,18 @@
 
             <img id="eq-image" alt="Hình minh họa của câu hỏi" class="hidden max-w-full mx-auto rounded-xl border border-slate-200 dark:border-[#2a3b33]" />
             <div id="eq-options" class="space-y-3"></div>
+            <div id="eq-note-wrap" class="hidden">
+              <button id="eq-note-toggle" type="button" class="text-xs font-bold text-brand-700 dark:text-brand-300 flex items-center gap-1.5">
+                <i data-lucide="pencil" class="w-4 h-4"></i><span id="eq-note-label">Thêm mẹo nhớ của riêng bạn</span>
+              </button>
+              <textarea id="eq-note" rows="2" maxlength="400" placeholder="Viết mẹo, từ khóa hoặc câu nói giúp bạn nhớ câu này..." class="hidden mt-2 w-full rounded-xl glass-lite p-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"></textarea>
+            </div>
             <div id="eq-explain" class="hidden rounded-xl border border-amber-300 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/10 text-amber-900 dark:text-amber-100 px-4 py-3 text-sm leading-relaxed"></div>
             <p id="hl-hint" class="text-xs text-slate-500 dark:text-slate-400">Highlight thủ công: bôi đen một đoạn chữ để tô màu và lưu lại cho câu này. Bấm vào chữ đã tô để xóa.</p>
           </div>
 
           <!-- Palette -->
-          <div id="exam-palette-card" class="lg:col-span-4 lg:max-h-full lg:flex flex-col bg-white dark:bg-[#121c17] border border-slate-200/90 dark:border-[#2a3b33] rounded-2xl p-5 space-y-4 shadow-sm">
+          <div id="exam-palette-card" class="lg:col-span-4 lg:max-h-full lg:flex flex-col glass-lite rounded-2xl p-5 space-y-4">
             <div class="flex items-center justify-between shrink-0">
               <span class="text-sm font-bold text-slate-500 dark:text-slate-400">Bảng câu hỏi</span>
               <span class="flex items-center gap-3">
@@ -485,7 +573,7 @@
 
         <!-- Điện thoại: nền mờ cho ngăn kéo bảng câu hỏi + thanh điều hướng cố định ở đáy -->
         <div id="palette-backdrop" class="hidden lg:hidden fixed inset-0 z-40 bg-black/55"></div>
-        <div id="exam-bottom-bar" class="lg:hidden fixed bottom-0 inset-x-0 z-30 bg-white/95 dark:bg-[#121c17]/95 backdrop-blur border-t border-slate-200 dark:border-[#2a3b33] px-3 pt-2.5 flex items-center gap-2.5">
+        <div id="exam-bottom-bar" class="lg:hidden fixed inset-x-3 bottom-2 z-30 glass rounded-[1.75rem] px-2.5 py-2 flex items-center gap-2.5">
           <button id="btn-exam-prev-bottom" type="button" class="flex-1 h-12 rounded-xl bg-slate-100 dark:bg-[#1b2822] text-slate-700 dark:text-slate-200 text-sm font-extrabold flex items-center justify-center gap-1 disabled:opacity-40" aria-label="Câu trước">
             <i data-lucide="chevron-left" class="w-5 h-5"></i><span>Trước</span>
           </button>
@@ -597,86 +685,26 @@
       <div id="notebook-list" class="space-y-3"></div>
     </section>
 
-    <!-- ==================== VIEW 3: FLASHCARDS ==================== -->
-    <section id="view-flashcards" class="hidden space-y-6">
-      <div class="bg-white dark:bg-[#121c17] border border-slate-200/90 dark:border-[#2a3b33] rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3 shadow-sm">
-        <div class="flex items-center gap-2">
-          <button id="fc-mode-cards" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold">🗂️ Thẻ lật 3D</button>
-          <button id="fc-mode-table" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold">📋 Bảng tóm tắt</button>
-        </div>
-
-        <div class="flex flex-wrap items-center gap-2">
-          <div class="flex items-center gap-1 bg-slate-100 dark:bg-[#0b1210] p-1 rounded-xl border border-slate-200 dark:border-[#2a3b33]">
-            <button data-fc-subj="ALL" class="fc-subj-btn px-3 py-1.5 rounded-lg text-xs font-bold">Tất cả</button>
-            <button data-fc-subj="FE GDC" class="fc-subj-btn px-3 py-1.5 rounded-lg text-xs font-bold">FE GDC</button>
-            <button data-fc-subj="FE AGU" class="fc-subj-btn px-3 py-1.5 rounded-lg text-xs font-bold">FE AGU</button>
-          </div>
-          <div class="relative">
-            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
-            <input id="fc-search" type="text" placeholder="Tìm khái niệm..." class="bg-slate-50 dark:bg-[#17231e] border border-slate-200 dark:border-[#36493f] text-slate-800 dark:text-slate-200 text-xs sm:text-sm rounded-xl pl-9 pr-3 py-2 w-48 sm:w-60 focus:outline-none focus:ring-2 focus:ring-brand-500" />
-          </div>
-        </div>
-      </div>
-
-      <div id="fc-cards-view" class="space-y-5">
-        <div class="perspective-1000 max-w-2xl mx-auto">
-          <div id="fc-card-3d" class="relative w-full min-h-[320px] sm:min-h-[360px] transform-style-3d cursor-pointer select-none">
-            <div class="absolute inset-0 backface-hidden bg-white dark:bg-[#121c17] border border-slate-200/90 dark:border-[#2a3b33] rounded-2xl p-8 flex flex-col justify-between shadow-md">
-              <div class="flex items-center justify-between">
-                <span id="fc-front-cat" class="px-3 py-1 rounded-full text-xs font-extrabold bg-brand-100 dark:bg-brand-900/50 text-brand-700 dark:text-brand-300"></span>
-                <span id="fc-counter" class="text-xs font-mono-code text-slate-500 dark:text-slate-400">1 / 1</span>
-              </div>
-              <div class="text-center my-auto px-2">
-                <div class="text-xs text-slate-400 mb-2 font-bold">Khái niệm trọng tâm</div>
-                <h3 id="fc-front-term" class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white leading-snug"></h3>
-              </div>
-              <div class="text-center text-xs text-slate-400 flex items-center justify-center gap-1.5">
-                <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i>
-                <span>Nhấn vào thẻ hoặc <kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-[#1b2822] border border-slate-300 dark:border-[#36493f]">Space</kbd> để lật</span>
-              </div>
-            </div>
-
-            <div class="absolute inset-0 backface-hidden rotate-y-180 bg-brand-50/90 dark:bg-[#14241c] border-2 border-brand-400 dark:border-brand-600/60 rounded-2xl p-7 sm:p-8 flex flex-col justify-between shadow-md">
-              <div class="flex items-center justify-between">
-                <span id="fc-back-term" class="text-sm font-extrabold text-brand-700 dark:text-brand-300"></span>
-                <span class="text-xs text-brand-600 dark:text-brand-400 font-bold">Bản chất &amp; Mẹo nhớ</span>
-              </div>
-              <div class="my-auto space-y-4 overflow-y-auto max-h-[210px] pr-1">
-                <p id="fc-back-def" class="text-base sm:text-lg text-slate-900 dark:text-white leading-relaxed font-semibold"></p>
-                <div class="bg-amber-100/80 dark:bg-amber-500/15 border border-amber-300 dark:border-amber-500/30 rounded-xl p-3 text-sm text-amber-950 dark:text-amber-200">
-                  <span class="font-extrabold">⚡ Mẹo: </span><span id="fc-back-tip"></span>
-                </div>
-              </div>
-              <div class="text-center text-xs text-slate-500 dark:text-slate-400">Dùng <kbd class="px-1.5 py-0.5 rounded bg-white dark:bg-[#1b2822] border border-slate-300 dark:border-[#36493f]">←</kbd> / <kbd class="px-1.5 py-0.5 rounded bg-white dark:bg-[#1b2822] border border-slate-300 dark:border-[#36493f]">→</kbd> để qua thẻ</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex items-center justify-center gap-3">
-          <button id="fc-prev" class="px-5 py-2.5 rounded-xl bg-white dark:bg-[#121c17] hover:bg-slate-100 dark:hover:bg-[#1b2822] text-xs sm:text-sm font-bold border border-slate-200 dark:border-[#2a3b33]">← Thẻ trước</button>
-          <button id="fc-flip-btn" class="px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-xs sm:text-sm font-extrabold text-white">Lật thẻ (Space)</button>
-          <button id="fc-next" class="px-5 py-2.5 rounded-xl bg-white dark:bg-[#121c17] hover:bg-slate-100 dark:hover:bg-[#1b2822] text-xs sm:text-sm font-bold border border-slate-200 dark:border-[#2a3b33]">Thẻ tiếp →</button>
-        </div>
-      </div>
-
-      <div id="fc-table-view" class="hidden bg-white dark:bg-[#121c17] border border-slate-200/90 dark:border-[#2a3b33] rounded-2xl overflow-hidden shadow-sm">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr class="bg-slate-50 dark:bg-[#17231e] border-b border-slate-200 dark:border-[#2a3b33] text-xs text-slate-500 dark:text-slate-400 font-bold">
-                <th class="p-4 w-28">Môn</th>
-                <th class="p-4 w-56">Thuật ngữ</th>
-                <th class="p-4">Bản chất</th>
-                <th class="p-4 w-64">Mẹo nhớ nhanh</th>
-              </tr>
-            </thead>
-            <tbody id="fc-table-body" class="divide-y divide-slate-200 dark:divide-[#2a3b33] text-sm"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
   </main>
+
+  <!-- ==================== THANH TAB ĐÁY (ĐIỆN THOẠI) ==================== -->
+  <nav id="tabbar" class="sm:hidden fixed z-40 left-3 right-3 bottom-3 glass rounded-[1.75rem] p-1.5 flex items-stretch gap-1" aria-label="Điều hướng chính">
+    <button data-mode="home" class="tab-item flex-1 flex flex-col items-center gap-0.5 py-1.5 rounded-2xl text-[11px] font-bold transition-all">
+      <i data-lucide="folder-kanban" class="w-6 h-6"></i>
+      <span>Môn học</span>
+    </button>
+    <button data-mode="mistakes" class="tab-item flex-1 flex flex-col items-center gap-0.5 py-1.5 rounded-2xl text-[11px] font-bold transition-all">
+      <span class="relative">
+        <i data-lucide="flame" class="w-6 h-6"></i>
+        <span id="tab-red-count" class="hidden absolute -top-1 -right-3 min-w-[1.1rem] px-1 py-0.5 rounded-full text-[10px] leading-none bg-rose-500 text-white font-extrabold text-center">0</span>
+      </span>
+      <span>Câu sai</span>
+    </button>
+    <button id="tab-upload" type="button" class="flex-1 flex flex-col items-center gap-0.5 py-1.5 rounded-2xl text-[11px] font-bold text-slate-500 dark:text-slate-400 transition-all">
+      <i data-lucide="upload-cloud" class="w-6 h-6"></i>
+      <span>Thêm đề</span>
+    </button>
+  </nav>
 
   <!-- ==================== MODAL: THÊM ĐỀ (STUDIO) ==================== -->
   <div id="modal-upload" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-5">
@@ -844,44 +872,59 @@
 
   <!-- ==================== MODAL: CHỌN GIAO DIỆN ==================== -->
   <div id="modal-theme" class="fixed inset-0 z-50 bg-black/55 backdrop-blur-sm hidden items-end sm:items-center justify-center sm:p-4">
-    <div class="w-full sm:max-w-md bg-white dark:bg-[#121c17] border border-slate-200 dark:border-[#36493f] rounded-t-3xl sm:rounded-3xl p-5 space-y-5 shadow-2xl" style="padding-bottom: calc(1.25rem + env(safe-area-inset-bottom))">
+    <div class="w-full sm:max-w-md bg-white dark:bg-[#121c17] border border-slate-200 dark:border-[#36493f] rounded-t-3xl sm:rounded-3xl p-5 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto" style="padding-bottom: calc(1.25rem + env(safe-area-inset-bottom))">
       <div class="flex items-center justify-between gap-3">
         <div>
-          <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Chọn giao diện</h3>
-          <p class="text-xs text-slate-500 dark:text-slate-400">Đổi lúc nào cũng được, máy sẽ nhớ lựa chọn của bạn.</p>
+          <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Giao diện</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Chọn một kiểu, máy sẽ nhớ cho lần sau.</p>
         </div>
         <button id="close-theme-modal" type="button" class="p-2 rounded-xl bg-slate-100 dark:bg-[#1b2822] text-slate-500" aria-label="Đóng">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
-
-      <div class="grid grid-cols-2 gap-3">
-        <button type="button" data-skin-pick="jade" class="skin-card text-left rounded-2xl border-2 p-2.5 transition-all">
-          <span class="block h-20 rounded-xl overflow-hidden" style="background:#f3f6f4">
-            <span class="block h-6" style="background:linear-gradient(90deg,#0a513a,#0f7d56)"></span>
-            <span class="flex gap-1.5 p-2"><span class="flex-1 h-9 rounded-lg bg-white shadow-sm" style="border-left:4px solid #0f7d56"></span><span class="flex-1 h-9 rounded-lg bg-white shadow-sm" style="border-left:4px solid #f59e0b"></span></span>
+      <div class="space-y-1.5" role="group" aria-label="Danh sách giao diện">
+        <button type="button" data-look="light" class="look-row w-full flex items-center gap-3 p-3 rounded-2xl text-left border-2 transition-all">
+          <span class="w-12 h-12 rounded-xl shrink-0 ring-1 ring-black/5 shadow-sm" style="background: linear-gradient(135deg,#f3f6f4 0 52%,#0f7d56 52%)"></span>
+          <span class="flex-1 min-w-0">
+            <span class="block text-sm font-extrabold text-slate-900 dark:text-white">Mặc định (sáng)</span>
+            <span class="block text-[11px] text-slate-500 dark:text-slate-400">Xanh ngọc, gọn gàng, dễ nhìn ban ngày</span>
           </span>
-          <span class="block mt-2 text-sm font-extrabold text-slate-900 dark:text-white">Xanh ngọc</span>
-          <span class="block text-[11px] text-slate-500 dark:text-slate-400">Gọn gàng, tập trung. Có chế độ sáng và tối.</span>
+          <span class="look-check w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs font-extrabold shrink-0"></span>
         </button>
-        <button type="button" data-skin-pick="pink" class="skin-card text-left rounded-2xl border-2 p-2.5 transition-all">
-          <span class="block h-20 rounded-xl overflow-hidden" style="background:#fff4f9">
-            <span class="block h-6" style="background:linear-gradient(90deg,#ffb8d9,#dcc8ff)"></span>
-            <span class="flex gap-1.5 p-2"><span class="flex-1 h-9 rounded-2xl bg-white shadow-sm" style="border-left:4px solid #ec4f93"></span><span class="flex-1 h-9 rounded-2xl bg-white shadow-sm" style="border-left:4px solid #c084fc"></span></span>
+        <button type="button" data-look="dark" class="look-row w-full flex items-center gap-3 p-3 rounded-2xl text-left border-2 transition-all">
+          <span class="w-12 h-12 rounded-xl shrink-0 ring-1 ring-black/5 shadow-sm" style="background: linear-gradient(135deg,#0b1210 0 52%,#1f9468 52%)"></span>
+          <span class="flex-1 min-w-0">
+            <span class="block text-sm font-extrabold text-slate-900 dark:text-white">Tối</span>
+            <span class="block text-[11px] text-slate-500 dark:text-slate-400">Dịu mắt khi học buổi tối</span>
           </span>
-          <span class="block mt-2 text-sm font-extrabold text-slate-900 dark:text-white">Hồng pastel</span>
-          <span class="block text-[11px] text-slate-500 dark:text-slate-400">Dễ thương, nhẹ nhàng. Chỉ có chế độ sáng.</span>
+          <span class="look-check w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs font-extrabold shrink-0"></span>
+        </button>
+        <button type="button" data-look="pink" class="look-row w-full flex items-center gap-3 p-3 rounded-2xl text-left border-2 transition-all">
+          <span class="w-12 h-12 rounded-xl shrink-0 ring-1 ring-black/5 shadow-sm" style="background: linear-gradient(135deg,#fff4f9 0 52%,#ec4f93 52%)"></span>
+          <span class="flex-1 min-w-0">
+            <span class="block text-sm font-extrabold text-slate-900 dark:text-white">Hồng pastel</span>
+            <span class="block text-[11px] text-slate-500 dark:text-slate-400">Dễ thương, nhẹ nhàng</span>
+          </span>
+          <span class="look-check w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs font-extrabold shrink-0"></span>
+        </button>
+        <button type="button" data-look="blue" class="look-row w-full flex items-center gap-3 p-3 rounded-2xl text-left border-2 transition-all">
+          <span class="w-12 h-12 rounded-xl shrink-0 ring-1 ring-black/5 shadow-sm" style="background: linear-gradient(135deg,#f1f6ff 0 52%,#2563eb 52%)"></span>
+          <span class="flex-1 min-w-0">
+            <span class="block text-sm font-extrabold text-slate-900 dark:text-white">Xanh dương</span>
+            <span class="block text-[11px] text-slate-500 dark:text-slate-400">Trong trẻo, tập trung</span>
+          </span>
+          <span class="look-check w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs font-extrabold shrink-0"></span>
+        </button>
+        <button type="button" data-look="violet" class="look-row w-full flex items-center gap-3 p-3 rounded-2xl text-left border-2 transition-all">
+          <span class="w-12 h-12 rounded-xl shrink-0 ring-1 ring-black/5 shadow-sm" style="background: linear-gradient(135deg,#f6f3ff 0 52%,#7c3aed 52%)"></span>
+          <span class="flex-1 min-w-0">
+            <span class="block text-sm font-extrabold text-slate-900 dark:text-white">Tím lavender</span>
+            <span class="block text-[11px] text-slate-500 dark:text-slate-400">Nhẹ nhàng, hiện đại</span>
+          </span>
+          <span class="look-check w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs font-extrabold shrink-0"></span>
         </button>
       </div>
-
-      <div class="space-y-2">
-        <p class="text-xs font-bold text-slate-500 dark:text-slate-400">Chế độ màn hình</p>
-        <div class="grid grid-cols-2 gap-2 bg-slate-100 dark:bg-[#0b1210] p-1 rounded-xl border border-slate-200 dark:border-[#2a3b33]">
-          <button type="button" id="mode-light" class="mode-btn py-2 rounded-lg text-sm font-bold flex items-center justify-center gap-1.5"><i id="theme-icon-sun" data-lucide="sun" class="w-4 h-4"></i>Sáng</button>
-          <button type="button" id="mode-dark" class="mode-btn py-2 rounded-lg text-sm font-bold flex items-center justify-center gap-1.5"><i id="theme-icon-moon" data-lucide="moon" class="w-4 h-4"></i>Tối</button>
-        </div>
-        <p id="mode-note" class="hidden text-[11px] text-slate-500 dark:text-slate-400">Giao diện hồng pastel chỉ có chế độ sáng. Chọn Xanh ngọc nếu bạn muốn dùng chế độ tối.</p>
-      </div>
+      <p class="text-[11px] text-slate-500 dark:text-slate-400">Chế độ tối chỉ có ở giao diện Tối. Các giao diện màu dùng nền sáng.</p>
     </div>
   </div>
 
@@ -974,6 +1017,10 @@
               <span class="text-sm font-semibold text-slate-700 dark:text-slate-200">Tự qua câu khi chọn</span>
               <input id="setup-auto-next" type="checkbox" class="w-4 h-4 accent-brand-600 rounded" />
             </label>
+            <label class="sm:col-span-2 flex items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 dark:bg-[#17231e] border border-slate-200 dark:border-[#36493f] cursor-pointer">
+              <span class="text-sm font-semibold text-slate-700 dark:text-slate-200">Lặp lại câu sai ở cuối bài <span class="block text-[11px] font-normal text-slate-500 dark:text-slate-400">Làm sai là câu đó quay lại cuối bài để bạn nhớ chắc hơn (cần bật "Chấm ngay").</span></span>
+              <input id="setup-repeat-wrong" type="checkbox" class="w-4 h-4 accent-brand-600 rounded shrink-0" />
+            </label>
           </div>
         </div>
       </div>
@@ -989,7 +1036,7 @@
     </div>
   </div>
 
-  <!-- SAMPLE & FLASHCARDS DATA -->
+  <!-- SAMPLE DATA -->
   <script>
     window.SAMPLE_QUESTIONS = [
       {
@@ -1024,24 +1071,6 @@
       }
     ];
 
-    window.FLASHCARDS_DATA = [
-      { subject: "FE GDC", term: "Core Loop", definition: "Vòng lặp hành động cốt lõi lặp đi lặp lại từng giây/phút của người chơi (Explore -> Fight -> Loot -> Upgrade).", tip: "Nhỏ nhất, lặp lại liên tục, tạo nên cảm giác chơi chính." },
-      { subject: "FE GDC", term: "Progression Loop", definition: "Vòng lặp phát triển dài hạn (Meta-loop) giúp người chơi mở khóa kỹ năng, cấp độ hoặc nội dung mới qua nhiều phiên chơi.", tip: "Core = từng phút; Progression = qua nhiều giờ/ngày." },
-      { subject: "FE GDC", term: "System (Game System)", definition: "Tập hợp các thành phần (entities), quy tắc (rules) và biến số tương tác với nhau để tạo ra hành vi động (emergent gameplay).", tip: "System = Components + Rules + Interactions." },
-      { subject: "FE GDC", term: "Degenerate Loop / Strategy", definition: "Chiến thuật hoặc vòng lặp quá bá đạo/nhàm chán nhưng hiệu quả nhất, khiến người chơi lạm dụng và bỏ qua phần còn lại của game.", tip: "Thấy 'exploit/boring optimal way' -> Degenerate." },
-      { subject: "FE GDC", term: "Sink (Resource Sink)", definition: "Cơ chế tiêu thụ/rút bớt tài nguyên (vàng, mana, vật phẩm) ra khỏi nền kinh tế game để tránh dư thừa.", tip: "Faucet (nguồn tạo) <-> Sink (nơi tiêu)." },
-      { subject: "FE GDC", term: "Resource Inflation", definition: "Tình trạng tài nguyên trong game tích tụ quá nhiều theo thời gian làm mất giá trị tiền tệ/vật phẩm do thiếu Sink.", tip: "Quá nhiều Faucet + thiếu Sink = Inflation." },
-      { subject: "FE GDC", term: "5 Beats of a Pitch", definition: "Cấu trúc 5 nhịp thuyết trình game: 1. Hook -> 2. Problem -> 3. Gameplay -> 4. Differentiator -> 5. Call to Action.", tip: "Hook -> Problem -> Gameplay -> Differentiator -> CTA." },
-      { subject: "FE GDC", term: "Graybox / Blockout", definition: "Dựng màn chơi bằng hình khối đơn giản để test gameplay, khoảng cách, nhảy, tầm nhìn trước khi làm đồ họa chi tiết.", tip: "'Gray before pretty' — Test layout & fun trước, làm đẹp sau." },
-      { subject: "FE GDC", term: "Softlock", definition: "Lỗi thiết kế khiến game vẫn chạy nhưng người chơi không thể tiến tiếp hay hoàn thành màn chơi (kẹt hố, mất item nhiệm vụ).", tip: "Game không crash nhưng kẹt vĩnh viễn = Softlock." },
-      { subject: "FE GDC", term: "Challenge Pacing", definition: "Nhịp độ thử thách theo chu kỳ: Easy (Làm quen) -> Harder (Thử thách) -> Peak (Cao trào/Boss) -> Rest (Nghỉ ngơi/Thưởng).", tip: "Easy -> Harder -> Peak -> Rest." },
-      { subject: "FE AGU", term: "SOLID: SRP / OCP / LSP / ISP / DIP", definition: "5 nguyên lý thiết kế hướng đối tượng giúp code dễ bảo trì, mở rộng và giảm phụ thuộc chéo trong C#/Unity.", tip: "Single, Open/Closed, Liskov, Interface Seg, Dependency Inv." },
-      { subject: "FE AGU", term: "Pattern: Strategy", definition: "Đóng gói các thuật toán/hành vi khác nhau vào các class riêng có chung interface để hoán đổi linh hoạt lúc runtime.", tip: "Đổi AI behavior / Weapon attack lúc runtime." },
-      { subject: "FE AGU", term: "Pattern: Observer", definition: "Cơ chế Publish-Subscribe (C# event / UnityEvent): Subject phát sự kiện, nhiều Observer lắng nghe phản ứng mà không cần biết nhau.", tip: "Decouple UI/Audio khỏi Player logic bằng Events." },
-      { subject: "FE AGU", term: "Object Pooling", definition: "Tái sử dụng các object sinh/hủy liên tục (đạn, VFX, quái) bằng cách SetActive(false/true) thay vì Instantiate/Destroy liên tục.", tip: "Giảm CPU spike và rác Managed Heap." },
-      { subject: "FE AGU", term: "60 FPS = 16.6ms", definition: "Ngân sách thời gian tối đa cho 1 frame để đạt 60 FPS (1000ms / 60 = 16.67ms). Với 30 FPS là 33.3ms.", tip: "60 FPS -> 16.6ms; 30 FPS -> 33.3ms." },
-      { subject: "FE AGU", term: "ServerRpc vs ClientRpc", definition: "ServerRpc: Client gọi hàm để chạy trên Server. ClientRpc: Server gọi hàm để chạy trên các Client.", tip: "Đọc theo nơi thực thi: ServerRpc chạy ở Server, ClientRpc chạy ở Client." }
-    ];
   </script>
 
   <!-- PRELOADED BUILT-IN QUESTION BANKS -->
@@ -1080,7 +1109,7 @@
 
       let instantFeedback = false;
       let currentTheme = 'dark';
-      let currentMode = 'home'; // 'home' | 'mistakes' | 'flashcards'
+      let currentMode = 'home'; // 'home' | 'mistakes'
       let activeSubjectName = null; // null = subjects grid, string = subject detail or running exam
 
       // Studio / Upload Modal State
@@ -1102,6 +1131,7 @@
         shuffleOpt: true,
         autoNext: false,
         instantFeedback: false,
+        repeatWrong: false,
         autoNextTimer: null,
         rawPool: [],
         questions: [],
@@ -1114,13 +1144,8 @@
         reviewFilter: 'WRONG'
       };
 
-      // Mistake Notebook & Flashcards State
+      // Mistake Notebook State
       let notebookTab = 'RED';
-      let fcViewType = 'cards';
-      let fcSubject = 'ALL';
-      let fcFiltered = [];
-      let fcIndex = 0;
-      let fcFlipped = false;
 
       // --- THEME ---
       function applyTheme(theme) {
@@ -1139,53 +1164,56 @@
 
       // ----- Giao diện: "jade" (xanh ngọc, có sáng/tối) hoặc "pink" (hồng pastel, chỉ sáng) -----
       const SKIN_KEY = 'quizfast_skin_v1';
-      const THEME_BEFORE_PINK_KEY = 'quizfast_theme_before_pink_v1';
       let currentSkin = 'jade';
 
-      function updateSkinUI() {
-        document.querySelectorAll('[data-skin-pick]').forEach(btn => {
-          const on = btn.dataset.skinPick === currentSkin;
-          btn.className = 'skin-card text-left rounded-2xl border-2 p-2.5 transition-all ' + (on
-            ? 'border-brand-600 bg-brand-50 dark:bg-brand-900/25 ring-2 ring-brand-500/30'
-            : 'border-slate-200 dark:border-[#36493f] bg-white dark:bg-[#121c17] hover:border-brand-400');
-          btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-        });
-        const onCls = 'mode-btn py-2 rounded-lg text-sm font-extrabold flex items-center justify-center gap-1.5 bg-white dark:bg-[#1b2822] text-brand-700 dark:text-brand-300 shadow-sm';
-        const offCls = 'mode-btn py-2 rounded-lg text-sm font-bold flex items-center justify-center gap-1.5 text-slate-500 dark:text-slate-400';
-        const light = document.getElementById('mode-light');
-        const dark = document.getElementById('mode-dark');
-        if (light && dark) {
-          light.className = currentTheme === 'dark' ? offCls : onCls;
-          dark.className = (currentTheme === 'dark' ? onCls : offCls) + (currentSkin === 'pink' ? ' opacity-40' : '');
-          dark.disabled = currentSkin === 'pink';
-        }
-        const note = document.getElementById('mode-note');
-        if (note) note.classList.toggle('hidden', currentSkin !== 'pink');
+      function currentLook() {
+        return currentSkin === 'jade' ? (currentTheme === 'dark' ? 'dark' : 'light') : currentSkin;
       }
 
+      function updateSkinUI() {
+        const cur = currentLook();
+        document.querySelectorAll('[data-look]').forEach(btn => {
+          const on = btn.dataset.look === cur;
+          btn.className = 'look-row w-full flex items-center gap-3 p-3 rounded-2xl text-left border-2 transition-all ' + (on
+            ? 'border-brand-600 bg-brand-50/80 dark:bg-brand-900/25'
+            : 'border-transparent hover:bg-slate-100/70 dark:hover:bg-white/5');
+          btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+          const chk = btn.querySelector('.look-check');
+          if (chk) {
+            chk.className = 'look-check w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs font-extrabold shrink-0 ' + (on
+              ? 'bg-brand-600 border-brand-600 text-white'
+              : 'border-slate-300 dark:border-[#36493f]');
+            chk.textContent = on ? '✓' : '';
+          }
+        });
+      }
+
+      // Kiểu màu (skin): jade, pink, blue, violet. Chỉ jade có chế độ tối; các kiểu còn lại luôn sáng.
       function applySkin(skin) {
-        skin = skin === 'pink' ? 'pink' : 'jade';
-        if (skin === 'pink' && currentSkin !== 'pink') {
-          try { localStorage.setItem(THEME_BEFORE_PINK_KEY, currentTheme); } catch { /* bỏ qua */ }
-          applyTheme('light');
-        } else if (skin === 'jade' && currentSkin === 'pink') {
-          let prev = 'light';
-          try { prev = localStorage.getItem(THEME_BEFORE_PINK_KEY) || 'light'; } catch { /* bỏ qua */ }
-          applyTheme(prev === 'dark' ? 'dark' : 'light');
-        }
+        skin = ['pink', 'blue', 'violet'].includes(skin) ? skin : 'jade';
+        if (skin !== 'jade') applyTheme('light');
         currentSkin = skin;
-        if (skin === 'pink') document.documentElement.setAttribute('data-skin', 'pink');
+        if (skin !== 'jade') document.documentElement.setAttribute('data-skin', skin);
         else document.documentElement.removeAttribute('data-skin');
         try { localStorage.setItem(SKIN_KEY, skin); } catch { /* bỏ qua */ }
         updateSkinUI();
         if (!examState.active) refreshHomeView();
       }
 
+      function applyLook(id) {
+        if (id === 'dark') { applySkin('jade'); applyTheme('dark'); }
+        else if (id === 'light') { applySkin('jade'); applyTheme('light'); }
+        else applySkin(id);
+        updateSkinUI();
+      }
+
       function setExamScrollLock(locked) {
+        document.body.classList.toggle('exam-active', locked);
         const main = document.getElementById('app-main');
         const examEl = document.getElementById('exam-running');
         if (main) {
           main.classList.toggle('lg:overflow-hidden', locked); // điện thoại luôn cuộn được, máy tính khóa để bảng câu hỏi đứng yên
+          main.classList.toggle('pb-28', !locked);
           main.classList.toggle('py-3', locked);
           main.classList.toggle('sm:py-4', locked);
           main.classList.toggle('py-5', !locked);
@@ -1214,9 +1242,9 @@
 
         const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) || 'light';
         let savedSkin = 'jade';
-        try { savedSkin = localStorage.getItem(SKIN_KEY) === 'pink' ? 'pink' : 'jade'; } catch { /* bỏ qua */ }
+        try { const sk = localStorage.getItem(SKIN_KEY); savedSkin = ['pink', 'blue', 'violet'].includes(sk) ? sk : 'jade'; } catch { /* bỏ qua */ }
         currentSkin = savedSkin;
-        applyTheme(savedSkin === 'pink' ? 'light' : savedTheme);
+        applyTheme(savedSkin !== 'jade' ? 'light' : savedTheme);
       }
 
       function saveProgress() { localStorage.setItem(STORAGE_KEYS.PROGRESS, JSON.stringify(progressMap)); }
@@ -1246,7 +1274,64 @@
         return progressMap[id];
       }
 
+      // ----- Mục tiêu mỗi ngày + chuỗi ngày học liên tiếp -----
+      const DAILY_KEY = 'quizfast_daily_v1';
+      const DAILY_GOAL = 20;
+      function localDay(offset) {
+        const d = new Date();
+        d.setDate(d.getDate() + (offset || 0));
+        return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+      }
+      function loadDaily() {
+        try { const o = JSON.parse(localStorage.getItem(DAILY_KEY) || 'null'); if (o && typeof o === 'object') return o; } catch { /* bỏ qua */ }
+        return { day: '', count: 0, streak: 0, last: '' };
+      }
+      function bumpDaily() {
+        const d = loadDaily();
+        const today = localDay(0);
+        if (d.day !== today) {
+          d.streak = d.last === localDay(-1) ? (d.streak || 0) + 1 : 1;
+          d.day = today;
+          d.count = 0;
+        }
+        d.count++;
+        d.last = today;
+        try { localStorage.setItem(DAILY_KEY, JSON.stringify(d)); } catch { /* bỏ qua */ }
+      }
+      function dailyView() {
+        const d = loadDaily();
+        const alive = d.last === localDay(0) || d.last === localDay(-1);
+        return { count: d.day === localDay(0) ? d.count : 0, streak: alive ? (d.streak || 0) : 0 };
+      }
+      function renderDailyCard() {
+        const v = dailyView();
+        const pct = Math.min(1, v.count / DAILY_GOAL);
+        const done = v.count >= DAILY_GOAL;
+        const ring = document.getElementById('daily-ring');
+        if (!ring) return;
+        ring.style.strokeDashoffset = String(97.4 * (1 - pct));
+        ring.style.stroke = done ? '#f59e0b' : 'rgb(var(--b500))';
+        document.getElementById('daily-pct').textContent = done ? '🎉' : Math.round(pct * 100) + '%';
+        document.getElementById('daily-count').textContent = v.count;
+        document.getElementById('daily-goal').textContent = DAILY_GOAL;
+        document.getElementById('daily-streak').textContent = v.streak > 0
+          ? `🔥 ${v.streak} ngày học liên tiếp`
+          : 'Làm 1 câu để bắt đầu chuỗi ngày học';
+      }
+
+      // ----- Ghi chú riêng cho từng câu (mẹo nhớ của bạn) -----
+      const NOTES_KEY = 'quizfast_notes_v1';
+      let userNotes = {};
+      try { const o = JSON.parse(localStorage.getItem(NOTES_KEY) || '{}'); if (o && typeof o === 'object') userNotes = o; } catch { /* bỏ qua */ }
+      function getNote(id) { return userNotes[id] || ''; }
+      function setNote(id, text) {
+        const t = String(text || '').trim();
+        if (t) userNotes[id] = String(text).slice(0, 400); else delete userNotes[id];
+        try { localStorage.setItem(NOTES_KEY, JSON.stringify(userNotes)); } catch { /* bỏ qua */ }
+      }
+
       function recordAnswer(id, isCorrect) {
+        bumpDaily();
         const rec = getQuestionRecord(id);
         if (isCorrect) {
           rec.streak = (rec.streak || 0) + 1;
@@ -1890,6 +1975,8 @@
           if (rec && rec.starred) totalStar++;
         });
         document.getElementById('nav-red-count').textContent = totalRed;
+        const tabRed = document.getElementById('tab-red-count');
+        if (tabRed) { tabRed.textContent = totalRed; tabRed.classList.toggle('hidden', totalRed === 0); }
         document.getElementById('btn-red-badge').textContent = totalRed;
         document.getElementById('btn-star-badge').textContent = totalStar;
       }
@@ -1897,14 +1984,20 @@
       // --- NAVIGATION ---
       function switchMode(mode) {
         currentMode = mode;
-        ['home', 'mistakes', 'flashcards'].forEach(m => {
+        ['home', 'mistakes'].forEach(m => {
           document.getElementById(`view-${m}`).classList.toggle('hidden', m !== mode);
         });
-        document.querySelectorAll('.nav-tab').forEach(btn => {
+        document.querySelectorAll('[data-mode]').forEach(btn => {
           const active = btn.dataset.mode === mode;
-          btn.className = active
-            ? 'nav-tab flex items-center gap-2 whitespace-nowrap px-3 sm:px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-extrabold transition-all bg-white text-brand-800 shadow-sm'
-            : 'nav-tab flex items-center gap-2 whitespace-nowrap px-3 sm:px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all hdr-tab-off text-white/85 hover:text-white hover:bg-white/10';
+          if (btn.classList.contains('tab-item')) {
+            btn.className = 'tab-item flex-1 flex flex-col items-center gap-0.5 py-1.5 rounded-2xl text-[11px] transition-all ' + (active
+              ? 'bg-brand-100/90 dark:bg-brand-900/50 text-brand-700 dark:text-brand-200 font-extrabold shadow-inner'
+              : 'text-slate-500 dark:text-slate-400 font-bold');
+          } else {
+            btn.className = 'nav-tab flex items-center gap-2 whitespace-nowrap px-4 py-1.5 rounded-full text-sm transition-all ' + (active
+              ? 'bg-brand-600 text-white font-extrabold shadow-sm'
+              : 'text-slate-600 dark:text-slate-300 font-bold hover:bg-white/60 dark:hover:bg-white/10');
+          }
         });
 
         if (mode === 'home') {
@@ -1913,7 +2006,6 @@
           else renderHomeSubjects();
         }
         if (mode === 'mistakes') { setExamScrollLock(false); renderNotebook(); }
-        if (mode === 'flashcards') { setExamScrollLock(false); renderFlashcards(); }
       }
 
       // --- RENDER HOME (SUBJECTS) ---
@@ -1922,15 +2014,15 @@
         const n = String(name);
         if (currentSkin === 'pink') {
           // Bản pastel cho giao diện hồng
-          if (n.startsWith('TTHCM')) return { grad: 'from-rose-400 to-amber-300', text: 'text-rose-500', border: 'border-l-rose-400', icon: 'flag-vn' };
-          if (n === 'FE GDC') return { grad: 'from-fuchsia-400 to-pink-300', text: 'text-fuchsia-600', border: 'border-l-fuchsia-400', icon: 'palette' };
-          if (n === 'FE AGU') return { grad: 'from-sky-400 to-violet-300', text: 'text-sky-600', border: 'border-l-sky-400', icon: 'gamepad-2' };
-          return { grad: 'from-brand-500 to-accent', text: 'text-brand-600', border: 'border-l-brand-500', icon: 'book-open' };
+          if (n.startsWith('TTHCM')) return { grad: 'from-rose-400 to-amber-300', text: 'text-rose-500', border: 'border-l-rose-400', hex: '#fb7185', icon: 'flag-vn' };
+          if (n === 'FE GDC') return { grad: 'from-fuchsia-400 to-pink-300', text: 'text-fuchsia-600', border: 'border-l-fuchsia-400', hex: '#e879f9', icon: 'palette' };
+          if (n === 'FE AGU') return { grad: 'from-sky-400 to-violet-300', text: 'text-sky-600', border: 'border-l-sky-400', hex: '#38bdf8', icon: 'gamepad-2' };
+          return { grad: 'from-brand-500 to-accent', text: 'text-brand-600', border: 'border-l-brand-500', hex: '#ec4f93', icon: 'book-open' };
         }
-        if (n.startsWith('TTHCM')) return { grad: 'from-rose-600 to-amber-400', text: 'text-rose-600 dark:text-rose-400', border: 'border-l-rose-500', icon: 'flag-vn' };
-        if (n === 'FE GDC') return { grad: 'from-violet-600 to-fuchsia-400', text: 'text-violet-600 dark:text-violet-400', border: 'border-l-violet-500', icon: 'palette' };
-        if (n === 'FE AGU') return { grad: 'from-sky-600 to-indigo-400', text: 'text-sky-600 dark:text-sky-400', border: 'border-l-sky-500', icon: 'gamepad-2' };
-        return { grad: 'from-brand-700 to-accent', text: 'text-brand-600 dark:text-brand-400', border: 'border-l-brand-600', icon: 'book-open' };
+        if (n.startsWith('TTHCM')) return { grad: 'from-rose-600 to-amber-400', text: 'text-rose-600 dark:text-rose-400', border: 'border-l-rose-500', hex: '#e11d48', icon: 'flag-vn' };
+        if (n === 'FE GDC') return { grad: 'from-violet-600 to-fuchsia-400', text: 'text-violet-600 dark:text-violet-400', border: 'border-l-violet-500', hex: '#8b5cf6', icon: 'palette' };
+        if (n === 'FE AGU') return { grad: 'from-sky-600 to-indigo-400', text: 'text-sky-600 dark:text-sky-400', border: 'border-l-sky-500', hex: '#0ea5e9', icon: 'gamepad-2' };
+        return { grad: 'from-brand-700 to-accent', text: 'text-brand-600 dark:text-brand-400', border: 'border-l-brand-600', hex: '#0f7d56', icon: 'book-open' };
       }
 
       function buildSubjectCard(subj, allQs) {
@@ -1944,7 +2036,7 @@
 
         const ac = subjectAccent(subj.name);
         const card = document.createElement('div');
-        card.className = 'group bg-white dark:bg-[#121c17] border border-slate-200/90 dark:border-[#2a3b33] hover:border-brand-500 dark:hover:border-brand-500 rounded-3xl overflow-hidden flex flex-col shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all cursor-pointer';
+        card.className = 'group glass-lite rounded-3xl overflow-hidden flex flex-col hover:shadow-lg hover:-translate-y-0.5 transition-all cursor-pointer';
         card.innerHTML = `
           <div class="relative h-20 bg-gradient-to-br ${ac.grad} px-5 pt-4">
             <div class="absolute inset-0 opacity-25" style="background-image: radial-gradient(circle at 85% 15%, #fff 0, transparent 45%)"></div>
@@ -2014,6 +2106,8 @@
         const userSubjects = subjects.filter(s => !s.isBuiltin);
         userSubjects.forEach(subj => userGrid.appendChild(buildSubjectCard(subj, allQs)));
         document.getElementById('user-subjects-empty').classList.toggle('hidden', userSubjects.length > 0);
+
+        renderDailyCard();
 
         // Bài đang làm dở gần nhất
         const sessions = Object.values(loadExamSessions()).filter(x => x && Array.isArray(x.questions) && x.questions.length);
@@ -2129,7 +2223,8 @@
                  </div>`;
 
             const card = document.createElement('div');
-            card.className = `bg-white dark:bg-[#121c17] border border-slate-200/90 dark:border-[#2a3b33] border-l-4 ${subjAc.border} hover:shadow-md rounded-2xl p-5 flex flex-col justify-between gap-4 shadow-sm transition-all`;
+            card.className = 'glass-lite hover:shadow-md rounded-2xl p-5 flex flex-col justify-between gap-4 transition-all';
+            card.style.borderLeft = `4px solid ${subjAc.hex}`;
             card.innerHTML = `
               <div class="space-y-3">
                 <div class="flex items-start justify-between gap-2">
@@ -2219,6 +2314,7 @@
         pendingExamSetup.timed = !study;
         document.getElementById('setup-instant-fb').checked = study;
         document.getElementById('setup-auto-next').checked = false;
+        document.getElementById('setup-repeat-wrong').checked = study;
         document.getElementById('setup-shuffle-opt').checked = !study;
         try { localStorage.setItem(SETUP_PRESET_KEY, study ? 'study' : 'exam'); } catch { /* bỏ qua */ }
         const on = 'text-left p-3 rounded-xl border-2 transition-all border-brand-600 bg-brand-50 dark:bg-brand-900/30 text-brand-800 dark:text-brand-200';
@@ -2298,7 +2394,7 @@
           all[examState.paperKey] = {
             paperKey: examState.paperKey, title: examState.title, subject: examState.subject,
             passPct: examState.passPct, passScore10: examState.passScore10, shuffleOpt: examState.shuffleOpt,
-            autoNext: examState.autoNext, instantFeedback: examState.instantFeedback,
+            autoNext: examState.autoNext, instantFeedback: examState.instantFeedback, repeatWrong: !!examState.repeatWrong,
             questions: examState.questions, answers: examState.answers, flags: examState.flags,
             currentIndex: examState.currentIndex, secondsLeft: examState.secondsLeft, totalSeconds: examState.totalSeconds,
             savedAt: Date.now()
@@ -2343,7 +2439,7 @@
         examState = {
           active: true, finished: false, paperKey: sv.paperKey, title: sv.title, subject: sv.subject,
           passPct: sv.passPct, passScore10: sv.passScore10, shuffleOpt: sv.shuffleOpt, autoNext: sv.autoNext,
-          instantFeedback: sv.instantFeedback, autoNextTimer: null, rawPool: [...sv.questions],
+          instantFeedback: sv.instantFeedback, repeatWrong: !!sv.repeatWrong, autoNextTimer: null, rawPool: [...sv.questions],
           questions: sv.questions, answers: sv.answers || {}, flags: sv.flags || {},
           currentIndex: Math.min(Math.max(0, sv.currentIndex || 0), sv.questions.length - 1),
           secondsLeft: sv.secondsLeft, totalSeconds: sv.totalSeconds, timerId: null, reviewFilter: 'WRONG'
@@ -2427,6 +2523,11 @@
           masteryEl.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 dark:bg-[#1b2822] text-slate-500 dark:text-slate-400';
         }
 
+        if (q.isRetry) {
+          masteryEl.textContent = '🔁 Làm lại câu sai';
+          masteryEl.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300';
+        }
+
         const starBtn = document.getElementById('btn-star-exam-q');
         starBtn.className = rec.starred
           ? 'flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-amber-400 bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 text-xs font-extrabold transition-all'
@@ -2478,7 +2579,7 @@
               cardCls += 'bg-brand-50 dark:bg-brand-900/30 border-brand-600 text-slate-900 dark:text-white';
               badgeCls += 'bg-brand-600 text-white';
             } else {
-              cardCls += 'bg-white dark:bg-[#17231e] shadow-sm hover:bg-brand-50/60 dark:hover:bg-[#203027] border-slate-200 dark:border-[#36493f] hover:border-brand-500 text-slate-800 dark:text-slate-200';
+              cardCls += 'glass-lite hover:border-brand-500 text-slate-800 dark:text-slate-200';
               badgeCls += LETTER_TINTS[optIdx % LETTER_TINTS.length] + ' group-hover:bg-brand-600 group-hover:text-white';
             }
           }
@@ -2516,6 +2617,17 @@
         const showEx = examState.instantFeedback && hasAnswered && !!q.explanation;
         exEl.classList.toggle('hidden', !showEx);
         exEl.textContent = showEx ? q.explanation : '';
+
+        const noteWrap = document.getElementById('eq-note-wrap');
+        const showNote = examState.instantFeedback && hasAnswered;
+        noteWrap.classList.toggle('hidden', !showNote);
+        if (showNote) {
+          const nt = getNote(q.id);
+          const ta = document.getElementById('eq-note');
+          ta.value = nt;
+          ta.classList.toggle('hidden', !nt);
+          document.getElementById('eq-note-label').textContent = nt ? 'Mẹo nhớ của bạn' : 'Thêm mẹo nhớ của riêng bạn';
+        }
 
         const palette = document.getElementById('exam-palette');
         palette.innerHTML = '';
@@ -2569,6 +2681,10 @@
         if (examState.instantFeedback && examState.answers[idx] !== undefined) return;
         examState.answers[idx] = optIdx;
         if (examState.instantFeedback) recordAnswer(q.id, optIdx === q.shuffledCorrectIndex);
+        if (examState.instantFeedback && examState.repeatWrong && optIdx !== q.shuffledCorrectIndex && !q.isRetry && !q.retryQueued) {
+          q.retryQueued = true;
+          examState.questions.push({ ...prepareExamQuestionItem(q, examState.shuffleOpt), isRetry: true });
+        }
         renderActiveExamQuestion();
         if (examState.autoNext && idx < examState.questions.length - 1) {
           if (examState.autoNextTimer) clearTimeout(examState.autoNextTimer);
@@ -2591,13 +2707,14 @@
 
         let correct = 0;
         examState.questions.forEach((q, i) => {
+          if (q.isRetry) return;
           const userAns = examState.answers[i];
           const isOk = userAns === q.shuffledCorrectIndex;
           if (isOk) correct++;
           if (!examState.instantFeedback && userAns !== undefined) recordAnswer(q.id, isOk);
         });
 
-        const total = examState.questions.length;
+        const total = examState.questions.filter(q => !q.isRetry).length;
         const pct = Math.round((correct / total) * 100);
         const score10Raw = (correct / total) * 10;
         const score10 = Math.round(score10Raw * 10) / 10;
@@ -2661,6 +2778,7 @@
         const letters = LETTERS6;
 
         examState.questions.forEach((q, i) => {
+          if (q.isRetry) return;
           const userAns = examState.answers[i];
           const isOk = userAns === q.shuffledCorrectIndex;
           if (examState.reviewFilter === 'WRONG' && isOk) return;
@@ -2682,6 +2800,7 @@
               </div>
               ${!isOk ? `<div class="text-emerald-700 dark:text-emerald-300">Đáp án đúng: <strong>${letters[q.shuffledCorrectIndex]}. ${escapeHtml(q.shuffledOptions[q.shuffledCorrectIndex])}</strong></div>` : ''}
             </div>
+            ${getNote(q.id) ? `<div class="rounded-xl glass-lite px-3.5 py-2.5 text-xs sm:text-sm leading-relaxed"><b>Mẹo nhớ của bạn:</b> ${escapeHtml(getNote(q.id))}</div>` : ''}
             ${q.explanation ? `<div class="rounded-xl border border-amber-300 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/10 text-amber-900 dark:text-amber-100 px-3.5 py-2.5 text-xs sm:text-sm leading-relaxed">${escapeHtml(q.explanation)}</div>` : ''}
           `;
           listEl.appendChild(card);
@@ -3937,60 +4056,6 @@ D. 60.0 ms`;
         });
       }
 
-      // --- FLASHCARDS ---
-      function renderFlashcards() {
-        const query = document.getElementById('fc-search').value.trim().toLowerCase();
-        fcFiltered = window.FLASHCARDS_DATA.filter(item => {
-          if (fcSubject !== 'ALL' && item.subject !== fcSubject) return false;
-          if (query) return `${item.term} ${item.definition} ${item.tip} ${item.subject}`.toLowerCase().includes(query);
-          return true;
-        });
-        if (fcIndex >= fcFiltered.length) fcIndex = 0;
-
-        document.getElementById('fc-cards-view').classList.toggle('hidden', fcViewType !== 'cards');
-        document.getElementById('fc-table-view').classList.toggle('hidden', fcViewType !== 'table');
-        document.getElementById('fc-mode-cards').className = fcViewType === 'cards' ? 'px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-brand-600 text-white' : 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 dark:bg-[#17231e] text-slate-700 dark:text-slate-300';
-        document.getElementById('fc-mode-table').className = fcViewType === 'table' ? 'px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-brand-600 text-white' : 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 dark:bg-[#17231e] text-slate-700 dark:text-slate-300';
-
-        document.querySelectorAll('.fc-subj-btn').forEach(btn => {
-          const active = btn.dataset.fcSubj === fcSubject;
-          btn.className = active ? 'fc-subj-btn px-3 py-1.5 rounded-lg text-xs font-extrabold bg-brand-600 text-white' : 'fc-subj-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 dark:text-slate-400';
-        });
-
-        document.getElementById('fc-card-3d').classList.toggle('rotate-y-180', fcFlipped);
-
-        if (fcFiltered.length === 0) {
-          document.getElementById('fc-front-cat').textContent = 'Trống';
-          document.getElementById('fc-counter').textContent = '0 / 0';
-          document.getElementById('fc-front-term').textContent = 'Không tìm thấy thuật ngữ';
-          document.getElementById('fc-back-term').textContent = '';
-          document.getElementById('fc-back-def').textContent = 'Hãy thử từ khóa khác.';
-          document.getElementById('fc-back-tip').textContent = '';
-        } else {
-          const item = fcFiltered[fcIndex];
-          document.getElementById('fc-front-cat').textContent = item.subject;
-          document.getElementById('fc-counter').textContent = `${fcIndex + 1} / ${fcFiltered.length}`;
-          document.getElementById('fc-front-term').textContent = item.term;
-          document.getElementById('fc-back-term').textContent = item.term;
-          document.getElementById('fc-back-def').textContent = item.definition;
-          document.getElementById('fc-back-tip').textContent = item.tip;
-        }
-
-        const tbody = document.getElementById('fc-table-body');
-        tbody.innerHTML = '';
-        fcFiltered.forEach(item => {
-          const tr = document.createElement('tr');
-          tr.className = 'hover:bg-slate-50 dark:hover:bg-[#17231e]';
-          tr.innerHTML = `
-            <td class="p-4 align-top"><span class="px-2.5 py-0.5 rounded-lg text-xs font-extrabold bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-300 whitespace-nowrap">${escapeHtml(item.subject)}</span></td>
-            <td class="p-4 align-top font-extrabold text-slate-900 dark:text-white">${escapeHtml(item.term)}</td>
-            <td class="p-4 align-top text-slate-600 dark:text-slate-300 leading-relaxed">${escapeHtml(item.definition)}</td>
-            <td class="p-4 align-top text-amber-700 dark:text-amber-300 text-xs sm:text-sm font-semibold">⚡ ${escapeHtml(item.tip)}</td>
-          `;
-          tbody.appendChild(tr);
-        });
-      }
-
       // --- BIND EVENTS ---
       function bindEvents() {
         bindHighlightEvents();
@@ -3998,9 +4063,7 @@ D. 60.0 ms`;
         const closeThemeModal = () => { themeModal.classList.add('hidden'); themeModal.classList.remove('flex'); };
         document.getElementById('close-theme-modal').addEventListener('click', closeThemeModal);
         themeModal.addEventListener('click', (e) => { if (e.target === themeModal) closeThemeModal(); });
-        document.querySelectorAll('[data-skin-pick]').forEach(btn => btn.addEventListener('click', () => applySkin(btn.dataset.skinPick)));
-        document.getElementById('mode-light').addEventListener('click', () => applyTheme('light'));
-        document.getElementById('mode-dark').addEventListener('click', () => { if (currentSkin !== 'pink') applyTheme('dark'); });
+        document.querySelectorAll('[data-look]').forEach(btn => btn.addEventListener('click', () => applyLook(btn.dataset.look)));
         document.getElementById('btn-theme-toggle').addEventListener('click', () => {
           updateSkinUI();
           themeModal.classList.remove('hidden');
@@ -4016,7 +4079,7 @@ D. 60.0 ms`;
           switchMode('home');
         });
 
-        document.querySelectorAll('.nav-tab').forEach(btn => {
+        document.querySelectorAll('[data-mode]').forEach(btn => {
           btn.addEventListener('click', () => {
             if (examState.active && btn.dataset.mode !== 'home') {
               if (!confirm('Bạn đang làm bài thi, thoát ra sẽ mất tiến độ bài đang làm. Tiếp tục?')) return;
@@ -4032,6 +4095,7 @@ D. 60.0 ms`;
         const heroDrop = document.getElementById('hero-dropzone');
         document.getElementById('btn-hero-paste-text').addEventListener('click', () => requireLogin('Đăng nhập để thêm đề và lưu vào tài khoản của bạn.', () => openUploadStudio()));
         document.getElementById('btn-open-upload').addEventListener('click', () => requireLogin('Đăng nhập để thêm đề và lưu vào tài khoản của bạn.', () => openUploadStudio()));
+        document.getElementById('tab-upload').addEventListener('click', () => requireLogin('Đăng nhập để thêm đề và lưu vào tài khoản của bạn.', () => openUploadStudio()));
         document.getElementById('btn-upload-into-subject').addEventListener('click', () => requireLogin('Đăng nhập để thêm đề và lưu vào tài khoản của bạn.', () => openUploadStudio(activeSubjectName)));
 
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(ev => {
@@ -4109,6 +4173,7 @@ D. 60.0 ms`;
           const shuffleOpt = document.getElementById('setup-shuffle-opt').checked;
           const instantFb = document.getElementById('setup-instant-fb').checked;
           const autoNext = document.getElementById('setup-auto-next').checked;
+          const repeatWrong = document.getElementById('setup-repeat-wrong').checked;
 
           let poolToRun = paper.isShuffle ? pickShufflePool(subjName) : [...paper.questions];
           if (shuffleQ) poolToRun = shuffleArray(poolToRun);
@@ -4116,6 +4181,7 @@ D. 60.0 ms`;
 
           closeExamSetupModal();
           startExamPaper(poolToRun, seconds, paper.title, paper.key, subjName, PASS_SCORE10 * 10, shuffleOpt, autoNext, instantFb, PASS_SCORE10);
+          examState.repeatWrong = instantFb && repeatWrong;
         });
 
         // Active Exam Controls
@@ -4148,6 +4214,16 @@ D. 60.0 ms`;
         };
         document.getElementById('btn-exam-prev-top').addEventListener('click', goPrevQuestion);
         document.getElementById('btn-exam-next-top').addEventListener('click', goNextQuestion);
+
+        document.getElementById('eq-note-toggle').addEventListener('click', () => {
+          const ta = document.getElementById('eq-note');
+          ta.classList.remove('hidden');
+          ta.focus();
+        });
+        document.getElementById('eq-note').addEventListener('input', (e) => {
+          const q = examState.questions[examState.currentIndex];
+          if (q) setNote(q.id, e.target.value);
+        });
 
         // Điện thoại: nút Trước/Tiếp ở đáy, mở bảng câu hỏi, vuốt trái/phải để đổi câu
         document.getElementById('btn-exam-prev-bottom').addEventListener('click', goPrevQuestion);
@@ -4191,7 +4267,7 @@ D. 60.0 ms`;
         });
 
         document.getElementById('btn-retry-wrong-only').addEventListener('click', () => {
-          const wrongQs = examState.questions.filter((q, i) => examState.answers[i] !== q.shuffledCorrectIndex);
+          const wrongQs = examState.questions.filter((q, i) => !q.isRetry && examState.answers[i] !== q.shuffledCorrectIndex);
           if (wrongQs.length === 0) return;
           startExamPaper(wrongQs, 0, `${examState.title} (Ôn ${wrongQs.length} câu sai)`, '', examState.subject, examState.passPct, examState.shuffleOpt, examState.autoNext, examState.instantFeedback, examState.passScore10);
         });
@@ -4205,6 +4281,17 @@ D. 60.0 ms`;
           btn.addEventListener('click', () => { notebookTab = btn.dataset.nbTab; renderNotebook(); });
         });
         document.getElementById('nb-subject-filter').addEventListener('change', renderNotebook);
+
+        // Ôn nhanh 10 câu: ưu tiên câu hay sai, rồi câu đang nhớ, rồi câu chưa làm
+        document.getElementById('btn-quick-10').addEventListener('click', () => {
+          const all = getAllQuestionsFlat();
+          if (!all.length) return;
+          const rank = (q) => { const st = (progressMap[q.id] || {}).status || 'unseen'; return st === 'red' ? 0 : (st === 'yellow' ? 1 : (st === 'unseen' ? 2 : 3)); };
+          const pool = shuffleArray(all).sort((a, b) => rank(a) - rank(b)).slice(0, 10);
+          switchMode('home');
+          startExamPaper(pool, 0, 'Ôn nhanh 10 câu', '', 'Ôn nhanh', 40, true, false, true, 4);
+          examState.repeatWrong = true;
+        });
 
         document.getElementById('btn-exam-from-red').addEventListener('click', () => {
           const pool = getAllQuestionsFlat().filter(q => progressMap[q.id] && progressMap[q.id].status === 'red');
@@ -4220,28 +4307,6 @@ D. 60.0 ms`;
           switchMode('home');
           const slice = shuffleArray(pool).slice(0, PAPER_SIZE);
           startExamPaper(slice, 0, `Đề Ôn Câu Gắn Sao (${slice.length} câu)`, '', 'Tổng hợp');
-        });
-
-        // Flashcards
-        document.getElementById('fc-mode-cards').addEventListener('click', () => { fcViewType = 'cards'; renderFlashcards(); });
-        document.getElementById('fc-mode-table').addEventListener('click', () => { fcViewType = 'table'; renderFlashcards(); });
-        document.querySelectorAll('.fc-subj-btn').forEach(btn => {
-          btn.addEventListener('click', () => { fcSubject = btn.dataset.fcSubj; fcFlipped = false; renderFlashcards(); });
-        });
-        document.getElementById('fc-search').addEventListener('input', () => { fcFlipped = false; renderFlashcards(); });
-        document.getElementById('fc-card-3d').addEventListener('click', () => { fcFlipped = !fcFlipped; renderFlashcards(); });
-        document.getElementById('fc-flip-btn').addEventListener('click', () => { fcFlipped = !fcFlipped; renderFlashcards(); });
-        document.getElementById('fc-prev').addEventListener('click', () => {
-          if (!fcFiltered.length) return;
-          fcIndex = (fcIndex - 1 + fcFiltered.length) % fcFiltered.length;
-          fcFlipped = false;
-          renderFlashcards();
-        });
-        document.getElementById('fc-next').addEventListener('click', () => {
-          if (!fcFiltered.length) return;
-          fcIndex = (fcIndex + 1) % fcFiltered.length;
-          fcFlipped = false;
-          renderFlashcards();
         });
 
         // Shortcuts Modal
@@ -4283,10 +4348,6 @@ D. 60.0 ms`;
               e.preventDefault();
               toggleHlPref('auto');
             }
-          } else if (currentMode === 'flashcards' && fcViewType === 'cards') {
-            if (e.key === ' ') { e.preventDefault(); fcFlipped = !fcFlipped; renderFlashcards(); }
-            else if (e.key === 'ArrowRight' && fcFiltered.length) { e.preventDefault(); fcIndex = (fcIndex + 1) % fcFiltered.length; fcFlipped = false; renderFlashcards(); }
-            else if (e.key === 'ArrowLeft' && fcFiltered.length) { e.preventDefault(); fcIndex = (fcIndex - 1 + fcFiltered.length) % fcFiltered.length; fcFlipped = false; renderFlashcards(); }
           }
         });
       }
