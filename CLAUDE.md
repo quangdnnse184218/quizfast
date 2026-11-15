@@ -40,6 +40,8 @@ Web luyện đề trắc nghiệm cho sinh viên (môn FE GDC, FE AGU, và đề
 - Đáp án kiểu "Tất cả đều đúng", "A và B", "Cả hai"... **không bị trộn** thứ tự dù bật trộn đáp án (xem `optionsOrderMatters`).
 - Chỉ đổi màu, chữ, bố cục. **Giữ dạng trắc nghiệm chọn đáp án** và màu thương hiệu xanh lá. Không tự nghĩ ra concept mới.
 - Bảng màu: thương hiệu xanh ngọc lục bảo đậm (`brand-600` #0f7d56, `brand-700` #0b6648) và thang `slate` đã được chỉnh ngả xanh trong `tailwind.config` (đổi một chỗ là đổi cả web). Nền tối dùng các mã #0b1210 / #121c17 / #1b2822.
+- Điểm nhấn: thanh đầu trang gradient ngọc lục bảo (chữ trắng), nút **Tải đề lên** màu vàng, mỗi môn có dải màu riêng (hàm `subjectAccent`: TTHCM đỏ→vàng, FE GDC tím, FE AGU xanh dương, môn của bạn xanh lá), chữ cái A/B/C/D có sắc nhẹ riêng (`LETTER_TINTS`), thanh tiến độ gradient xanh→vàng trong trang làm bài. Trên điện thoại ẩn nhóm nút Highlight và nhãn tên môn để câu hỏi lên cao hơn.
+- Tránh dùng `space-y-*` cho vùng có phần tử ẩn bằng class `hidden` (margin vẫn tính, tạo khoảng trống lạ); dùng `flex flex-col gap-*`.
 - Icon: icon màu từ Fluent Emoji Flat (MIT) và Twemoji (cờ), tải sẵn thành file SVG trong `icons/`. Mã vẫn viết `<i data-lucide="tên">`; bảng `MAP` ở đầu `index.html` đổi tên lucide sang file màu, tên không có trong `MAP` (đóng, mũi tên, thêm...) vẫn dùng nét lucide. Thêm icon mới: tải SVG vào `icons/` rồi thêm vào `MAP`.
 - Mặc định giao diện sáng; có chế độ tối (đã chỉnh cho đủ tương phản).
 - Highlight: nhãn nhỏ "Highlight" phía trên, hai nút bên dưới là "Tự động" (web tự dò từ khóa, không dùng danh sách có sẵn) và "Thủ công" (bôi đen, lưu theo từng câu trong localStorage). **Mặc định tắt cả hai**, người dùng tự bật. Phím H bật/tắt tô tự động.

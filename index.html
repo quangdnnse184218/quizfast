@@ -179,22 +179,22 @@
 <body class="bg-[#f3f6f4] dark:bg-[#0b1210] text-slate-900 dark:text-[#f0f6f2] h-[100dvh] overflow-hidden flex flex-col transition-colors duration-200 selection:bg-brand-500/30">
 
   <!-- ==================== TOP HEADER ==================== -->
-  <header class="sticky top-0 z-30 bg-white/90 dark:bg-[#121c17]/90 backdrop-blur-md border-b border-slate-200/80 dark:border-[#2a3b33]">
+  <header class="sticky top-0 z-30 text-white bg-gradient-to-r from-brand-800 via-brand-700 to-brand-600 dark:from-[#08201a] dark:via-[#0a2e22] dark:to-[#0d3a2a] shadow-lg shadow-brand-900/25">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
       <!-- Brand Logo -->
       <div class="flex items-center gap-3">
-        <button id="btn-logo-home" type="button" class="w-10 h-10 rounded-xl bg-brand-700 text-white flex items-center justify-center hover:bg-brand-600 transition-transform shrink-0" title="Về trang chủ">
+        <button id="btn-logo-home" type="button" class="w-10 h-10 rounded-xl bg-white/15 ring-1 ring-white/30 text-white flex items-center justify-center hover:bg-white/25 transition-colors shrink-0" title="Về trang chủ">
           <i data-lucide="zap" class="w-6 h-6"></i>
         </button>
         <div>
           <div class="flex items-center gap-2">
-            <span class="hidden sm:inline font-display font-extrabold text-lg sm:text-xl tracking-tight text-slate-900 dark:text-white">QuizFast</span>
+            <span class="hidden sm:inline font-display font-extrabold text-lg sm:text-xl tracking-tight text-white">QuizFast</span>
           </div>
         </div>
       </div>
 
       <!-- Main Navigation -->
-      <nav class="flex items-center gap-1 bg-slate-100 dark:bg-[#0b1210] p-1 rounded-xl border border-slate-200/80 dark:border-[#2a3b33]">
+      <nav class="flex items-center gap-1 bg-black/20 p-1 rounded-xl border border-white/10">
         <button data-mode="home" aria-label="Môn và đề" title="Môn và đề" class="nav-tab flex items-center gap-2 whitespace-nowrap px-3 sm:px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all">
           <i data-lucide="folder-kanban" class="w-4 h-4"></i>
           <span class="hidden sm:inline">Môn &amp; Đề</span>
@@ -202,7 +202,7 @@
         <button data-mode="mistakes" aria-label="Câu hay sai" title="Câu hay sai" class="nav-tab flex items-center gap-2 whitespace-nowrap px-3 sm:px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all">
           <i data-lucide="flame" class="w-4 h-4"></i>
           <span class="hidden md:inline">Câu hay sai</span>
-          <span id="nav-red-count" class="px-1.5 py-0.2 rounded-full text-[11px] bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300 font-extrabold">0</span>
+          <span id="nav-red-count" class="px-1.5 py-0.5 rounded-full text-[11px] leading-none bg-rose-500 text-white font-extrabold">0</span>
         </button>
         <button data-mode="flashcards" aria-label="Flashcards" title="Flashcards" class="nav-tab flex items-center gap-2 whitespace-nowrap px-3 sm:px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all">
           <i data-lucide="layers" class="w-4 h-4"></i>
@@ -212,15 +212,15 @@
 
       <!-- Header Actions -->
       <div class="flex items-center gap-2">
-        <button id="btn-open-upload" aria-label="Tải đề lên" class="whitespace-nowrap flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs sm:text-sm font-extrabold shadow-sm shadow-brand-600/25 transition-all active:scale-95">
+        <button id="btn-open-upload" aria-label="Tải đề lên" class="whitespace-nowrap flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-brand-950 text-xs sm:text-sm font-extrabold shadow-sm shadow-black/20 transition-all active:scale-95">
           <i data-lucide="upload-cloud" class="w-4 h-4"></i>
           <span class="hidden sm:inline">Tải đề lên</span>
         </button>
-        <button id="btn-theme-toggle" class="p-2.5 rounded-xl bg-slate-100 dark:bg-[#1b2822] hover:bg-slate-200 dark:hover:bg-[#2f4238] text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-[#36493f] transition-all" title="Đổi giao diện Sáng / Tối">
+        <button id="btn-theme-toggle" class="p-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white border border-white/20 transition-all" title="Đổi giao diện Sáng / Tối">
           <i id="theme-icon-sun" data-lucide="sun" class="w-4 h-4 hidden text-amber-400"></i>
           <i id="theme-icon-moon" data-lucide="moon" class="w-4 h-4 text-slate-700"></i>
         </button>
-        <button id="btn-shortcuts-help" class="hidden lg:flex p-2.5 rounded-xl bg-slate-100 dark:bg-[#1b2822] hover:bg-slate-200 dark:hover:bg-[#2f4238] text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-[#36493f] transition-all" title="Phím tắt bàn phím">
+        <button id="btn-shortcuts-help" class="hidden lg:flex p-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white border border-white/20 transition-all" title="Phím tắt bàn phím">
           <i data-lucide="keyboard" class="w-4 h-4"></i>
         </button>
       </div>
@@ -231,13 +231,13 @@
   <main id="app-main" class="flex-1 min-h-0 max-w-7xl w-full mx-auto px-4 sm:px-6 py-5 sm:py-6 overflow-y-auto">
 
     <!-- ==================== VIEW 1: HOME (SUBJECTS + SMART UPLOAD) ==================== -->
-    <section id="view-home" class="space-y-8 max-w-6xl mx-auto lg:h-full">
+    <section id="view-home" class="flex flex-col gap-6 max-w-6xl mx-auto lg:h-full">
 
       <!-- 1A. MÀN HÌNH TỔNG QUAN CÁC MÔN & KHU VỰC UPLOAD ĐỀ -->
-      <div id="home-subjects-screen" class="space-y-12">
+      <div id="home-subjects-screen" class="flex flex-col gap-9">
 
         <!-- Bài đang làm dở -->
-        <div id="resume-banner" class="hidden rounded-2xl border-2 border-brand-500 bg-brand-50 dark:bg-brand-900/25 p-4 flex flex-wrap items-center justify-between gap-3">
+        <div id="resume-banner" class="hidden rounded-2xl border border-amber-300 dark:border-amber-500/40 bg-gradient-to-r from-amber-50 to-brand-50 dark:from-amber-500/10 dark:to-brand-900/30 p-4 flex flex-wrap items-center justify-between gap-3 shadow-sm">
           <div class="min-w-0">
             <p class="text-xs font-bold text-brand-700 dark:text-brand-300">Bạn đang làm dở</p>
             <p id="resume-banner-text" class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white truncate"></p>
@@ -283,7 +283,8 @@
       <!-- 1B. MÀN HÌNH CHI TIẾT MÔN HỌC (DANH SÁCH ĐỀ TRONG MÔN) -->
       <div id="subject-detail-screen" class="hidden space-y-6">
         <!-- Tiêu đề môn + độ thông thạo -->
-        <div class="bg-white dark:bg-[#121c17] border border-slate-200/90 dark:border-[#2a3b33] rounded-2xl shadow-sm divide-y divide-slate-200/80 dark:divide-[#2a3b33]">
+        <div class="bg-white dark:bg-[#121c17] border border-slate-200/90 dark:border-[#2a3b33] rounded-3xl overflow-hidden shadow-sm divide-y divide-slate-200/80 dark:divide-[#2a3b33]">
+          <div id="detail-accent" class="h-2 bg-gradient-to-r from-brand-700 to-emerald-400"></div>
           <div class="p-5 sm:p-6 flex flex-wrap items-center justify-between gap-4">
             <div class="flex items-center gap-3.5 min-w-0">
               <button id="btn-back-subjects" class="p-2.5 rounded-xl bg-slate-100 dark:bg-[#1b2822] hover:bg-slate-200 dark:hover:bg-[#2f4238] text-slate-700 dark:text-slate-200 transition-all shrink-0" title="Quay lại danh sách môn" aria-label="Quay lại danh sách môn">
@@ -335,21 +336,21 @@
       <!-- 1C. MÀN HÌNH ĐANG LÀM ĐỀ (ACTIVE EXAM WORKSPACE) -->
       <div id="exam-running" class="hidden !mt-0 lg:h-full flex-col gap-4 pb-24 lg:pb-0">
         <div class="shrink-0 bg-white dark:bg-[#121c17] border border-slate-200/90 dark:border-[#2a3b33] rounded-2xl p-3.5 sm:p-4 flex flex-wrap items-center justify-between gap-3 shadow-sm">
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-3 min-w-0 flex-1">
             <button id="btn-exit-exam" class="whitespace-nowrap flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#1b2822] hover:bg-slate-200 dark:hover:bg-[#2f4238] text-slate-700 dark:text-slate-200 text-xs sm:text-sm font-bold transition-all">
               <i data-lucide="arrow-left" class="w-4 h-4"></i>
               <span class="hidden sm:inline">Thoát đề</span>
             </button>
-            <div>
-              <div id="exam-running-title" class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white">Đề 1</div>
-              <div class="text-xs text-slate-500 dark:text-slate-400">
+            <div class="min-w-0">
+              <div id="exam-running-title" class="truncate text-sm sm:text-base font-extrabold text-slate-900 dark:text-white">Đề 1</div>
+              <div class="text-xs whitespace-nowrap text-slate-500 dark:text-slate-400">
                 Đã làm: <span id="exam-answered-count" class="font-bold text-brand-600 dark:text-brand-400">0</span> / <span id="exam-total-count">60</span> câu
               </div>
             </div>
           </div>
 
-          <div class="flex flex-wrap items-center gap-2">
-            <div class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-brand-50 dark:bg-[#17231e] border border-brand-200 dark:border-brand-700/40">
+          <div class="flex items-center gap-2 shrink-0">
+            <div class="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl bg-brand-50 dark:bg-[#17231e] border border-brand-200 dark:border-brand-700/40">
               <i data-lucide="clock" class="w-4 h-4 text-brand-600 dark:text-brand-400"></i>
               <span id="exam-timer" class="font-mono-code text-base sm:text-lg font-extrabold text-brand-700 dark:text-brand-400">50:00</span>
             </div>
@@ -357,6 +358,9 @@
             <button id="btn-submit-exam" class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs sm:text-sm font-extrabold shadow-sm transition-all">
               Nộp bài
             </button>
+          </div>
+          <div class="basis-full h-2 rounded-full bg-slate-100 dark:bg-[#1b2822] overflow-hidden" role="progressbar" aria-label="Tiến độ làm bài">
+            <div id="exam-progress-fill" class="h-full rounded-full bg-gradient-to-r from-brand-500 via-emerald-400 to-amber-400 transition-all duration-300" style="width: 0%"></div>
           </div>
         </div>
 
@@ -366,12 +370,12 @@
             <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-slate-200/80 dark:border-[#2a3b33]">
               <div class="flex flex-wrap items-center gap-2">
                 <span id="eq-number-badge" class="px-3 py-1 rounded-lg text-xs font-extrabold bg-brand-600 text-white">Câu 1 / 60</span>
-                <span id="eq-subject-badge" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 dark:bg-[#1b2822] text-slate-600 dark:text-slate-300"></span>
+                <span id="eq-subject-badge" class="hidden sm:inline-block px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 dark:bg-[#1b2822] text-slate-600 dark:text-slate-300"></span>
                 <span id="eq-mastery-badge" class="px-2.5 py-1 rounded-lg text-xs font-bold"></span>
               </div>
 
               <div class="flex flex-wrap items-center gap-1.5">
-                <div class="inline-flex flex-col gap-0.5">
+                <div class="hidden sm:inline-flex flex-col gap-0.5">
                   <span class="hidden sm:block text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-none px-0.5">Highlight</span>
                   <div class="inline-flex items-center rounded-xl border border-slate-200 dark:border-[#36493f] overflow-hidden" role="group" aria-label="Highlight">
                     <button type="button" class="hl-btn-auto flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-bold transition-all" title="Tự động tô từ khóa (phím H)">
@@ -405,7 +409,7 @@
               </div>
             </div>
 
-            <h2 id="eq-question" class="text-base sm:text-xl font-bold text-slate-900 dark:text-white leading-relaxed"></h2>
+            <h2 id="eq-question" class="text-[1.075rem] sm:text-xl font-bold text-slate-900 dark:text-white leading-relaxed"></h2>
 
             <img id="eq-image" alt="Hình minh họa của câu hỏi" class="hidden max-w-full mx-auto rounded-xl border border-slate-200 dark:border-[#2a3b33]" />
             <div id="eq-options" class="space-y-3"></div>
@@ -1762,8 +1766,8 @@
         document.querySelectorAll('.nav-tab').forEach(btn => {
           const active = btn.dataset.mode === mode;
           btn.className = active
-            ? 'nav-tab flex items-center gap-2 whitespace-nowrap px-3 sm:px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-extrabold transition-all bg-brand-600 text-white shadow-sm'
-            : 'nav-tab flex items-center gap-2 whitespace-nowrap px-3 sm:px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white';
+            ? 'nav-tab flex items-center gap-2 whitespace-nowrap px-3 sm:px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-extrabold transition-all bg-white text-brand-800 shadow-sm'
+            : 'nav-tab flex items-center gap-2 whitespace-nowrap px-3 sm:px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all text-white/85 hover:text-white hover:bg-white/10';
         });
 
         if (mode === 'home') {
@@ -1776,6 +1780,15 @@
       }
 
       // --- RENDER HOME (SUBJECTS) ---
+      // Màu riêng cho từng môn (giao diện chung vẫn xanh lá; màu môn chỉ là điểm nhấn)
+      function subjectAccent(name) {
+        const n = String(name);
+        if (n.startsWith('TTHCM')) return { grad: 'from-rose-600 to-amber-400', text: 'text-rose-600 dark:text-rose-400', border: 'border-l-rose-500', icon: 'flag-vn' };
+        if (n === 'FE GDC') return { grad: 'from-violet-600 to-fuchsia-400', text: 'text-violet-600 dark:text-violet-400', border: 'border-l-violet-500', icon: 'palette' };
+        if (n === 'FE AGU') return { grad: 'from-sky-600 to-indigo-400', text: 'text-sky-600 dark:text-sky-400', border: 'border-l-sky-500', icon: 'gamepad-2' };
+        return { grad: 'from-brand-700 to-emerald-400', text: 'text-brand-600 dark:text-brand-400', border: 'border-l-brand-600', icon: 'book-open' };
+      }
+
       function buildSubjectCard(subj, allQs) {
         const qs = allQs.filter(q => q.subject === subj.name);
         const papers = getPapersForSubject(subj.name);
@@ -1785,33 +1798,34 @@
         });
         const pct = qs.length ? Math.round((mastered / qs.length) * 100) : 0;
 
+        const ac = subjectAccent(subj.name);
         const card = document.createElement('div');
-        card.className = 'group bg-white dark:bg-[#121c17] border border-slate-200/90 dark:border-[#2a3b33] hover:border-brand-500 dark:hover:border-brand-500 rounded-2xl p-5 flex flex-col justify-between gap-5 shadow-sm hover:shadow-md transition-all cursor-pointer';
+        card.className = 'group bg-white dark:bg-[#121c17] border border-slate-200/90 dark:border-[#2a3b33] hover:border-brand-500 dark:hover:border-brand-500 rounded-3xl overflow-hidden flex flex-col shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all cursor-pointer';
         card.innerHTML = `
-          <div class="space-y-3">
-            <div class="flex items-start justify-between gap-2">
-              <div class="w-12 h-12 rounded-2xl bg-brand-50 dark:bg-brand-900/30 border border-brand-100 dark:border-brand-800/40 flex items-center justify-center">
-                <i data-lucide="${String(subj.name).startsWith('TTHCM') ? 'flag-vn' : (subj.name === 'FE GDC' ? 'palette' : (subj.name === 'FE AGU' ? 'gamepad-2' : 'book-open'))}" class="w-7 h-7"></i>
-              </div>
-              <div class="flex items-center gap-1.5">
-                <span class="px-2.5 py-1 rounded-full text-xs font-extrabold bg-slate-100 dark:bg-[#1b2822] text-slate-600 dark:text-slate-300">${qs.length} câu</span>
-                ${!subj.isBuiltin ? `<button class="btn-del-subj p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10" title="Xóa môn học này" aria-label="Xóa môn học này"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
-              </div>
+          <div class="relative h-20 bg-gradient-to-br ${ac.grad} px-5 pt-4">
+            <div class="absolute inset-0 opacity-25" style="background-image: radial-gradient(circle at 85% 15%, #fff 0, transparent 45%)"></div>
+            <div class="relative flex items-start justify-between gap-2">
+              <span class="px-2.5 py-1 rounded-full text-xs font-extrabold bg-white/25 text-white backdrop-blur-sm">${qs.length} câu</span>
+              ${!subj.isBuiltin ? `<button class="btn-del-subj p-1.5 rounded-lg text-white/80 hover:text-white hover:bg-white/20" title="Xóa môn học này" aria-label="Xóa môn học này"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
             </div>
-
-            <div>
-              <h3 class="text-lg font-extrabold text-slate-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">${escapeHtml(subj.name)}</h3>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-1">${escapeHtml(subj.description)}</p>
+            <div class="absolute -bottom-6 left-5 w-12 h-12 rounded-2xl bg-white dark:bg-[#1b2822] shadow-md ring-4 ring-white dark:ring-[#121c17] flex items-center justify-center">
+              <i data-lucide="${ac.icon}" class="w-7 h-7"></i>
             </div>
           </div>
 
-          <div class="space-y-2.5">
-            <div class="flex items-center justify-between text-xs">
-              <span class="text-slate-500 dark:text-slate-400 font-semibold">${papers.length} đề thi sẵn sàng</span>
-              <span class="font-extrabold text-brand-600 dark:text-brand-400">Thuộc ${pct}%</span>
+          <div class="px-5 pt-8 pb-4 flex-1 flex flex-col justify-between gap-3">
+            <div>
+              <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">${escapeHtml(subj.name)}</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-2">${escapeHtml(subj.description)}</p>
             </div>
-            <div class="w-full h-2 bg-slate-100 dark:bg-[#1b2822] rounded-full overflow-hidden">
-              <div class="bg-brand-500 h-full transition-all duration-300" style="width: ${pct}%"></div>
+            <div class="space-y-2">
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-slate-500 dark:text-slate-400 font-semibold">${papers.length} đề</span>
+                <span class="font-extrabold ${ac.text}">Thuộc ${pct}%</span>
+              </div>
+              <div class="w-full h-2 bg-slate-100 dark:bg-[#1b2822] rounded-full overflow-hidden">
+                <div class="h-full rounded-full bg-gradient-to-r ${ac.grad} transition-all duration-300" style="width: ${pct}%"></div>
+              </div>
             </div>
           </div>
         `;
@@ -1883,6 +1897,8 @@
         const subjQs = getAllQuestionsFlat().filter(q => q.subject === subjName);
         const papers = getPapersForSubject(subjName);
 
+        const subjAc = subjectAccent(subjName);
+        document.getElementById('detail-accent').className = `h-2 bg-gradient-to-r ${subjAc.grad}`;
         document.getElementById('detail-subj-name').textContent = subjName;
         document.getElementById('detail-subj-badge').textContent = `${subjQs.length} câu • ${papers.length} đề`;
         document.getElementById('detail-subj-desc').textContent = subjMeta.description || 'Chọn đề để bắt đầu làm bài';
@@ -1969,7 +1985,7 @@
                  </div>`;
 
             const card = document.createElement('div');
-            card.className = 'bg-white dark:bg-[#121c17] border border-slate-200/90 dark:border-[#2a3b33] hover:border-brand-500 rounded-2xl p-5 flex flex-col justify-between gap-4 shadow-sm transition-all';
+            card.className = `bg-white dark:bg-[#121c17] border border-slate-200/90 dark:border-[#2a3b33] border-l-4 ${subjAc.border} hover:shadow-md rounded-2xl p-5 flex flex-col justify-between gap-4 shadow-sm transition-all`;
             card.innerHTML = `
               <div class="space-y-3">
                 <div class="flex items-start justify-between gap-2">
@@ -2100,6 +2116,16 @@
         const re = /(tất\s+cả|cả\s+[a-f]\s*(và|,|&)\s*[a-f]\b|\b[a-f]\s*(và|,)\s*[a-f]\b|các\s+(phương\s+án|ý|đáp\s+án)\s+(trên|còn\s+lại|đều)|không\s+có\s+(phương\s+án|đáp\s+án|ý)|đều\s+(đúng|sai)|cả\s+(hai|ba|bốn))/i;
         return opts.some(o => re.test(String(o)));
       }
+
+      // Chữ cái A/B/C/D mỗi chữ một sắc nhẹ cho dễ phân biệt khi nhìn nhanh
+      const LETTER_TINTS = [
+        'bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300',
+        'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300',
+        'bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-300',
+        'bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-300',
+        'bg-teal-100 text-teal-700 dark:bg-teal-500/20 dark:text-teal-300',
+        'bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-300'
+      ];
 
       function prepareExamQuestionItem(q, shouldShuffleOpt) {
         const opts = Array.isArray(q.options) ? q.options : [];
@@ -2238,6 +2264,7 @@
         document.getElementById('exam-answered-count').textContent = answeredCount;
         document.getElementById('exam-total-count').textContent = total;
         document.getElementById('palette-progress-pct').textContent = `${Math.round((answeredCount / total) * 100)}%`;
+        document.getElementById('exam-progress-fill').style.width = `${Math.round((answeredCount / total) * 100)}%`;
         document.getElementById('eq-number-badge').textContent = `Câu ${idx + 1} / ${total}`;
         document.getElementById('eq-subject-badge').textContent = (examState.subject || q.subject || '') + (q.chapter ? ` · Chương ${q.chapter}` : '');
 
@@ -2288,7 +2315,7 @@
           const isSelected = chosen === optIdx;
           const isCorrectOpt = optIdx === q.shuffledCorrectIndex;
 
-          let cardCls = 'w-full text-left p-4 rounded-xl border-2 transition-all flex items-start gap-3.5 group cursor-pointer ';
+          let cardCls = 'w-full text-left p-4 rounded-2xl border-2 transition-all flex items-start gap-3.5 group cursor-pointer active:scale-[0.99] ';
           let badgeCls = 'w-7 h-7 rounded-lg flex items-center justify-center text-xs font-extrabold shrink-0 mt-0.5 transition-colors ';
 
           if (examState.instantFeedback && hasAnswered) {
@@ -2307,8 +2334,8 @@
               cardCls += 'bg-brand-50 dark:bg-brand-900/30 border-brand-600 text-slate-900 dark:text-white';
               badgeCls += 'bg-brand-600 text-white';
             } else {
-              cardCls += 'bg-slate-50/80 dark:bg-[#17231e] hover:bg-brand-50/50 dark:hover:bg-[#203027] border-slate-200 dark:border-[#36493f] hover:border-brand-500 text-slate-800 dark:text-slate-200';
-              badgeCls += 'bg-white dark:bg-[#121c17] border border-slate-200 dark:border-[#2f4238] text-slate-600 dark:text-slate-300 group-hover:bg-brand-600 group-hover:text-white group-hover:border-brand-600';
+              cardCls += 'bg-white dark:bg-[#17231e] shadow-sm hover:bg-brand-50/60 dark:hover:bg-[#203027] border-slate-200 dark:border-[#36493f] hover:border-brand-500 text-slate-800 dark:text-slate-200';
+              badgeCls += LETTER_TINTS[optIdx % LETTER_TINTS.length] + ' group-hover:bg-brand-600 group-hover:text-white';
             }
           }
 
