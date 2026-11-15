@@ -4,10 +4,9 @@ Web luyện đề trắc nghiệm cho sinh viên (môn FE GDC, FE AGU, và đề
 
 ## Cấu trúc
 - `index.html`: toàn bộ giao diện và logic (Tailwind CDN, không có bước build).
-- `qf-auth.js`: đăng ký/đăng nhập bằng Supabase Auth (gọi REST trực tiếp, không build), dùng chung cho `index.html` và `admin.html`. `QFAuth.rest()` tự gắn token người dùng.
-- `admin.html`: trang quản trị (tổng quan, người dùng + đổi quyền, môn mặc định, câu hỏi + nhập JSON, đề của người dùng). Chỉ tài khoản `role='admin'` vào được; quyền thật do RLS bảo vệ, không phải do ẩn giao diện.
-- `supabase/001_auth_and_admin.sql`: migration auth + admin (chạy một lần trong SQL Editor; email admin đầu tiên nằm trong bảng `quizfast_admin_emails`).
-- `data-gdc.js`, `data-agu-1.js`, `data-agu-2.js`: ngân hàng câu hỏi có sẵn (375 câu), chỉ còn là **bản dự phòng**. Nguồn chính là bảng `quizfast_questions` trên Supabase.
+- **Không còn máy chủ, không đăng nhập.** Supabase project `appquiz` bị tạm dừng (hết hạn mức Free 2 project) nên đã gỡ toàn bộ đăng nhập, trang admin và đồng bộ cloud. Web chạy hoàn toàn trên trình duyệt. (Lịch sử git trước commit gỡ có bản đăng nhập + admin + SQL Supabase nếu cần lấy lại.)
+- `data-tthcm-349.js` (môn `TTHCM 349 câu`) và `data-tthcm-chuong.js` (môn `TTHCM theo chương`, 6 chương, bỏ 3 câu không có đáp án đúng và 13 câu trùng hẳn): sinh từ 2 file Word nguồn bằng script bóc tách riêng (không lưu trong repo). Ảnh minh họa nằm ở `images/`.
+- `data-*.js`: ngân hàng câu hỏi có sẵn, **nguồn duy nhất** của các môn mặc định. Thêm môn mặc định = thêm file `data-xxx.js` (mảng câu hỏi, `subject` là tên môn) và nạp bằng thẻ `<script>` + `buildBuiltinBank()` trong `index.html`.
 - Chạy thử: `python -m http.server 8765 --bind 127.0.0.1` rồi mở http://127.0.0.1:8765/index.html (đã có cấu hình `.claude/launch.json`, tên `quizfast`).
 - Deploy: **Vercel** (project `quizfast`, team `quang-5d6e`, id `prj_UWX1VjAswXbnrNm0wOg2t93p5cDa`), nối repo `quangdnnse184218/quizfast`. Trang tĩnh, không build. Đẩy lên `main` là tự lên bản chính thức https://quizfast-xi.vercel.app ; mỗi nhánh khác tự có link xem trước. (Trước đây dùng GitHub Pages `quangdnnse184218.github.io/quizfast`.)
 
@@ -17,14 +16,13 @@ Web luyện đề trắc nghiệm cho sinh viên (môn FE GDC, FE AGU, và đề
 - Thời gian chỉ có 2 chế độ: **60 phút** hoặc **không giới hạn**.
 - "Đề Xáo Trộn" của mỗi môn: bốc 60 câu lúc bắt đầu làm, ưu tiên câu hay sai, rồi câu chưa làm, rồi đang nhớ, rồi đã thuộc.
 - Đề tự tải lên (Studio) quá 60 câu thì tự chia thành nhiều đề.
+- Môn có trường `chapter` (và `chapterTitle`) trong dữ liệu, ví dụ `TTHCM theo chương`: đề được nhóm theo chương; chương dài được chia **đều** thành các đề không quá 60 câu (ví dụ 171 câu → 3 đề × 57). Môn không có `chapter` vẫn chia 60 câu theo thứ tự như trên.
+- Câu hỏi có thể có `image` (đường dẫn trong `images/`) và `explanation` (ghi chú, hiện sau khi trả lời ở chế độ "Học" và trong phần xem lại).
 
 ## Môn mặc định và môn học của bạn
 - Trang chủ chia hai phần: **Môn mặc định** (do admin thêm, người dùng chỉ học, không thêm/xóa đề) và **Môn học của bạn** (do chính người dùng tạo, lưu trên cloud).
-- Thêm môn mặc định mới (admin): thêm một dòng vào `quizfast_default_subjects`, nạp câu hỏi vào `quizfast_questions` với `subject` trùng tên, rồi (nếu cần) thêm file dự phòng. Môn không có trong `quizfast_default_subjects` (hoặc `is_published=false`) sẽ không hiện. Nếu DB không tải được, web tạm dùng các môn có trong ngân hàng câu hỏi.
-- Tạo môn / thêm đề / xóa **cần đăng nhập** (email + mật khẩu, Supabase Auth). Chưa đăng nhập vẫn học được môn mặc định. `owner_id` của `quizfast_subjects`/`quizfast_exams` = `auth.uid()::text`; RLS so khớp với `auth.uid()`. Đăng xuất hoặc đổi tài khoản thì xóa dữ liệu môn/đề cục bộ (khóa `quizfast_data_owner_v1`); dữ liệu cũ tạo trước khi có tài khoản được giữ lại và đẩy lên tài khoản đăng nhập đầu tiên.
-- Quyền admin: bảng `quizfast_profiles` (`role` user|admin), hàm `quizfast_is_admin()`. Trigger trên `auth.users` tạo hồ sơ; email trong `quizfast_admin_emails` tự thành admin. Đổi quyền người khác ở tab Người dùng của admin.html.
-- Cần chỉnh trong Supabase Dashboard (không làm được bằng SQL): Authentication → Providers → Email (xác nhận email đã được bỏ bằng trigger `quizfast_auto_confirm`, không cần chỉnh), URL Configuration → Site URL / Redirect URLs thêm domain Vercel.
-- Khóa chính môn là `(owner_id, name)`. Tên môn của người dùng không được trùng tên môn mặc định (không phân biệt hoa thường). ID đề tự tải lên có chuỗi ngẫu nhiên để không đụng nhau giữa người dùng.
+- Môn mặc định = mọi môn có trong các file `data-*.js`. Môn của bạn (tạo bằng Studio) lưu trong `localStorage` của trình duyệt đó, không đồng bộ giữa các máy.
+- Tên môn của người dùng không được trùng tên môn mặc định (không phân biệt hoa thường).
 
 ## Thêm đề (Studio) và bóc tách câu hỏi
 - Nguồn: **chỉ văn bản**: dán chữ, hoặc chọn/kéo thả file Word `.docx` và `.txt`/`.md`/`.json`/`.csv`. Đã **bỏ** ảnh, PDF và toàn bộ phần AI (Gemini); không còn ô chọn "Cách bóc tách", luôn bóc tách bằng code.
@@ -36,18 +34,18 @@ Web luyện đề trắc nghiệm cho sinh viên (môn FE GDC, FE AGU, và đề
 - Chưa làm: đọc `.xlsx`/`.csv` dạng bảng, `.doc` cũ (báo người dùng đổi sang `.docx`).
 
 ## Giao diện
+- **Ưu tiên điện thoại.** Trang làm bài có thanh điều hướng cố định ở đáy (Trước / bảng câu hỏi / Tiếp), bảng câu hỏi là ngăn kéo từ dưới lên, vuốt trái/phải để đổi câu; màn hình lớn (lg trở lên) giữ bố cục hai cột.
+- Hộp thiết lập bài có hai chế độ chọn nhanh: **Học** (chấm ngay, không giới hạn giờ, giữ thứ tự đáp án gốc; mặc định) và **Thi thử** (60 phút, chấm khi nộp). Lựa chọn được nhớ.
+- Bài đang làm dở tự lưu (`quizfast_exam_session_v1`) theo từng đề; có nút "Làm tiếp" ở thẻ đề và thanh "Bạn đang làm dở" ở trang chủ. Nộp bài thì xóa bản lưu.
+- Đáp án kiểu "Tất cả đều đúng", "A và B", "Cả hai"... **không bị trộn** thứ tự dù bật trộn đáp án (xem `optionsOrderMatters`).
 - Chỉ đổi màu, chữ, bố cục. **Giữ dạng trắc nghiệm chọn đáp án** và màu thương hiệu xanh lá. Không tự nghĩ ra concept mới.
 - Mặc định giao diện sáng; có chế độ tối (đã chỉnh cho đủ tương phản).
 - Highlight: nhãn nhỏ "Highlight" phía trên, hai nút bên dưới là "Tự động" (web tự dò từ khóa, không dùng danh sách có sẵn) và "Thủ công" (bôi đen, lưu theo từng câu trong localStorage). **Mặc định tắt cả hai**, người dùng tự bật. Phím H bật/tắt tô tự động.
 - "Đề Xáo Trộn" luôn nằm cuối danh sách đề của mỗi môn.
 
-## Dữ liệu (Supabase)
-- Project `appquiz`, ref `typsubizynimfhukhewc`, vùng ap-southeast-1. Khóa công khai (publishable) nằm trong `index.html`, đó là bình thường.
-- `quizfast_questions`: ngân hàng câu hỏi chuẩn. RLS bật, **chỉ có chính sách đọc công khai**. Không bật tạm quyền ghi cho `anon` để nạp dữ liệu (hệ thống sẽ chặn). Nạp hoặc sửa bằng SQL qua công cụ Supabase, chia lô, và đối chiếu mã băm md5 từng lô với file gốc.
-- `quizfast_default_subjects`: danh sách **môn mặc định** (tên, mô tả, thứ tự, `is_published`). Chỉ đọc công khai; chỉ admin sửa qua SQL.
-- `quizfast_subjects`, `quizfast_exams`: **môn và đề của người dùng**, mỗi dòng có `owner_id`. RLS chỉ cho người đăng nhập đọc/ghi dòng có `owner_id = auth.uid()::text`; admin được đọc và xóa tất cả. Không còn quyền công khai.
-- Web đọc câu hỏi từ DB, nếu DB lỗi hoặc thiếu thì dùng file `data-*.js`. Giữ nguyên ID câu hỏi cũ (ví dụ `GDC_M34_Q1`) vì tiến độ người học gắn theo ID.
-- Hàng đợi đồng bộ (`quizfast_sync_queue_v1`) giữ các thay đổi chưa đẩy được lên cloud; lần đồng bộ sau không được ghi đè chúng.
+## Dữ liệu
+- Không dùng cơ sở dữ liệu. Câu hỏi nằm trong `data-*.js`; tiến độ, điểm, môn/đề tự thêm nằm trong `localStorage`. Giữ nguyên ID câu hỏi cũ (ví dụ `GDC_M34_Q1`) vì tiến độ người học gắn theo ID.
+- Nếu sau này cần lưu trên máy chủ/đăng nhập: dùng lại bản trong lịch sử git (Supabase) hoặc chọn nền tảng khác.
 
 ## Làm việc với git
 - Mỗi việc làm trong nhánh/worktree riêng tách từ `main` mới nhất. **Luôn `git fetch` trước**, vì `main` có thể đã có commit từ nơi khác.
@@ -55,9 +53,7 @@ Web luyện đề trắc nghiệm cho sinh viên (môn FE GDC, FE AGU, và đề
 - Không commit khóa bí mật (chỉ khóa publishable của Supabase được để trong mã).
 
 ## Chưa làm (có thể giao tiếp)
-- Tự lưu bài đang làm dở (hiện tải lại trang là mất bài).
-- Đăng nhập bằng Google; đổi mật khẩu trong ứng dụng (hiện chỉ có "Quên mật khẩu" qua email); xóa tài khoản người dùng từ admin (cần service key / Edge Function).
-- Hàm `rls_auto_enable()` mà Supabase cảnh báo cho phép `anon` gọi.
+- Đồng bộ môn/đề giữa các máy (cần máy chủ).
 
 ## Khóa localStorage đang dùng
-`quizfast_auth_v1` (phiên đăng nhập), `quizfast_data_owner_v1`, `quizfast_progress_v1` (tiến độ từng câu), `quizfast_paper_history_v1` (điểm từng đề), `quizfast_subjects_v1`, `quizfast_custom_exams_v1`, `quizfast_sync_queue_v1`, `quizfast_theme_v1`, `quizfast_hl_prefs_v1`, `quizfast_user_hl_v1`.
+`quizfast_progress_v1` (tiến độ từng câu), `quizfast_paper_history_v1` (điểm từng đề), `quizfast_subjects_v1`, `quizfast_custom_exams_v1`, `quizfast_theme_v1`, `quizfast_exam_session_v1`, `quizfast_setup_preset_v1`, `quizfast_hl_prefs_v1`, `quizfast_user_hl_v1`.

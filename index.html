@@ -50,6 +50,19 @@
 
     button { -webkit-tap-highlight-color: transparent; }
 
+    /* Điện thoại: bảng câu hỏi thành ngăn kéo từ dưới lên, thanh điều hướng cố định ở đáy */
+    @media (max-width: 1023px) {
+      #exam-palette-card { display: none; }
+      #exam-palette-card.sheet-open {
+        display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; max-height: 80vh;
+        border-radius: 1.25rem 1.25rem 0 0; box-shadow: 0 -12px 40px rgba(0,0,0,.35);
+        padding-bottom: calc(1.25rem + env(safe-area-inset-bottom));
+      }
+      #exam-palette { max-height: 44vh !important; }
+      #exam-bottom-bar { padding-bottom: calc(.6rem + env(safe-area-inset-bottom)); }
+    }
+    #eq-image { max-height: 320px; object-fit: contain; }
+
     /* Chữ mờ ở giao diện tối: nâng độ tương phản */
     .dark .text-slate-300, .dark .dark\:text-slate-300 { color: #d6e0da !important; }
     .dark .text-slate-400, .dark .dark\:text-slate-400 { color: #bccac2 !important; }
@@ -133,7 +146,7 @@
     }
   </style>
 </head>
-<body class="bg-[#f1f9f4] dark:bg-[#0f1512] text-slate-900 dark:text-[#f0f6f2] h-screen overflow-hidden flex flex-col transition-colors duration-200 selection:bg-brand-500/30">
+<body class="bg-[#f1f9f4] dark:bg-[#0f1512] text-slate-900 dark:text-[#f0f6f2] h-[100dvh] overflow-hidden flex flex-col transition-colors duration-200 selection:bg-brand-500/30">
 
   <!-- ==================== TOP HEADER ==================== -->
   <header class="sticky top-0 z-30 bg-white/90 dark:bg-[#19211d]/90 backdrop-blur-md border-b border-slate-200/80 dark:border-[#34453b]">
@@ -177,7 +190,6 @@
           <i id="theme-icon-sun" data-lucide="sun" class="w-4 h-4 hidden text-amber-400"></i>
           <i id="theme-icon-moon" data-lucide="moon" class="w-4 h-4 text-slate-700"></i>
         </button>
-        <div id="auth-area" class="flex items-center gap-2"></div>
         <button id="btn-shortcuts-help" class="hidden lg:flex p-2.5 rounded-xl bg-slate-100 dark:bg-[#24302a] hover:bg-slate-200 dark:hover:bg-[#3b4e44] text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-[#46594e] transition-all" title="Phím tắt bàn phím">
           <i data-lucide="keyboard" class="w-4 h-4"></i>
         </button>
@@ -194,6 +206,15 @@
       <!-- 1A. MÀN HÌNH TỔNG QUAN CÁC MÔN & KHU VỰC UPLOAD ĐỀ -->
       <div id="home-subjects-screen" class="space-y-12">
 
+        <!-- Bài đang làm dở -->
+        <div id="resume-banner" class="hidden rounded-2xl border-2 border-brand-500 bg-brand-50 dark:bg-brand-900/25 p-4 flex flex-wrap items-center justify-between gap-3">
+          <div class="min-w-0">
+            <p class="text-xs font-bold text-brand-700 dark:text-brand-300">Bạn đang làm dở</p>
+            <p id="resume-banner-text" class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white truncate"></p>
+          </div>
+          <button id="btn-resume-banner" type="button" class="px-5 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-600 text-white text-sm font-extrabold">Làm tiếp</button>
+        </div>
+
         <!-- Môn mặc định: do quản trị viên thêm vào, người dùng chỉ học -->
         <section class="space-y-4" aria-labelledby="home-default-title">
           <div>
@@ -208,7 +229,7 @@
           <div id="hero-dropzone" class="flex flex-wrap items-end justify-between gap-3">
             <div>
               <h2 id="home-user-title" class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Môn học của bạn</h2>
-              <p id="user-subjects-sub" class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Môn và đề do chính bạn thêm. Đăng nhập để lưu vào tài khoản của bạn trên cloud.</p>
+              <p id="user-subjects-sub" class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Môn và đề do chính bạn thêm, lưu ngay trong trình duyệt của bạn.</p>
             </div>
             <div class="flex flex-wrap items-center gap-2">
               <button id="btn-new-subject" type="button" class="px-3.5 py-2 rounded-xl bg-white dark:bg-[#19211d] hover:bg-slate-50 dark:hover:bg-[#24302a] border border-slate-200 dark:border-[#34453b] text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 shadow-sm transition-all">
@@ -282,12 +303,12 @@
       </div>
 
       <!-- 1C. MÀN HÌNH ĐANG LÀM ĐỀ (ACTIVE EXAM WORKSPACE) -->
-      <div id="exam-running" class="hidden h-full flex-col gap-4">
+      <div id="exam-running" class="hidden h-full flex-col gap-4 pb-24 lg:pb-0">
         <div class="shrink-0 bg-white dark:bg-[#19211d] border border-slate-200/90 dark:border-[#34453b] rounded-2xl p-3.5 sm:p-4 flex flex-wrap items-center justify-between gap-3 shadow-sm">
           <div class="flex items-center gap-3">
             <button id="btn-exit-exam" class="whitespace-nowrap flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#24302a] hover:bg-slate-200 dark:hover:bg-[#3b4e44] text-slate-700 dark:text-slate-200 text-xs sm:text-sm font-bold transition-all">
               <i data-lucide="arrow-left" class="w-4 h-4"></i>
-              <span>Thoát đề</span>
+              <span class="hidden sm:inline">Thoát đề</span>
             </button>
             <div>
               <div id="exam-running-title" class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white">Đề 1</div>
@@ -311,7 +332,7 @@
 
         <div class="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
           <!-- Question Card -->
-          <div class="lg:col-span-8 max-h-full overflow-y-auto bg-white dark:bg-[#19211d] border border-slate-200/90 dark:border-[#34453b] rounded-2xl p-5 sm:p-7 space-y-5 shadow-sm">
+          <div id="exam-q-card" class="lg:col-span-8 lg:max-h-full lg:overflow-y-auto bg-white dark:bg-[#19211d] border border-slate-200/90 dark:border-[#34453b] rounded-2xl p-5 sm:p-7 space-y-5 shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-slate-200/80 dark:border-[#34453b]">
               <div class="flex flex-wrap items-center gap-2">
                 <span id="eq-number-badge" class="px-3 py-1 rounded-lg text-xs font-extrabold bg-brand-600 text-white">Câu 1 / 60</span>
@@ -321,7 +342,7 @@
 
               <div class="flex flex-wrap items-center gap-1.5">
                 <div class="inline-flex flex-col gap-0.5">
-                  <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-none px-0.5">Highlight</span>
+                  <span class="hidden sm:block text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-none px-0.5">Highlight</span>
                   <div class="inline-flex items-center rounded-xl border border-slate-200 dark:border-[#46594e] overflow-hidden" role="group" aria-label="Highlight">
                     <button type="button" class="hl-btn-auto flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-bold transition-all" title="Tự động tô từ khóa (phím H)">
                       <i data-lucide="highlighter" class="w-3.5 h-3.5"></i>
@@ -333,7 +354,7 @@
                     </button>
                   </div>
                 </div>
-                <div class="h-5 w-px bg-slate-200 dark:bg-[#3b4e44] mx-0.5"></div>
+                <div class="hidden sm:block h-5 w-px bg-slate-200 dark:bg-[#3b4e44] mx-0.5"></div>
                 <button id="btn-star-exam-q" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border text-xs font-bold transition-all" title="Gắn sao (S)">
                   <i data-lucide="star" class="w-3.5 h-3.5"></i>
                   <span class="hidden sm:inline">Sao</span>
@@ -342,12 +363,12 @@
                   <i data-lucide="flag" class="w-3.5 h-3.5"></i>
                   <span class="hidden sm:inline">Cờ</span>
                 </button>
-                <div class="h-5 w-px bg-slate-200 dark:bg-[#3b4e44] mx-0.5"></div>
-                <button id="btn-exam-prev-top" class="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-[#24302a] hover:bg-slate-200 dark:hover:bg-[#3b4e44] text-xs font-bold text-slate-700 dark:text-slate-200 transition-all disabled:opacity-40" title="Câu trước (←)">
+                <div class="hidden sm:block h-5 w-px bg-slate-200 dark:bg-[#3b4e44] mx-0.5"></div>
+                <button id="btn-exam-prev-top" class="hidden lg:flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-[#24302a] hover:bg-slate-200 dark:hover:bg-[#3b4e44] text-xs font-bold text-slate-700 dark:text-slate-200 transition-all disabled:opacity-40" title="Câu trước (←)">
                   <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
                   <span class="hidden sm:inline">Trước</span>
                 </button>
-                <button id="btn-exam-next-top" class="flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-xs font-extrabold text-white transition-all" title="Câu tiếp theo (→)">
+                <button id="btn-exam-next-top" class="hidden lg:flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-xs font-extrabold text-white transition-all" title="Câu tiếp theo (→)">
                   <span>Tiếp theo</span>
                   <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                 </button>
@@ -356,15 +377,20 @@
 
             <h2 id="eq-question" class="text-base sm:text-xl font-bold text-slate-900 dark:text-white leading-relaxed"></h2>
 
+            <img id="eq-image" alt="Hình minh họa của câu hỏi" class="hidden max-w-full mx-auto rounded-xl border border-slate-200 dark:border-[#34453b]" />
             <div id="eq-options" class="space-y-3"></div>
+            <div id="eq-explain" class="hidden rounded-xl border border-amber-300 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/10 text-amber-900 dark:text-amber-100 px-4 py-3 text-sm leading-relaxed"></div>
             <p id="hl-hint" class="text-xs text-slate-500 dark:text-slate-400">Highlight thủ công: bôi đen một đoạn chữ để tô màu và lưu lại cho câu này. Bấm vào chữ đã tô để xóa.</p>
           </div>
 
           <!-- Palette -->
-          <div class="lg:col-span-4 max-h-full flex flex-col bg-white dark:bg-[#19211d] border border-slate-200/90 dark:border-[#34453b] rounded-2xl p-5 space-y-4 shadow-sm">
+          <div id="exam-palette-card" class="lg:col-span-4 lg:max-h-full lg:flex flex-col bg-white dark:bg-[#19211d] border border-slate-200/90 dark:border-[#34453b] rounded-2xl p-5 space-y-4 shadow-sm">
             <div class="flex items-center justify-between shrink-0">
               <span class="text-sm font-bold text-slate-500 dark:text-slate-400">Bảng câu hỏi</span>
-              <span id="palette-progress-pct" class="text-xs font-bold text-brand-600 dark:text-brand-400">0%</span>
+              <span class="flex items-center gap-3">
+                <span id="palette-progress-pct" class="text-xs font-bold text-brand-600 dark:text-brand-400">0%</span>
+                <button id="btn-palette-close" type="button" class="lg:hidden px-3 py-1 rounded-lg bg-slate-100 dark:bg-[#24302a] text-xs font-bold text-slate-700 dark:text-slate-200">Đóng</button>
+              </span>
             </div>
             <div id="exam-palette" class="grid grid-cols-6 sm:grid-cols-10 lg:grid-cols-6 gap-2 max-h-[380px] overflow-y-auto pr-1"></div>
             <div class="shrink-0 grid grid-cols-3 gap-2 pt-3 border-t border-slate-200/80 dark:border-[#34453b] text-[11px] font-semibold text-slate-500 dark:text-slate-400">
@@ -373,6 +399,20 @@
               <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-slate-200 dark:bg-[#24302a] border border-slate-300 dark:border-[#46594e] inline-block"></span> Chưa làm</span>
             </div>
           </div>
+        </div>
+
+        <!-- Điện thoại: nền mờ cho ngăn kéo bảng câu hỏi + thanh điều hướng cố định ở đáy -->
+        <div id="palette-backdrop" class="hidden lg:hidden fixed inset-0 z-40 bg-black/55"></div>
+        <div id="exam-bottom-bar" class="lg:hidden fixed bottom-0 inset-x-0 z-30 bg-white/95 dark:bg-[#19211d]/95 backdrop-blur border-t border-slate-200 dark:border-[#34453b] px-3 pt-2.5 flex items-center gap-2.5">
+          <button id="btn-exam-prev-bottom" type="button" class="flex-1 h-12 rounded-xl bg-slate-100 dark:bg-[#24302a] text-slate-700 dark:text-slate-200 text-sm font-extrabold flex items-center justify-center gap-1 disabled:opacity-40" aria-label="Câu trước">
+            <i data-lucide="chevron-left" class="w-5 h-5"></i><span>Trước</span>
+          </button>
+          <button id="btn-exam-palette-open" type="button" class="h-12 px-3.5 rounded-xl border-2 border-brand-600 text-brand-700 dark:text-brand-300 text-sm font-extrabold flex items-center justify-center gap-1.5" aria-label="Mở bảng câu hỏi">
+            <i data-lucide="layout-grid" class="w-4 h-4"></i><span id="exam-bottom-label">1/60</span>
+          </button>
+          <button id="btn-exam-next-bottom" type="button" class="flex-1 h-12 rounded-xl bg-brand-600 text-white text-sm font-extrabold flex items-center justify-center gap-1 disabled:opacity-40" aria-label="Câu tiếp theo">
+            <span>Tiếp</span><i data-lucide="chevron-right" class="w-5 h-5"></i>
+          </button>
         </div>
       </div>
 
@@ -403,7 +443,7 @@
           <h3 class="text-base sm:text-lg font-extrabold">Xem lại bài làm</h3>
           <div class="flex flex-wrap items-center gap-2">
             <div class="inline-flex flex-col gap-0.5">
-                  <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-none px-0.5">Highlight</span>
+                  <span class="hidden sm:block text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-none px-0.5">Highlight</span>
                   <div class="inline-flex items-center rounded-xl border border-slate-200 dark:border-[#46594e] overflow-hidden" role="group" aria-label="Highlight">
                     <button type="button" class="hl-btn-auto flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-bold transition-all" title="Tự động tô từ khóa (phím H)">
                       <i data-lucide="highlighter" class="w-3.5 h-3.5"></i>
@@ -454,7 +494,7 @@
 
         <div class="flex flex-wrap items-center gap-2">
           <div class="inline-flex flex-col gap-0.5">
-                  <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-none px-0.5">Highlight</span>
+                  <span class="hidden sm:block text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-none px-0.5">Highlight</span>
                   <div class="inline-flex items-center rounded-xl border border-slate-200 dark:border-[#46594e] overflow-hidden" role="group" aria-label="Highlight">
                     <button type="button" class="hl-btn-auto flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-bold transition-all" title="Tự động tô từ khóa (phím H)">
                       <i data-lucide="highlighter" class="w-3.5 h-3.5"></i>
@@ -720,43 +760,6 @@
     </div>
   </div>
 
-  <!-- ==================== MODAL: ĐĂNG NHẬP / ĐĂNG KÝ ==================== -->
-  <div id="modal-auth" class="fixed inset-0 z-50 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4">
-    <div class="bg-white dark:bg-[#19211d] border border-slate-200 dark:border-[#46594e] rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
-      <div class="flex items-start justify-between gap-3">
-        <div>
-          <h3 id="auth-title" class="text-lg font-extrabold">Đăng nhập</h3>
-          <p id="auth-reason" class="text-xs text-slate-500 dark:text-slate-400 mt-1">Đăng nhập để tạo môn, thêm đề và lưu vào tài khoản của bạn.</p>
-        </div>
-        <button id="close-auth-modal" type="button" class="p-1.5 rounded-lg bg-slate-100 dark:bg-[#24302a] text-slate-500" aria-label="Đóng">
-          <i data-lucide="x" class="w-4 h-4"></i>
-        </button>
-      </div>
-      <div class="flex gap-1 bg-slate-100 dark:bg-[#0f1512] p-1 rounded-xl border border-slate-200/80 dark:border-[#34453b]">
-        <button id="auth-tab-login" type="button" class="flex-1 px-3 py-1.5 rounded-lg text-sm font-bold">Đăng nhập</button>
-        <button id="auth-tab-register" type="button" class="flex-1 px-3 py-1.5 rounded-lg text-sm font-bold">Đăng ký</button>
-      </div>
-      <form id="auth-form" class="space-y-3" novalidate>
-        <div id="auth-name-row" class="hidden space-y-1">
-          <label class="text-xs font-bold text-slate-600 dark:text-slate-300" for="auth-name">Tên hiển thị</label>
-          <input id="auth-name" type="text" autocomplete="name" maxlength="60" class="w-full bg-white dark:bg-[#0f1512] border border-slate-200 dark:border-[#46594e] rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />
-        </div>
-        <div class="space-y-1">
-          <label class="text-xs font-bold text-slate-600 dark:text-slate-300" for="auth-email">Email</label>
-          <input id="auth-email" type="email" autocomplete="email" required class="w-full bg-white dark:bg-[#0f1512] border border-slate-200 dark:border-[#46594e] rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />
-        </div>
-        <div class="space-y-1">
-          <label class="text-xs font-bold text-slate-600 dark:text-slate-300" for="auth-password">Mật khẩu</label>
-          <input id="auth-password" type="password" autocomplete="current-password" required minlength="8" class="w-full bg-white dark:bg-[#0f1512] border border-slate-200 dark:border-[#46594e] rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />
-          <p id="auth-pass-hint" class="hidden text-[11px] text-slate-500 dark:text-slate-400">Ít nhất 8 ký tự.</p>
-        </div>
-        <p id="auth-msg" role="alert" class="hidden text-xs font-bold rounded-lg px-3 py-2"></p>
-        <button id="auth-submit" type="submit" class="w-full px-4 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-600 text-white text-sm font-extrabold transition-colors disabled:opacity-60">Đăng nhập</button>
-        <button id="auth-forgot" type="button" class="w-full text-xs font-bold text-brand-700 dark:text-brand-300 hover:underline">Quên mật khẩu?</button>
-      </form>
-    </div>
-  </div>
-
   <!-- ==================== MODAL: KEYBOARD SHORTCUTS ==================== -->
   <div id="modal-shortcuts" class="fixed inset-0 z-50 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4">
     <div class="bg-white dark:bg-[#19211d] border border-slate-200 dark:border-[#46594e] rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
@@ -794,6 +797,18 @@
 
       <!-- Body -->
       <div class="p-6 space-y-5 overflow-y-auto">
+        <!-- 0. Chọn nhanh -->
+        <div class="grid grid-cols-2 gap-2.5">
+          <button type="button" id="setup-preset-study" class="text-left p-3 rounded-xl border-2 transition-all">
+            <span class="block text-sm font-extrabold">📖 Học</span>
+            <span class="block text-[11px] leading-snug mt-0.5 opacity-80">Xem đáp án và ghi chú ngay, không giới hạn giờ</span>
+          </button>
+          <button type="button" id="setup-preset-exam" class="text-left p-3 rounded-xl border-2 transition-all">
+            <span class="block text-sm font-extrabold">⏱️ Thi thử</span>
+            <span class="block text-[11px] leading-snug mt-0.5 opacity-80">60 phút, chấm điểm khi nộp bài</span>
+          </button>
+        </div>
+
         <!-- 1. Thời gian làm bài -->
         <div class="space-y-2.5">
           <label class="text-sm font-bold text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
@@ -905,10 +920,11 @@
   </script>
 
   <!-- PRELOADED BUILT-IN QUESTION BANKS -->
-  <script src="qf-auth.js"></script>
   <script src="data-gdc.js"></script>
   <script src="data-agu-1.js"></script>
   <script src="data-agu-2.js"></script>
+  <script src="data-tthcm-349.js"></script>
+  <script src="data-tthcm-chuong.js"></script>
 
   <!-- MAIN APPLICATION LOGIC -->
   <script>
@@ -1001,8 +1017,7 @@
         const main = document.getElementById('app-main');
         const examEl = document.getElementById('exam-running');
         if (main) {
-          main.classList.toggle('overflow-hidden', locked);
-          main.classList.toggle('overflow-y-auto', !locked);
+          main.classList.toggle('lg:overflow-hidden', locked); // điện thoại luôn cuộn được, máy tính khóa để bảng câu hỏi đứng yên
           main.classList.toggle('py-3', locked);
           main.classList.toggle('sm:py-4', locked);
           main.classList.toggle('py-5', !locked);
@@ -1038,103 +1053,6 @@
       function saveCustomSubjects() { localStorage.setItem(STORAGE_KEYS.CUSTOM_SUBJECTS, JSON.stringify(customSubjects)); }
       function saveCustomExams() { localStorage.setItem(STORAGE_KEYS.CUSTOM_EXAMS, JSON.stringify(customExams)); }
 
-      // --- SUPABASE CLOUD SYNC ---
-      const SYNC_QUEUE_KEY = 'quizfast_sync_queue_v1';
-
-      // Môn và đề của người dùng gắn với tài khoản đăng nhập (Supabase Auth). owner_id = id tài khoản.
-      // Chưa đăng nhập thì chỉ học được môn mặc định; tạo môn/đề cần đăng nhập.
-      const DATA_OWNER_KEY = 'quizfast_data_owner_v1'; // tài khoản mà dữ liệu cục bộ đang thuộc về
-      function currentUserId() { return window.QFAuth && QFAuth.user ? QFAuth.user.id : null; }
-
-      // Hàng đợi thay đổi chưa đẩy lên cloud (lưu trong máy, để không mất khi lỗi mạng hoặc tải lại trang)
-      let syncQueue = { upSubj: [], upExam: [], delSubj: [], delExam: [] };
-      try {
-        const savedQueue = JSON.parse(localStorage.getItem(SYNC_QUEUE_KEY) || 'null');
-        if (savedQueue && typeof savedQueue === 'object') syncQueue = { ...syncQueue, ...savedQueue };
-      } catch { /* bỏ qua */ }
-      function saveSyncQueue() { localStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(syncQueue)); }
-      function qPush(list, value) {
-        if (!syncQueue[list].includes(value)) syncQueue[list].push(value);
-        saveSyncQueue();
-      }
-      function qDrop(list, value) {
-        syncQueue[list] = syncQueue[list].filter(x => x !== value);
-        saveSyncQueue();
-      }
-
-      function setCloudStatus(state, text) {
-        const dot = document.getElementById('cloud-sync-dot');
-        const lbl = document.getElementById('cloud-sync-label');
-        if (!dot || !lbl) return;
-        lbl.textContent = text;
-        if (state === 'ok') dot.className = 'w-1.5 h-1.5 rounded-full bg-brand-500';
-        else if (state === 'syncing') dot.className = 'w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse';
-        else dot.className = 'w-1.5 h-1.5 rounded-full bg-rose-500';
-      }
-
-      async function sbFetch(path, options = {}) {
-        // Bảng của người dùng cần đăng nhập; bảng câu hỏi và môn mặc định là dữ liệu công khai
-        if ((path.startsWith('/quizfast_subjects') || path.startsWith('/quizfast_exams')) && !currentUserId()) {
-          throw new Error('NOT_SIGNED_IN');
-        }
-        return QFAuth.rest(path, options);
-      }
-
-      // ---- Đăng nhập: chặn tính năng tạo môn/đề khi chưa có tài khoản ----
-      let openAuthModal = () => {};
-      let pendingAfterLogin = null;
-      function requireLogin(reason, action) {
-        if (currentUserId()) { action(); return; }
-        pendingAfterLogin = action;
-        openAuthModal('login', reason);
-      }
-
-      function escAuth(t) { return String(t == null ? '' : t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
-      function renderAuthArea() {
-        const el = document.getElementById('auth-area');
-        if (!el) return;
-        const st = QFAuth.state();
-        if (!st.user) {
-          el.innerHTML = `
-            <button type="button" data-auth-action="login" class="whitespace-nowrap px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#24302a] hover:bg-slate-200 dark:hover:bg-[#3b4e44] border border-slate-200/80 dark:border-[#46594e] text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 transition-all">Đăng nhập</button>
-            <button type="button" data-auth-action="register" class="hidden sm:inline-block whitespace-nowrap px-3 py-2 rounded-xl border border-brand-600 text-brand-700 dark:text-brand-300 hover:bg-brand-50 dark:hover:bg-brand-900/30 text-sm font-bold transition-all">Đăng ký</button>`;
-          return;
-        }
-        const label = (st.profile && st.profile.display_name) || st.user.email || 'Tài khoản';
-        el.innerHTML = `
-          ${st.isAdmin ? `<a href="admin.html" class="whitespace-nowrap flex items-center gap-1 px-3 py-2 rounded-xl bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-200 border border-amber-200 dark:border-amber-500/40 text-xs sm:text-sm font-bold transition-all" title="Trang quản trị">Admin</a>` : ''}
-          <span class="hidden md:inline max-w-[140px] truncate text-xs font-bold text-slate-600 dark:text-slate-300" title="${escAuth(st.user.email)}">${escAuth(label)}</span>
-          <button type="button" data-auth-action="logout" class="whitespace-nowrap px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#24302a] hover:bg-slate-200 dark:hover:bg-[#3b4e44] border border-slate-200/80 dark:border-[#46594e] text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 transition-all">Đăng xuất</button>`;
-      }
-
-      // Đổi tài khoản (đăng nhập/đăng xuất): dữ liệu cục bộ của người này không được lẫn sang người khác
-      let lastAuthUid = undefined;
-      function handleAuthChange() {
-        renderAuthArea();
-        const uid = currentUserId();
-        const sub = document.getElementById('user-subjects-sub');
-        if (sub) sub.textContent = uid
-          ? 'Môn và đề do chính bạn thêm, được lưu vào tài khoản của bạn trên cloud.'
-          : 'Môn và đề do chính bạn thêm. Đăng nhập để lưu vào tài khoản của bạn trên cloud.';
-        if (uid === lastAuthUid) return;
-        lastAuthUid = uid;
-        let owner = null;
-        try { owner = localStorage.getItem(DATA_OWNER_KEY); } catch { /* bỏ qua */ }
-        // owner === null: dữ liệu cũ từ trước khi có tài khoản, giữ lại để đẩy lên tài khoản vừa đăng nhập
-        if (owner !== null && owner !== (uid || '')) {
-          customSubjects = [];
-          customExams = [];
-          syncQueue = { upSubj: [], upExam: [], delSubj: [], delExam: [] };
-          saveCustomSubjects();
-          saveCustomExams();
-          saveSyncQueue();
-        }
-        if (uid || owner !== null) { try { localStorage.setItem(DATA_OWNER_KEY, uid || ''); } catch { /* bỏ qua */ } }
-        if (uid) syncFromSupabase();
-        else setCloudStatus('err', 'Chưa đăng nhập');
-        refreshHomeView();
-      }
-
       function refreshHomeView() {
         updateGlobalCounters();
         if (currentMode === 'home' && !examState.active && !examState.finished) {
@@ -1143,181 +1061,12 @@
         }
       }
 
-      // Ngân hàng câu hỏi chuẩn lấy từ bảng quizfast_questions. Câu nào chưa có trên DB thì dùng bản có sẵn trong máy.
-      async function loadBankFromSupabase() {
-        try {
-          const rows = await sbFetch('/quizfast_questions?select=id,subject,question,options,correct_index,keyword_anchor,explanation&order=position.asc&limit=5000');
-          if (!Array.isArray(rows) || rows.length === 0) return;
-          const fromDb = rows
-            .filter(r => r && r.id && r.question && Array.isArray(r.options) && r.options.length >= 2)
-            .map(r => ({
-              id: r.id,
-              subject: r.subject,
-              question: r.question,
-              options: r.options,
-              correctIndex: r.correct_index,
-              keyword_anchor: r.keyword_anchor || '',
-              explanation: r.explanation || ''
-            }));
-          const dbIds = new Set(fromDb.map(q => q.id));
-          const localOnly = builtinQuestions.filter(q => !dbIds.has(q.id));
-          builtinQuestions = [...fromDb, ...localOnly];
-          refreshHomeView();
-        } catch (err) {
-          console.warn('Không tải được ngân hàng câu hỏi từ Supabase, dùng bản có sẵn trong máy:', err);
-        }
-      }
-
-      // Danh sách môn mặc định do quản trị viên quản lý trong bảng quizfast_default_subjects
-      async function loadDefaultSubjects() {
-        try {
-          const rows = await sbFetch('/quizfast_default_subjects?select=name,description,position&is_published=eq.true&order=position.asc');
-          if (!Array.isArray(rows)) return;
-          defaultMeta = new Map(rows.map(r => [r.name, { description: r.description || '', position: Number(r.position) || 0 }]));
-          defaultMetaLoaded = rows.length > 0;
-          refreshHomeView();
-        } catch (err) {
-          console.warn('Không tải được danh sách môn mặc định, dùng môn có trong ngân hàng câu hỏi:', err);
-        }
-      }
-
-      let flushing = false;
-      async function flushQueue() {
-        if (flushing) return true;
-        flushing = true;
-        try {
-          for (const name of [...syncQueue.delSubj]) {
-            await sbFetch(`/quizfast_exams?owner_id=eq.${currentUserId()}&subject=eq.${encodeURIComponent(name)}`, { method: 'DELETE' });
-            await sbFetch(`/quizfast_subjects?owner_id=eq.${currentUserId()}&name=eq.${encodeURIComponent(name)}`, { method: 'DELETE' });
-            qDrop('delSubj', name);
-          }
-          for (const id of [...syncQueue.delExam]) {
-            await sbFetch(`/quizfast_exams?owner_id=eq.${currentUserId()}&id=eq.${encodeURIComponent(id)}`, { method: 'DELETE' });
-            qDrop('delExam', id);
-          }
-
-          const subs = syncQueue.upSubj.map(n => customSubjects.find(x => x.name === n)).filter(Boolean);
-          if (subs.length) {
-            await sbFetch('/quizfast_subjects?on_conflict=owner_id,name', {
-              method: 'POST',
-              headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
-              body: JSON.stringify(subs.map(x => ({ owner_id: currentUserId(), name: x.name, description: x.description || '' })))
-            });
-          }
-          syncQueue.upSubj = [];
-
-          const exs = syncQueue.upExam.map(id => customExams.find(e => e.id === id)).filter(Boolean);
-          if (exs.length) {
-            await sbFetch('/quizfast_exams?on_conflict=id', {
-              method: 'POST',
-              headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
-              body: JSON.stringify(exs.map(ex => ({
-                owner_id: currentUserId(),
-                id: ex.id,
-                subject: ex.subject,
-                title: ex.title,
-                minutes: EXAM_MINUTES,
-                pass_pct: PASS_SCORE10 * 10,
-                shuffle_q: !!ex.shuffleQ,
-                shuffle_opt: ex.shuffleOpt !== false,
-                questions: ex.questions || []
-              })))
-            });
-          }
-          syncQueue.upExam = [];
-          saveSyncQueue();
-          return true;
-        } catch (err) {
-          console.warn('Đồng bộ lên cloud lỗi (sẽ thử lại lần sau):', err);
-          return false;
-        } finally {
-          flushing = false;
-        }
-      }
-
-      async function pushToCloud(label) {
-        if (!currentUserId()) { setCloudStatus('err', 'Chưa đăng nhập'); return; }
-        setCloudStatus('syncing', label);
-        const ok = await flushQueue();
-        setCloudStatus(ok ? 'ok' : 'err', ok ? 'Đã đồng bộ' : 'Chưa đồng bộ được');
-      }
-
-      async function syncFromSupabase() {
-        if (!currentUserId()) { setCloudStatus('err', 'Chưa đăng nhập'); return; }
-        setCloudStatus('syncing', 'Đang đồng bộ...');
-        try {
-          // 1. Đẩy các thay đổi đang chờ trước, để lần tải về không ghi đè mất chúng
-          const pushed = await flushQueue();
-          if (!pushed) throw new Error('Chưa đẩy được thay đổi đang chờ lên cloud');
-
-          // 2. Tải về
-          const [subjRows, examRows] = await Promise.all([
-            sbFetch(`/quizfast_subjects?select=*&owner_id=eq.${currentUserId()}&order=created_at.asc`),
-            sbFetch(`/quizfast_exams?select=*&owner_id=eq.${currentUserId()}&order=created_at.asc`)
-          ]);
-
-          if (Array.isArray(subjRows) && Array.isArray(examRows)) {
-            const cloudSubjects = subjRows.map(r => ({ name: r.name, description: r.description || 'Môn học của bạn' }));
-            const cloudExams = examRows.map(r => ({
-              id: r.id,
-              subject: r.subject,
-              title: r.title,
-              minutes: EXAM_MINUTES,
-              passPct: PASS_SCORE10 * 10,
-              shuffleQ: !!r.shuffle_q,
-              shuffleOpt: r.shuffle_opt !== false,
-              questions: Array.isArray(r.questions) ? r.questions : []
-            }));
-
-            // 3. Dữ liệu chỉ có trong máy (chưa từng lên cloud) được giữ lại và đẩy lên, không bị xóa
-            const cloudSubjNames = new Set(cloudSubjects.map(x => x.name));
-            const cloudExamIds = new Set(cloudExams.map(x => x.id));
-            const localOnlySubjects = customSubjects.filter(x => !cloudSubjNames.has(x.name));
-            const localOnlyExams = customExams.filter(x => !cloudExamIds.has(x.id));
-
-            customSubjects = [...cloudSubjects, ...localOnlySubjects];
-            customExams = [...cloudExams, ...localOnlyExams];
-            saveCustomSubjects();
-            saveCustomExams();
-
-            if (localOnlySubjects.length || localOnlyExams.length) {
-              localOnlySubjects.forEach(x => qPush('upSubj', x.name));
-              localOnlyExams.forEach(x => qPush('upExam', x.id));
-              await flushQueue();
-            }
-          }
-
-          setCloudStatus('ok', 'Đã đồng bộ');
-          refreshHomeView();
-        } catch (err) {
-          console.warn('Supabase sync error:', err);
-          setCloudStatus('err', 'Offline (Local)');
-        }
-      }
-
-      function sbUpsertSubject(subj) {
-        qDrop('delSubj', subj.name);
-        qPush('upSubj', subj.name);
-        return pushToCloud('Đang lưu môn...');
-      }
-
-      function sbDeleteSubject(name) {
-        qDrop('upSubj', name);
-        qPush('delSubj', name);
-        return pushToCloud('Đang xóa...');
-      }
-
-      function sbUpsertExams(examsList) {
-        if (!Array.isArray(examsList) || examsList.length === 0) return Promise.resolve();
-        examsList.forEach(ex => { qDrop('delExam', ex.id); qPush('upExam', ex.id); });
-        return pushToCloud('Đang lưu lên Cloud...');
-      }
-
-      function sbDeleteExam(examId) {
-        qDrop('upExam', examId);
-        qPush('delExam', examId);
-        return pushToCloud('Đang xóa...');
-      }
+      // Dữ liệu môn/đề tự thêm lưu hoàn toàn trong trình duyệt (localStorage), không dùng máy chủ.
+      const requireLogin = (_reason, action) => action();
+      const sbUpsertSubject = () => Promise.resolve();
+      const sbDeleteSubject = () => Promise.resolve();
+      const sbUpsertExams = () => Promise.resolve();
+      const sbDeleteExam = () => Promise.resolve();
 
       function getQuestionRecord(id) {
         if (!progressMap[id]) {
@@ -1353,7 +1102,9 @@
         const gdc = Array.isArray(window.GDC_DATA) ? window.GDC_DATA : [];
         const agu1 = Array.isArray(window.AGU_PART1_DATA) ? window.AGU_PART1_DATA : [];
         const agu2 = Array.isArray(window.AGU_PART2_DATA) ? window.AGU_PART2_DATA : [];
-        const combined = [...gdc, ...agu1, ...agu2];
+        const tthcmA = Array.isArray(window.TTHCM_A_DATA) ? window.TTHCM_A_DATA : [];
+        const tthcmB = Array.isArray(window.TTHCM_B_DATA) ? window.TTHCM_B_DATA : [];
+        const combined = [...gdc, ...agu1, ...agu2, ...tthcmA, ...tthcmB];
 
         const map = new Map();
         const source = combined.length > 0 ? combined : window.SAMPLE_QUESTIONS;
@@ -1378,7 +1129,12 @@
 
       // Môn mặc định do quản trị viên thêm (bảng quizfast_default_subjects + ngân hàng câu hỏi);
       // môn học của bạn do chính người dùng tạo và lưu theo mã đồng bộ.
-      const SUBJECT_INFO = { 'FE GDC': 'Game Design Concepts', 'FE AGU': 'Advanced Game Unity' };
+      const SUBJECT_INFO = {
+        'FE GDC': 'Game Design Concepts',
+        'FE AGU': 'Advanced Game Unity',
+        'TTHCM 349 câu': 'Tư tưởng Hồ Chí Minh: 349 câu đã rà soát đáp án',
+        'TTHCM theo chương': 'Tư tưởng Hồ Chí Minh: chia theo 6 chương, dễ ôn từng phần'
+      };
       let defaultMeta = new Map();
       let defaultMetaLoaded = false;
 
@@ -1417,7 +1173,35 @@
 
         // 1. Bộ đề có sẵn: gom toàn bộ câu của môn, chia mỗi đề 60 câu (đề cuối có thể ít hơn, không trùng câu)
         const bPool = builtinQuestions.filter(q => q.subject === subjName);
-        for (let i = 0; i < bPool.length; i += PAPER_SIZE) {
+        if (bPool.some(q => q.chapter)) {
+          // Môn có chương: mỗi chương là một nhóm; chương dài được chia đều thành các đề không quá 60 câu
+          const chapters = [...new Set(bPool.map(q => q.chapter || 0))].sort((a, b) => a - b);
+          chapters.forEach(c => {
+            const cq = bPool.filter(q => (q.chapter || 0) === c);
+            const parts = Math.ceil(cq.length / PAPER_SIZE);
+            const per = Math.ceil(cq.length / parts);
+            const ctitle = (cq.find(q => q.chapterTitle) || {}).chapterTitle || '';
+            for (let k = 0; k < parts; k++) {
+              const slice = cq.slice(k * per, (k + 1) * per);
+              if (!slice.length) continue;
+              papers.push({
+                key: `${subjName}_C${c}_P${k + 1}`,
+                title: `${subjName} — Chương ${c}${parts > 1 ? ` · Đề ${k + 1}` : ''}`,
+                shortTitle: parts > 1 ? `Đề ${k + 1}` : `Cả chương ${c}`,
+                group: `Chương ${c}`,
+                groupTitle: ctitle,
+                rangeLabel: `Câu ${k * per + 1} – ${k * per + slice.length} của chương`,
+                questions: slice,
+                minutes: EXAM_MINUTES,
+                shuffleQ: false,
+                shuffleOpt: true,
+                isCustom: false,
+                isShuffle: false
+              });
+            }
+          });
+        }
+        for (let i = 0; i < (bPool.some(q => q.chapter) ? 0 : bPool.length); i += PAPER_SIZE) {
           const n = i / PAPER_SIZE + 1;
           const slice = bPool.slice(i, i + PAPER_SIZE);
           papers.push({
@@ -2043,6 +1827,17 @@
         userSubjects.forEach(subj => userGrid.appendChild(buildSubjectCard(subj, allQs)));
         document.getElementById('user-subjects-empty').classList.toggle('hidden', userSubjects.length > 0);
 
+        // Bài đang làm dở gần nhất
+        const sessions = Object.values(loadExamSessions()).filter(x => x && Array.isArray(x.questions) && x.questions.length);
+        sessions.sort((a, b) => (b.savedAt || 0) - (a.savedAt || 0));
+        const banner = document.getElementById('resume-banner');
+        banner.classList.toggle('hidden', sessions.length === 0);
+        if (sessions.length) {
+          const sv = sessions[0];
+          document.getElementById('resume-banner-text').textContent = `${sv.title} · câu ${Math.min((sv.currentIndex || 0) + 1, sv.questions.length)}/${sv.questions.length}`;
+          document.getElementById('btn-resume-banner').onclick = () => resumeExamSession(sv.paperKey);
+        }
+
         lucide.createIcons();
       }
 
@@ -2095,7 +1890,23 @@
           const emptyBtn = grid.querySelector('#btn-empty-add-paper');
           if (emptyBtn) emptyBtn.addEventListener('click', () => requireLogin('Đăng nhập để thêm đề và lưu vào tài khoản của bạn.', () => openUploadStudio(subjName)));
         } else {
+          let lastGroup = null;
           papers.forEach(paper => {
+            if (paper.group && paper.group !== lastGroup) {
+              lastGroup = paper.group;
+              const gp = papers.filter(x => x.group === paper.group);
+              const gTotal = gp.reduce((n, x) => n + x.questions.length, 0);
+              const gDone = gp.reduce((n, x) => n + x.questions.filter(q => progressMap[q.id] && progressMap[q.id].status !== 'unseen').length, 0);
+              const head = document.createElement('div');
+              head.className = 'col-span-full pt-3 first:pt-0';
+              head.innerHTML = `
+                <div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
+                  <h3 class="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white">${escapeHtml(paper.group)}${paper.groupTitle ? ` <span class="font-bold text-slate-500 dark:text-slate-400">· ${escapeHtml(paper.groupTitle)}</span>` : ''}</h3>
+                  <span class="text-xs font-bold text-brand-600 dark:text-brand-400">${gDone}/${gTotal} câu đã làm</span>
+                </div>`;
+              grid.appendChild(head);
+            }
+            const sess = loadExamSessions()[paper.key];
             const qCount = paper.isShuffle ? paper.size : paper.questions.length;
             let doneCount = 0;
             if (!paper.isShuffle) {
@@ -2156,10 +1967,13 @@
                 <div class="space-y-1.5">${progressHtml}</div>
               </div>
 
-              <button class="btn-start-paper w-full py-2.5 rounded-xl bg-brand-700 hover:bg-brand-600 text-white text-sm font-extrabold flex items-center justify-center gap-2 transition-colors">
-                <span>Bắt đầu làm bài</span>
-                <i data-lucide="arrow-right" class="w-4 h-4"></i>
-              </button>
+              <div class="space-y-2">
+                <button class="btn-start-paper w-full py-3 rounded-xl bg-brand-700 hover:bg-brand-600 text-white text-sm font-extrabold flex items-center justify-center gap-2 transition-colors">
+                  <span>${sess ? `Làm tiếp (câu ${Math.min((sess.currentIndex || 0) + 1, sess.questions.length)}/${sess.questions.length})` : 'Bắt đầu làm bài'}</span>
+                  <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+                ${sess ? '<button class="btn-restart-paper w-full py-2 rounded-xl bg-slate-100 dark:bg-[#24302a] hover:bg-slate-200 dark:hover:bg-[#3b4e44] text-xs font-bold text-slate-600 dark:text-slate-300">Làm lại từ đầu</button>' : ''}
+              </div>
             `;
 
             if (paper.isCustom) {
@@ -2176,7 +1990,15 @@
             }
 
             card.querySelector('.btn-start-paper').addEventListener('click', () => {
+              if (sess && resumeExamSession(paper.key)) return;
               openExamSetupModal(paper, subjName);
+            });
+            const restartBtn = card.querySelector('.btn-restart-paper');
+            if (restartBtn) restartBtn.addEventListener('click', () => {
+              if (!confirm('Bỏ phần đã làm dở của đề này và làm lại từ đầu?')) return;
+              clearExamSession(paper.key);
+              openExamSetupModal(paper, subjName);
+              renderSubjectDetail(subjName);
             });
 
             grid.appendChild(card);
@@ -2196,6 +2018,26 @@
         document.getElementById('setup-mode-unlimited').className = timed ? off : on;
       }
 
+      // Chọn nhanh: "Học" (chấm ngay, không giới hạn giờ, giữ thứ tự đáp án gốc) hoặc "Thi thử" (60 phút, chấm khi nộp)
+      const SETUP_PRESET_KEY = 'quizfast_setup_preset_v1';
+      function loadSetupPreset() {
+        try { return localStorage.getItem(SETUP_PRESET_KEY) === 'exam' ? 'exam' : 'study'; } catch { return 'study'; }
+      }
+      function applySetupPreset(name) {
+        if (!pendingExamSetup) return;
+        const study = name !== 'exam';
+        pendingExamSetup.timed = !study;
+        document.getElementById('setup-instant-fb').checked = study;
+        document.getElementById('setup-auto-next').checked = false;
+        document.getElementById('setup-shuffle-opt').checked = !study;
+        try { localStorage.setItem(SETUP_PRESET_KEY, study ? 'study' : 'exam'); } catch { /* bỏ qua */ }
+        const on = 'text-left p-3 rounded-xl border-2 transition-all border-brand-600 bg-brand-50 dark:bg-brand-900/30 text-brand-800 dark:text-brand-200';
+        const off = 'text-left p-3 rounded-xl border-2 transition-all border-slate-200 dark:border-[#46594e] bg-white dark:bg-[#19211d] text-slate-700 dark:text-slate-200';
+        document.getElementById('setup-preset-study').className = study ? on : off;
+        document.getElementById('setup-preset-exam').className = study ? off : on;
+        refreshExamSetupModalUI();
+      }
+
       function openExamSetupModal(paper, subjName) {
         if (!paper || !paper.questions || paper.questions.length === 0) return;
         const qCount = paper.isShuffle ? paper.size : paper.questions.length;
@@ -2206,8 +2048,7 @@
         document.getElementById('setup-rule-note').textContent = `Điểm đạt: trên ${PASS_SCORE10}/10.` + (paper.isShuffle ? ' Đề này bốc ưu tiên câu hay sai và câu chưa làm.' : '');
         document.getElementById('setup-shuffle-q').checked = !!paper.shuffleQ;
         document.getElementById('setup-shuffle-opt').checked = paper.shuffleOpt !== false;
-        document.getElementById('setup-instant-fb').checked = false;
-        document.getElementById('setup-auto-next').checked = false;
+        applySetupPreset(loadSetupPreset());
 
         refreshExamSetupModalUI();
         const modal = document.getElementById('modal-exam-setup');
@@ -2224,8 +2065,15 @@
       }
 
       // --- ACTIVE EXAM WORKSPACE ---
+      // Đáp án kiểu "Tất cả đều đúng", "A và B", "Cả hai"... phụ thuộc thứ tự nên không được trộn
+      function optionsOrderMatters(opts) {
+        const re = /(tất\s+cả|cả\s+[a-f]\s*(và|,|&)\s*[a-f]\b|\b[a-f]\s*(và|,)\s*[a-f]\b|các\s+(phương\s+án|ý|đáp\s+án)\s+(trên|còn\s+lại|đều)|không\s+có\s+(phương\s+án|đáp\s+án|ý)|đều\s+(đúng|sai)|cả\s+(hai|ba|bốn))/i;
+        return opts.some(o => re.test(String(o)));
+      }
+
       function prepareExamQuestionItem(q, shouldShuffleOpt) {
         const opts = Array.isArray(q.options) ? q.options : [];
+        if (shouldShuffleOpt && optionsOrderMatters(opts)) shouldShuffleOpt = false;
         const indexed = opts.map((text, idx) => ({
           text: stripOptionPrefix(text),
           isCorrect: idx === q.correctIndex
@@ -2237,6 +2085,74 @@
           shuffledCorrectIndex: Math.max(0, finalOpts.findIndex(item => item.isCorrect))
         };
       }
+
+      // ----- Tự lưu bài đang làm dở (tải lại trang hoặc thoát ra vẫn làm tiếp được) -----
+      const EXAM_SESSION_KEY = 'quizfast_exam_session_v1';
+      function loadExamSessions() {
+        try { const o = JSON.parse(localStorage.getItem(EXAM_SESSION_KEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch { return {}; }
+      }
+      function saveExamSession() {
+        if (!examState.active || !examState.paperKey) return;
+        try {
+          const all = loadExamSessions();
+          all[examState.paperKey] = {
+            paperKey: examState.paperKey, title: examState.title, subject: examState.subject,
+            passPct: examState.passPct, passScore10: examState.passScore10, shuffleOpt: examState.shuffleOpt,
+            autoNext: examState.autoNext, instantFeedback: examState.instantFeedback,
+            questions: examState.questions, answers: examState.answers, flags: examState.flags,
+            currentIndex: examState.currentIndex, secondsLeft: examState.secondsLeft, totalSeconds: examState.totalSeconds,
+            savedAt: Date.now()
+          };
+          localStorage.setItem(EXAM_SESSION_KEY, JSON.stringify(all));
+        } catch { /* hết dung lượng: bỏ qua, không làm hỏng bài đang làm */ }
+      }
+      function clearExamSession(key) {
+        if (!key) return;
+        try {
+          const all = loadExamSessions();
+          if (all[key]) { delete all[key]; localStorage.setItem(EXAM_SESSION_KEY, JSON.stringify(all)); }
+        } catch { /* bỏ qua */ }
+      }
+
+      function launchExamUI() {
+        document.getElementById('home-subjects-screen').classList.add('hidden');
+        document.getElementById('subject-detail-screen').classList.add('hidden');
+        setExamScrollLock(true);
+        document.getElementById('exam-result').classList.add('hidden');
+        document.getElementById('exam-running-title').textContent = examState.title;
+        lastRenderedExamIdx = -1;
+
+        updateExamTimerDisplay();
+        if (examState.totalSeconds > 0) {
+          examState.timerId = setInterval(() => {
+            examState.secondsLeft--;
+            updateExamTimerDisplay();
+            if (examState.secondsLeft % 5 === 0) saveExamSession();
+            if (examState.secondsLeft <= 0) submitExam();
+          }, 1000);
+        }
+        renderActiveExamQuestion();
+      }
+
+      function resumeExamSession(key) {
+        const sv = loadExamSessions()[key];
+        if (!sv || !Array.isArray(sv.questions) || sv.questions.length === 0) { clearExamSession(key); return false; }
+        if (examState.timerId) clearInterval(examState.timerId);
+        if (examState.autoNextTimer) clearTimeout(examState.autoNextTimer);
+        activeSubjectName = sv.subject || activeSubjectName;
+        examState = {
+          active: true, finished: false, paperKey: sv.paperKey, title: sv.title, subject: sv.subject,
+          passPct: sv.passPct, passScore10: sv.passScore10, shuffleOpt: sv.shuffleOpt, autoNext: sv.autoNext,
+          instantFeedback: sv.instantFeedback, autoNextTimer: null, rawPool: [...sv.questions],
+          questions: sv.questions, answers: sv.answers || {}, flags: sv.flags || {},
+          currentIndex: Math.min(Math.max(0, sv.currentIndex || 0), sv.questions.length - 1),
+          secondsLeft: sv.secondsLeft, totalSeconds: sv.totalSeconds, timerId: null, reviewFilter: 'WRONG'
+        };
+        launchExamUI();
+        return true;
+      }
+
+      let lastRenderedExamIdx = -1;
 
       function startExamPaper(pool, seconds, title, paperKey, subj, passPct = 40, shuffleOpt = true, autoNext = false, instantFb = false, passScore10 = 4) {
         if (!pool || pool.length === 0) return;
@@ -2266,22 +2182,7 @@
           reviewFilter: 'WRONG'
         };
 
-        document.getElementById('home-subjects-screen').classList.add('hidden');
-        document.getElementById('subject-detail-screen').classList.add('hidden');
-        setExamScrollLock(true);
-        document.getElementById('exam-result').classList.add('hidden');
-        document.getElementById('exam-running-title').textContent = title;
-
-        updateExamTimerDisplay();
-        if (seconds > 0) {
-          examState.timerId = setInterval(() => {
-            examState.secondsLeft--;
-            updateExamTimerDisplay();
-            if (examState.secondsLeft <= 0) submitExam();
-          }, 1000);
-        }
-
-        renderActiveExamQuestion();
+        launchExamUI();
       }
 
       function updateExamTimerDisplay() {
@@ -2308,7 +2209,7 @@
         document.getElementById('exam-total-count').textContent = total;
         document.getElementById('palette-progress-pct').textContent = `${Math.round((answeredCount / total) * 100)}%`;
         document.getElementById('eq-number-badge').textContent = `Câu ${idx + 1} / ${total}`;
-        document.getElementById('eq-subject-badge').textContent = examState.subject || q.subject || '';
+        document.getElementById('eq-subject-badge').textContent = (examState.subject || q.subject || '') + (q.chapter ? ` · Chương ${q.chapter}` : '');
 
         const masteryEl = document.getElementById('eq-mastery-badge');
         if (rec.status === 'green') {
@@ -2341,6 +2242,10 @@
         qEl.dataset.hlQ = q.id;
         qEl.dataset.hlF = 'q';
         qEl.dataset.hlK = '';
+
+        const imgEl = document.getElementById('eq-image');
+        if (q.image) { imgEl.src = q.image; imgEl.classList.remove('hidden'); }
+        else { imgEl.classList.add('hidden'); imgEl.removeAttribute('src'); }
 
         const optionsEl = document.getElementById('eq-options');
         optionsEl.innerHTML = '';
@@ -2401,6 +2306,15 @@
         const nextTop = document.getElementById('btn-exam-next-top');
         if (prevTop) prevTop.disabled = idx === 0;
         if (nextTop) nextTop.disabled = idx >= total - 1;
+        document.getElementById('btn-exam-prev-bottom').disabled = idx === 0;
+        document.getElementById('btn-exam-next-bottom').disabled = idx >= total - 1;
+        document.getElementById('exam-bottom-label').textContent = `${idx + 1}/${total}`;
+
+        // Ghi chú / giải thích hiện sau khi trả lời ở chế độ chấm ngay
+        const exEl = document.getElementById('eq-explain');
+        const showEx = examState.instantFeedback && hasAnswered && !!q.explanation;
+        exEl.classList.toggle('hidden', !showEx);
+        exEl.textContent = showEx ? q.explanation : '';
 
         const palette = document.getElementById('exam-palette');
         palette.innerHTML = '';
@@ -2422,11 +2336,29 @@
 
           b.className = cls;
           b.textContent = i + 1;
-          b.addEventListener('click', () => { examState.currentIndex = i; renderActiveExamQuestion(); });
+          b.addEventListener('click', () => { examState.currentIndex = i; closePalette(); renderActiveExamQuestion(); });
           palette.appendChild(b);
         }
 
+        // Sang câu khác thì cuộn lên đầu (điện thoại); chọn đáp án trong cùng câu thì giữ nguyên vị trí
+        if (idx !== lastRenderedExamIdx) {
+          lastRenderedExamIdx = idx;
+          const mainEl = document.getElementById('app-main');
+          if (mainEl) mainEl.scrollTop = 0;
+          const cardEl = document.getElementById('exam-q-card');
+          if (cardEl) cardEl.scrollTop = 0;
+        }
+        saveExamSession();
         lucide.createIcons();
+      }
+
+      function openPalette() {
+        document.getElementById('exam-palette-card').classList.add('sheet-open');
+        document.getElementById('palette-backdrop').classList.remove('hidden');
+      }
+      function closePalette() {
+        document.getElementById('exam-palette-card').classList.remove('sheet-open');
+        document.getElementById('palette-backdrop').classList.add('hidden');
       }
 
       function selectExamOption(optIdx) {
@@ -2450,6 +2382,7 @@
       }
 
       function submitExam() {
+        clearExamSession(examState.paperKey);
         if (examState.timerId) clearInterval(examState.timerId);
         if (examState.autoNextTimer) clearTimeout(examState.autoNextTimer);
         examState.active = false;
@@ -2541,12 +2474,14 @@
               <span class="font-bold text-slate-400">${escapeHtml(examState.subject)}</span>
             </div>
             <p class="text-sm sm:text-base font-bold text-slate-900 dark:text-white leading-relaxed select-text" ${hlAttr(q.id, 'q', '')}>${hlRender(q.question, { qid: q.id, field: 'q', subject: q.subject || examState.subject, max: 6 })}</p>
+            ${q.image ? `<img src="${escapeHtml(q.image)}" alt="Hình minh họa" class="max-w-full max-h-72 mx-auto rounded-xl border border-slate-200 dark:border-[#34453b]" />` : ''}
             <div class="text-xs sm:text-sm space-y-1.5">
               <div class="${isOk ? 'text-brand-700 dark:text-brand-300' : 'text-rose-600 dark:text-rose-300'}">
                 Bạn chọn: <strong>${userAns !== undefined ? letters[userAns] + '. ' + escapeHtml(q.shuffledOptions[userAns]) : '(Chưa trả lời)'}</strong>
               </div>
               ${!isOk ? `<div class="text-brand-700 dark:text-brand-300">Đáp án đúng: <strong>${letters[q.shuffledCorrectIndex]}. ${escapeHtml(q.shuffledOptions[q.shuffledCorrectIndex])}</strong></div>` : ''}
             </div>
+            ${q.explanation ? `<div class="rounded-xl border border-amber-300 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/10 text-amber-900 dark:text-amber-100 px-3.5 py-2.5 text-xs sm:text-sm leading-relaxed">${escapeHtml(q.explanation)}</div>` : ''}
           `;
           listEl.appendChild(card);
         });
@@ -3932,92 +3867,6 @@ D. 60.0 ms`;
         });
 
 
-        // ---- Tài khoản: đăng nhập / đăng ký ----
-        const authModal = document.getElementById('modal-auth');
-        let authMode = 'login';
-        const authMsg = document.getElementById('auth-msg');
-        const showAuthMsg = (text, ok) => {
-          authMsg.textContent = text;
-          authMsg.className = 'text-xs font-bold rounded-lg px-3 py-2 ' + (ok
-            ? 'bg-brand-100 dark:bg-brand-900/50 text-brand-700 dark:text-brand-300'
-            : 'bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300');
-        };
-        const clearAuthMsg = () => { authMsg.className = 'hidden'; authMsg.textContent = ''; };
-        const setAuthMode = (mode) => {
-          authMode = mode;
-          const reg = mode === 'register';
-          document.getElementById('auth-title').textContent = reg ? 'Tạo tài khoản' : 'Đăng nhập';
-          document.getElementById('auth-submit').textContent = reg ? 'Đăng ký' : 'Đăng nhập';
-          document.getElementById('auth-name-row').classList.toggle('hidden', !reg);
-          document.getElementById('auth-pass-hint').classList.toggle('hidden', !reg);
-          document.getElementById('auth-forgot').classList.toggle('hidden', reg);
-          document.getElementById('auth-password').autocomplete = reg ? 'new-password' : 'current-password';
-          const on = 'bg-white dark:bg-[#24302a] text-brand-700 dark:text-brand-300 shadow-sm';
-          const off = 'text-slate-500 dark:text-slate-400';
-          document.getElementById('auth-tab-login').className = `flex-1 px-3 py-1.5 rounded-lg text-sm font-bold ${reg ? off : on}`;
-          document.getElementById('auth-tab-register').className = `flex-1 px-3 py-1.5 rounded-lg text-sm font-bold ${reg ? on : off}`;
-          clearAuthMsg();
-        };
-        const closeAuthModal = () => { authModal.classList.add('hidden'); authModal.classList.remove('flex'); };
-        openAuthModal = (mode = 'login', reason = '') => {
-          setAuthMode(mode);
-          document.getElementById('auth-reason').textContent = reason || 'Đăng nhập để tạo môn, thêm đề và lưu vào tài khoản của bạn.';
-          document.getElementById('auth-password').value = '';
-          authModal.classList.remove('hidden');
-          authModal.classList.add('flex');
-          setTimeout(() => document.getElementById('auth-email').focus(), 30);
-        };
-        document.getElementById('close-auth-modal').addEventListener('click', closeAuthModal);
-        authModal.addEventListener('click', (e) => { if (e.target === authModal) closeAuthModal(); });
-        document.getElementById('auth-tab-login').addEventListener('click', () => setAuthMode('login'));
-        document.getElementById('auth-tab-register').addEventListener('click', () => setAuthMode('register'));
-        document.getElementById('auth-form').addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const email = document.getElementById('auth-email').value.trim();
-          const password = document.getElementById('auth-password').value;
-          const name = document.getElementById('auth-name').value.trim();
-          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showAuthMsg('Email không hợp lệ.', false);
-          if (authMode === 'register' && password.length < 8) return showAuthMsg('Mật khẩu cần ít nhất 8 ký tự.', false);
-          if (!password) return showAuthMsg('Vui lòng nhập mật khẩu.', false);
-          const btn = document.getElementById('auth-submit');
-          btn.disabled = true;
-          clearAuthMsg();
-          try {
-            if (authMode === 'register') {
-              const r = await QFAuth.signUp(email, password, name);
-              if (r.needsConfirm) {
-                showAuthMsg('Đã gửi thư xác nhận. Hãy mở email và bấm vào liên kết, rồi quay lại đăng nhập.', true);
-                setTimeout(() => setAuthMode('login'), 0);
-                return;
-              }
-            } else {
-              await QFAuth.signIn(email, password);
-            }
-            closeAuthModal();
-            if (pendingAfterLogin) { const fn = pendingAfterLogin; pendingAfterLogin = null; setTimeout(fn, 50); }
-          } catch (err) {
-            showAuthMsg(err.message || 'Có lỗi xảy ra.', false);
-          } finally { btn.disabled = false; }
-        });
-        document.getElementById('auth-forgot').addEventListener('click', async () => {
-          const email = document.getElementById('auth-email').value.trim();
-          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showAuthMsg('Nhập email của bạn ở ô phía trên trước.', false);
-          try {
-            await QFAuth.resetPassword(email);
-            showAuthMsg('Nếu email tồn tại, bạn sẽ nhận được thư đặt lại mật khẩu.', true);
-          } catch (err) { showAuthMsg(err.message, false); }
-        });
-
-        document.getElementById('auth-area').addEventListener('click', (e) => {
-          const btn = e.target.closest('[data-auth-action]');
-          if (!btn) return;
-          const act = btn.dataset.authAction;
-          if (act === 'login') openAuthModal('login');
-          else if (act === 'register') openAuthModal('register');
-          else if (act === 'logout') QFAuth.signOut();
-        });
-        QFAuth.onChange(handleAuthChange);
-
         // Upload Studio Modal
         const uploadModal = document.getElementById('modal-upload');
         const closeUpload = () => { uploadModal.classList.add('hidden'); uploadModal.classList.remove('flex'); };
@@ -4030,6 +3879,8 @@ D. 60.0 ms`;
         // Pre-Exam Settings Modal
         document.getElementById('close-exam-setup-modal').addEventListener('click', closeExamSetupModal);
         document.getElementById('cancel-exam-setup-modal').addEventListener('click', closeExamSetupModal);
+        document.getElementById('setup-preset-study').addEventListener('click', () => applySetupPreset('study'));
+        document.getElementById('setup-preset-exam').addEventListener('click', () => applySetupPreset('exam'));
         document.getElementById('setup-mode-timed').addEventListener('click', () => {
           if (!pendingExamSetup) return;
           pendingExamSetup.timed = true;
@@ -4058,7 +3909,8 @@ D. 60.0 ms`;
 
         // Active Exam Controls
         document.getElementById('btn-exit-exam').addEventListener('click', () => {
-          if (Object.keys(examState.answers).length > 0 && !confirm('Thoát khỏi đề đang làm?')) return;
+          if (Object.keys(examState.answers).length > 0 && !confirm(examState.paperKey ? 'Thoát khỏi đề? Phần đã làm được lưu lại để bạn làm tiếp sau.' : 'Thoát khỏi đề đang làm?')) return;
+          saveExamSession();
           if (examState.timerId) clearInterval(examState.timerId);
           if (examState.autoNextTimer) clearTimeout(examState.autoNextTimer);
           examState.active = false;
@@ -4085,6 +3937,27 @@ D. 60.0 ms`;
         };
         document.getElementById('btn-exam-prev-top').addEventListener('click', goPrevQuestion);
         document.getElementById('btn-exam-next-top').addEventListener('click', goNextQuestion);
+
+        // Điện thoại: nút Trước/Tiếp ở đáy, mở bảng câu hỏi, vuốt trái/phải để đổi câu
+        document.getElementById('btn-exam-prev-bottom').addEventListener('click', goPrevQuestion);
+        document.getElementById('btn-exam-next-bottom').addEventListener('click', goNextQuestion);
+        document.getElementById('btn-exam-palette-open').addEventListener('click', openPalette);
+        document.getElementById('btn-palette-close').addEventListener('click', closePalette);
+        document.getElementById('palette-backdrop').addEventListener('click', closePalette);
+        const qCard = document.getElementById('exam-q-card');
+        let swipe = null;
+        qCard.addEventListener('touchstart', (e) => {
+          const t = e.changedTouches[0];
+          swipe = { x: t.clientX, y: t.clientY, at: Date.now() };
+        }, { passive: true });
+        qCard.addEventListener('touchend', (e) => {
+          if (!swipe || !examState.active || hasTextSelection()) { swipe = null; return; }
+          const t = e.changedTouches[0];
+          const dx = t.clientX - swipe.x, dy = t.clientY - swipe.y;
+          const fast = Date.now() - swipe.at < 700;
+          swipe = null;
+          if (fast && Math.abs(dx) > 70 && Math.abs(dy) < 50) { if (dx < 0) goNextQuestion(); else goPrevQuestion(); }
+        }, { passive: true });
 
         document.getElementById('btn-submit-exam').addEventListener('click', () => {
           const answered = Object.keys(examState.answers).length;
@@ -4214,10 +4087,6 @@ D. 60.0 ms`;
         bindEvents();
         switchMode('home');
         lucide.createIcons();
-        loadBankFromSupabase();
-        loadDefaultSubjects();
-        renderAuthArea();
-        QFAuth.init().then(() => handleAuthChange());
       }
 
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
