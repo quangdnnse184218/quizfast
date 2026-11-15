@@ -6,9 +6,12 @@
   <title>QuizFast — Luyện đề trắc nghiệm</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Baloo+2:wght@600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    try { if (localStorage.getItem('quizfast_skin_v1') === 'pink') document.documentElement.setAttribute('data-skin', 'pink'); } catch (e) {}
+  </script>
   <script>
     // Icon màu (Fluent Emoji Flat, MIT; Twemoji cho cờ). Icon điều khiển (đóng, mũi tên, thêm) vẫn dùng nét đơn giản.
     (function () {
@@ -43,19 +46,39 @@
     })();
   </script>
   <script>
+    var v = function (n) { return 'rgb(var(--' + n + ') / <alpha-value>)'; };
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
           colors: {
             brand: {
-              50: '#edf8f2', 100: '#d5f0e1', 200: '#aee1c7', 300: '#7acba6', 400: '#43af84',
-              500: '#1f9468', 600: '#0f7d56', 700: '#0b6648', 800: '#0a513a', 900: '#0a422f', 950: '#05261b'
+              50: v('b50'),
+              100: v('b100'),
+              200: v('b200'),
+              300: v('b300'),
+              400: v('b400'),
+              500: v('b500'),
+              600: v('b600'),
+              700: v('b700'),
+              800: v('b800'),
+              900: v('b900'),
+              950: v('b950')
             },
             slate: {
-              50: '#f5f8f6', 100: '#ebf0ed', 200: '#dce4df', 300: '#c3cec8', 400: '#93a39a',
-              500: '#6b7c73', 600: '#51615a', 700: '#3b4943', 800: '#26322d', 900: '#17211c', 950: '#0d1511'
-            }
+              50: v('s50'),
+              100: v('s100'),
+              200: v('s200'),
+              300: v('s300'),
+              400: v('s400'),
+              500: v('s500'),
+              600: v('s600'),
+              700: v('s700'),
+              800: v('s800'),
+              900: v('s900'),
+              950: v('s950')
+            },
+            accent: v('acc')
           }
         }
       }
@@ -75,6 +98,32 @@
       outline: 2px solid #1f9468;
       outline-offset: 2px;
     }
+
+    :root { --b50: 237 248 242; --b100: 213 240 225; --b200: 174 225 199; --b300: 122 203 166; --b400: 67 175 132; --b500: 31 148 104; --b600: 15 125 86; --b700: 11 102 72; --b800: 10 81 58; --b900: 10 66 47; --b950: 5 38 27; --s50: 245 248 246; --s100: 235 240 237; --s200: 220 228 223; --s300: 195 206 200; --s400: 147 163 154; --s500: 107 124 115; --s600: 81 97 90; --s700: 59 73 67; --s800: 38 50 45; --s900: 23 33 28; --s950: 13 21 17; --acc: 52 211 153; }
+    html[data-skin="pink"] { --b50: 255 241 247; --b100: 255 224 238; --b200: 255 194 220; --b300: 255 154 196; --b400: 248 114 171; --b500: 236 79 147; --b600: 214 58 127; --b700: 184 43 105; --b800: 143 34 83; --b900: 110 29 68; --b950: 67 16 42; --s50: 253 247 250; --s100: 249 237 243; --s200: 240 220 231; --s300: 226 195 212; --s400: 180 143 165; --s500: 138 106 126; --s600: 108 80 98; --s700: 82 59 75; --s800: 58 39 53; --s900: 40 26 36; --s950: 23 14 20; --acc: 192 132 252; }
+
+    /* ===== Giao diện hồng pastel (chỉ chế độ sáng) ===== */
+    html[data-skin="pink"] body {
+      background-color: #fff4f9 !important;
+      background-image: radial-gradient(circle at 22px 22px, rgba(244,114,182,.16) 2px, transparent 3px), radial-gradient(circle at 66px 56px, rgba(192,132,252,.14) 2px, transparent 3px);
+      background-size: 88px 88px;
+    }
+    html[data-skin="pink"] h1, html[data-skin="pink"] h2, html[data-skin="pink"] h3, html[data-skin="pink"] .font-display {
+      font-family: 'Baloo 2', 'Be Vietnam Pro', system-ui, sans-serif; letter-spacing: 0;
+    }
+    html[data-skin="pink"] header {
+      background: linear-gradient(90deg, #ffb8d9 0%, #ffd1e6 45%, #dcc8ff 100%) !important;
+      color: #7a1f4d; box-shadow: 0 8px 24px rgba(236,79,147,.18);
+    }
+    html[data-skin="pink"] header .hdr-title { color: #7a1f4d; }
+    html[data-skin="pink"] header .hdr-nav { background: rgba(255,255,255,.6); border-color: rgba(255,255,255,.9); }
+    html[data-skin="pink"] header .hdr-tab-off { color: #8f2253; }
+    html[data-skin="pink"] header .hdr-btn { background: rgba(255,255,255,.7); border-color: #fff; color: #7a1f4d; }
+    html[data-skin="pink"] header .hdr-cta { background: #ec4f93; color: #fff; }
+    html[data-skin="pink"] .shadow-sm { box-shadow: 0 4px 14px rgba(236,79,147,.12); }
+    html[data-skin="pink"] .rounded-2xl { border-radius: 1.5rem; }
+    html[data-skin="pink"] .rounded-xl { border-radius: 1.1rem; }
+    html[data-skin="pink"] header button, html[data-skin="pink"] #app-main button.rounded-xl { border-radius: 9999px; }
 
     button { -webkit-tap-highlight-color: transparent; }
     .qf-ico { display: inline-block; flex-shrink: 0; object-fit: contain; user-select: none; }
@@ -188,13 +237,13 @@
         </button>
         <div>
           <div class="flex items-center gap-2">
-            <span class="hidden sm:inline font-display font-extrabold text-lg sm:text-xl tracking-tight text-white">QuizFast</span>
+            <span class="hidden sm:inline hdr-title font-display font-extrabold text-lg sm:text-xl tracking-tight text-white">QuizFast</span>
           </div>
         </div>
       </div>
 
       <!-- Main Navigation -->
-      <nav class="flex items-center gap-1 bg-black/20 p-1 rounded-xl border border-white/10">
+      <nav class="hdr-nav flex items-center gap-1 bg-black/20 p-1 rounded-xl border border-white/10">
         <button data-mode="home" aria-label="Môn và đề" title="Môn và đề" class="nav-tab flex items-center gap-2 whitespace-nowrap px-3 sm:px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all">
           <i data-lucide="folder-kanban" class="w-4 h-4"></i>
           <span class="hidden sm:inline">Môn &amp; Đề</span>
@@ -212,15 +261,14 @@
 
       <!-- Header Actions -->
       <div class="flex items-center gap-2">
-        <button id="btn-open-upload" aria-label="Tải đề lên" class="whitespace-nowrap flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-brand-950 text-xs sm:text-sm font-extrabold shadow-sm shadow-black/20 transition-all active:scale-95">
+        <button id="btn-open-upload" aria-label="Tải đề lên" class="hdr-cta whitespace-nowrap flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-brand-950 text-xs sm:text-sm font-extrabold shadow-sm shadow-black/20 transition-all active:scale-95">
           <i data-lucide="upload-cloud" class="w-4 h-4"></i>
           <span class="hidden sm:inline">Tải đề lên</span>
         </button>
-        <button id="btn-theme-toggle" class="p-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white border border-white/20 transition-all" title="Đổi giao diện Sáng / Tối">
-          <i id="theme-icon-sun" data-lucide="sun" class="w-4 h-4 hidden text-amber-400"></i>
-          <i id="theme-icon-moon" data-lucide="moon" class="w-4 h-4 text-slate-700"></i>
+        <button id="btn-theme-toggle" class="hdr-btn p-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white border border-white/20 transition-all" title="Đổi giao diện" aria-label="Đổi giao diện">
+          <i data-lucide="palette" class="w-5 h-5"></i>
         </button>
-        <button id="btn-shortcuts-help" class="hidden lg:flex p-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white border border-white/20 transition-all" title="Phím tắt bàn phím">
+        <button id="btn-shortcuts-help" class="hdr-btn hidden lg:flex p-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white border border-white/20 transition-all" title="Phím tắt bàn phím">
           <i data-lucide="keyboard" class="w-4 h-4"></i>
         </button>
       </div>
@@ -284,7 +332,7 @@
       <div id="subject-detail-screen" class="hidden space-y-6">
         <!-- Tiêu đề môn + độ thông thạo -->
         <div class="bg-white dark:bg-[#121c17] border border-slate-200/90 dark:border-[#2a3b33] rounded-3xl overflow-hidden shadow-sm divide-y divide-slate-200/80 dark:divide-[#2a3b33]">
-          <div id="detail-accent" class="h-2 bg-gradient-to-r from-brand-700 to-emerald-400"></div>
+          <div id="detail-accent" class="h-2 bg-gradient-to-r from-brand-700 to-accent"></div>
           <div class="p-5 sm:p-6 flex flex-wrap items-center justify-between gap-4">
             <div class="flex items-center gap-3.5 min-w-0">
               <button id="btn-back-subjects" class="p-2.5 rounded-xl bg-slate-100 dark:bg-[#1b2822] hover:bg-slate-200 dark:hover:bg-[#2f4238] text-slate-700 dark:text-slate-200 transition-all shrink-0" title="Quay lại danh sách môn" aria-label="Quay lại danh sách môn">
@@ -316,12 +364,12 @@
             </div>
             <div class="space-y-3">
               <div class="w-full h-2.5 bg-slate-100 dark:bg-[#243229] rounded-full overflow-hidden flex">
-                <div id="bar-mastered" class="bg-brand-500 h-full transition-all duration-500" style="width: 0%"></div>
+                <div id="bar-mastered" class="bg-emerald-500 h-full transition-all duration-500" style="width: 0%"></div>
                 <div id="bar-learning" class="bg-amber-400 h-full transition-all duration-500" style="width: 0%"></div>
                 <div id="bar-wrong" class="bg-rose-500 h-full transition-all duration-500" style="width: 0%"></div>
               </div>
               <div class="flex flex-wrap gap-x-6 gap-y-1.5 text-sm text-slate-600 dark:text-slate-300">
-                <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-brand-500"></span>Thuộc <b id="stat-green" class="text-slate-900 dark:text-white">0</b></span>
+                <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>Thuộc <b id="stat-green" class="text-slate-900 dark:text-white">0</b></span>
                 <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>Đang nhớ <b id="stat-yellow" class="text-slate-900 dark:text-white">0</b></span>
                 <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>Hay sai <b id="stat-red" class="text-slate-900 dark:text-white">0</b></span>
               </div>
@@ -360,7 +408,7 @@
             </button>
           </div>
           <div class="basis-full h-2 rounded-full bg-slate-100 dark:bg-[#1b2822] overflow-hidden" role="progressbar" aria-label="Tiến độ làm bài">
-            <div id="exam-progress-fill" class="h-full rounded-full bg-gradient-to-r from-brand-500 via-emerald-400 to-amber-400 transition-all duration-300" style="width: 0%"></div>
+            <div id="exam-progress-fill" class="h-full rounded-full bg-gradient-to-r from-brand-500 via-accent to-amber-400 transition-all duration-300" style="width: 0%"></div>
           </div>
         </div>
 
@@ -794,6 +842,49 @@
     </div>
   </div>
 
+  <!-- ==================== MODAL: CHỌN GIAO DIỆN ==================== -->
+  <div id="modal-theme" class="fixed inset-0 z-50 bg-black/55 backdrop-blur-sm hidden items-end sm:items-center justify-center sm:p-4">
+    <div class="w-full sm:max-w-md bg-white dark:bg-[#121c17] border border-slate-200 dark:border-[#36493f] rounded-t-3xl sm:rounded-3xl p-5 space-y-5 shadow-2xl" style="padding-bottom: calc(1.25rem + env(safe-area-inset-bottom))">
+      <div class="flex items-center justify-between gap-3">
+        <div>
+          <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Chọn giao diện</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Đổi lúc nào cũng được, máy sẽ nhớ lựa chọn của bạn.</p>
+        </div>
+        <button id="close-theme-modal" type="button" class="p-2 rounded-xl bg-slate-100 dark:bg-[#1b2822] text-slate-500" aria-label="Đóng">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <button type="button" data-skin-pick="jade" class="skin-card text-left rounded-2xl border-2 p-2.5 transition-all">
+          <span class="block h-20 rounded-xl overflow-hidden" style="background:#f3f6f4">
+            <span class="block h-6" style="background:linear-gradient(90deg,#0a513a,#0f7d56)"></span>
+            <span class="flex gap-1.5 p-2"><span class="flex-1 h-9 rounded-lg bg-white shadow-sm" style="border-left:4px solid #0f7d56"></span><span class="flex-1 h-9 rounded-lg bg-white shadow-sm" style="border-left:4px solid #f59e0b"></span></span>
+          </span>
+          <span class="block mt-2 text-sm font-extrabold text-slate-900 dark:text-white">Xanh ngọc</span>
+          <span class="block text-[11px] text-slate-500 dark:text-slate-400">Gọn gàng, tập trung. Có chế độ sáng và tối.</span>
+        </button>
+        <button type="button" data-skin-pick="pink" class="skin-card text-left rounded-2xl border-2 p-2.5 transition-all">
+          <span class="block h-20 rounded-xl overflow-hidden" style="background:#fff4f9">
+            <span class="block h-6" style="background:linear-gradient(90deg,#ffb8d9,#dcc8ff)"></span>
+            <span class="flex gap-1.5 p-2"><span class="flex-1 h-9 rounded-2xl bg-white shadow-sm" style="border-left:4px solid #ec4f93"></span><span class="flex-1 h-9 rounded-2xl bg-white shadow-sm" style="border-left:4px solid #c084fc"></span></span>
+          </span>
+          <span class="block mt-2 text-sm font-extrabold text-slate-900 dark:text-white">Hồng pastel</span>
+          <span class="block text-[11px] text-slate-500 dark:text-slate-400">Dễ thương, nhẹ nhàng. Chỉ có chế độ sáng.</span>
+        </button>
+      </div>
+
+      <div class="space-y-2">
+        <p class="text-xs font-bold text-slate-500 dark:text-slate-400">Chế độ màn hình</p>
+        <div class="grid grid-cols-2 gap-2 bg-slate-100 dark:bg-[#0b1210] p-1 rounded-xl border border-slate-200 dark:border-[#2a3b33]">
+          <button type="button" id="mode-light" class="mode-btn py-2 rounded-lg text-sm font-bold flex items-center justify-center gap-1.5"><i id="theme-icon-sun" data-lucide="sun" class="w-4 h-4"></i>Sáng</button>
+          <button type="button" id="mode-dark" class="mode-btn py-2 rounded-lg text-sm font-bold flex items-center justify-center gap-1.5"><i id="theme-icon-moon" data-lucide="moon" class="w-4 h-4"></i>Tối</button>
+        </div>
+        <p id="mode-note" class="hidden text-[11px] text-slate-500 dark:text-slate-400">Giao diện hồng pastel chỉ có chế độ sáng. Chọn Xanh ngọc nếu bạn muốn dùng chế độ tối.</p>
+      </div>
+    </div>
+  </div>
+
   <!-- ==================== MODAL: KEYBOARD SHORTCUTS ==================== -->
   <div id="modal-shortcuts" class="fixed inset-0 z-50 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4">
     <div class="bg-white dark:bg-[#121c17] border border-slate-200 dark:border-[#36493f] rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
@@ -1037,14 +1128,57 @@
         const html = document.documentElement;
         if (theme === 'dark') {
           html.classList.add('dark');
-          document.getElementById('theme-icon-sun').classList.remove('hidden');
-          document.getElementById('theme-icon-moon').classList.add('hidden');
+
         } else {
           html.classList.remove('dark');
-          document.getElementById('theme-icon-sun').classList.add('hidden');
-          document.getElementById('theme-icon-moon').classList.remove('hidden');
+
         }
         localStorage.setItem(STORAGE_KEYS.THEME, theme);
+        updateSkinUI();
+      }
+
+      // ----- Giao diện: "jade" (xanh ngọc, có sáng/tối) hoặc "pink" (hồng pastel, chỉ sáng) -----
+      const SKIN_KEY = 'quizfast_skin_v1';
+      const THEME_BEFORE_PINK_KEY = 'quizfast_theme_before_pink_v1';
+      let currentSkin = 'jade';
+
+      function updateSkinUI() {
+        document.querySelectorAll('[data-skin-pick]').forEach(btn => {
+          const on = btn.dataset.skinPick === currentSkin;
+          btn.className = 'skin-card text-left rounded-2xl border-2 p-2.5 transition-all ' + (on
+            ? 'border-brand-600 bg-brand-50 dark:bg-brand-900/25 ring-2 ring-brand-500/30'
+            : 'border-slate-200 dark:border-[#36493f] bg-white dark:bg-[#121c17] hover:border-brand-400');
+          btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        const onCls = 'mode-btn py-2 rounded-lg text-sm font-extrabold flex items-center justify-center gap-1.5 bg-white dark:bg-[#1b2822] text-brand-700 dark:text-brand-300 shadow-sm';
+        const offCls = 'mode-btn py-2 rounded-lg text-sm font-bold flex items-center justify-center gap-1.5 text-slate-500 dark:text-slate-400';
+        const light = document.getElementById('mode-light');
+        const dark = document.getElementById('mode-dark');
+        if (light && dark) {
+          light.className = currentTheme === 'dark' ? offCls : onCls;
+          dark.className = (currentTheme === 'dark' ? onCls : offCls) + (currentSkin === 'pink' ? ' opacity-40' : '');
+          dark.disabled = currentSkin === 'pink';
+        }
+        const note = document.getElementById('mode-note');
+        if (note) note.classList.toggle('hidden', currentSkin !== 'pink');
+      }
+
+      function applySkin(skin) {
+        skin = skin === 'pink' ? 'pink' : 'jade';
+        if (skin === 'pink' && currentSkin !== 'pink') {
+          try { localStorage.setItem(THEME_BEFORE_PINK_KEY, currentTheme); } catch { /* bỏ qua */ }
+          applyTheme('light');
+        } else if (skin === 'jade' && currentSkin === 'pink') {
+          let prev = 'light';
+          try { prev = localStorage.getItem(THEME_BEFORE_PINK_KEY) || 'light'; } catch { /* bỏ qua */ }
+          applyTheme(prev === 'dark' ? 'dark' : 'light');
+        }
+        currentSkin = skin;
+        if (skin === 'pink') document.documentElement.setAttribute('data-skin', 'pink');
+        else document.documentElement.removeAttribute('data-skin');
+        try { localStorage.setItem(SKIN_KEY, skin); } catch { /* bỏ qua */ }
+        updateSkinUI();
+        if (!examState.active) refreshHomeView();
       }
 
       function setExamScrollLock(locked) {
@@ -1079,7 +1213,10 @@
         instantFeedback = false;
 
         const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) || 'light';
-        applyTheme(savedTheme);
+        let savedSkin = 'jade';
+        try { savedSkin = localStorage.getItem(SKIN_KEY) === 'pink' ? 'pink' : 'jade'; } catch { /* bỏ qua */ }
+        currentSkin = savedSkin;
+        applyTheme(savedSkin === 'pink' ? 'light' : savedTheme);
       }
 
       function saveProgress() { localStorage.setItem(STORAGE_KEYS.PROGRESS, JSON.stringify(progressMap)); }
@@ -1767,7 +1904,7 @@
           const active = btn.dataset.mode === mode;
           btn.className = active
             ? 'nav-tab flex items-center gap-2 whitespace-nowrap px-3 sm:px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-extrabold transition-all bg-white text-brand-800 shadow-sm'
-            : 'nav-tab flex items-center gap-2 whitespace-nowrap px-3 sm:px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all text-white/85 hover:text-white hover:bg-white/10';
+            : 'nav-tab flex items-center gap-2 whitespace-nowrap px-3 sm:px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all hdr-tab-off text-white/85 hover:text-white hover:bg-white/10';
         });
 
         if (mode === 'home') {
@@ -1783,10 +1920,17 @@
       // Màu riêng cho từng môn (giao diện chung vẫn xanh lá; màu môn chỉ là điểm nhấn)
       function subjectAccent(name) {
         const n = String(name);
+        if (currentSkin === 'pink') {
+          // Bản pastel cho giao diện hồng
+          if (n.startsWith('TTHCM')) return { grad: 'from-rose-400 to-amber-300', text: 'text-rose-500', border: 'border-l-rose-400', icon: 'flag-vn' };
+          if (n === 'FE GDC') return { grad: 'from-fuchsia-400 to-pink-300', text: 'text-fuchsia-600', border: 'border-l-fuchsia-400', icon: 'palette' };
+          if (n === 'FE AGU') return { grad: 'from-sky-400 to-violet-300', text: 'text-sky-600', border: 'border-l-sky-400', icon: 'gamepad-2' };
+          return { grad: 'from-brand-500 to-accent', text: 'text-brand-600', border: 'border-l-brand-500', icon: 'book-open' };
+        }
         if (n.startsWith('TTHCM')) return { grad: 'from-rose-600 to-amber-400', text: 'text-rose-600 dark:text-rose-400', border: 'border-l-rose-500', icon: 'flag-vn' };
         if (n === 'FE GDC') return { grad: 'from-violet-600 to-fuchsia-400', text: 'text-violet-600 dark:text-violet-400', border: 'border-l-violet-500', icon: 'palette' };
         if (n === 'FE AGU') return { grad: 'from-sky-600 to-indigo-400', text: 'text-sky-600 dark:text-sky-400', border: 'border-l-sky-500', icon: 'gamepad-2' };
-        return { grad: 'from-brand-700 to-emerald-400', text: 'text-brand-600 dark:text-brand-400', border: 'border-l-brand-600', icon: 'book-open' };
+        return { grad: 'from-brand-700 to-accent', text: 'text-brand-600 dark:text-brand-400', border: 'border-l-brand-600', icon: 'book-open' };
       }
 
       function buildSubjectCard(subj, allQs) {
@@ -2271,7 +2415,7 @@
         const masteryEl = document.getElementById('eq-mastery-badge');
         if (rec.status === 'green') {
           masteryEl.textContent = '🟢 Thuộc lòng';
-          masteryEl.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-300';
+          masteryEl.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300';
         } else if (rec.status === 'yellow') {
           masteryEl.textContent = '🟡 Đang nhớ';
           masteryEl.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300';
@@ -2320,8 +2464,8 @@
 
           if (examState.instantFeedback && hasAnswered) {
             if (isCorrectOpt) {
-              cardCls += 'bg-brand-50 dark:bg-brand-900/30 border-brand-500 text-brand-950 dark:text-brand-100';
-              badgeCls += 'bg-brand-600 text-white';
+              cardCls += 'bg-emerald-50 dark:bg-emerald-900/30 border-emerald-500 text-emerald-950 dark:text-emerald-100';
+              badgeCls += 'bg-emerald-600 text-white';
             } else if (isSelected) {
               cardCls += 'bg-rose-50 dark:bg-rose-500/15 border-rose-500 text-rose-950 dark:text-rose-100';
               badgeCls += 'bg-rose-600 text-white';
@@ -2386,7 +2530,7 @@
           let cls = 'h-9 rounded-lg text-xs font-extrabold transition-all ';
           if (flagged) cls += 'bg-amber-400 text-slate-950 ';
           else if (answered) {
-            if (examState.instantFeedback) cls += (ans === itemQ.shuffledCorrectIndex) ? 'bg-brand-600 text-white ' : 'bg-rose-500 text-white ';
+            if (examState.instantFeedback) cls += (ans === itemQ.shuffledCorrectIndex) ? 'bg-emerald-600 text-white ' : 'bg-rose-500 text-white ';
             else cls += 'bg-brand-600 text-white ';
           } else cls += 'bg-slate-100 dark:bg-[#17231e] text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-[#36493f] hover:border-brand-500 ';
           if (current) cls += 'ring-2 ring-brand-600 dark:ring-white ring-offset-2 ring-offset-white dark:ring-offset-[#121c17] ';
@@ -2482,7 +2626,7 @@
         const badge = document.getElementById('exam-score-badge');
         badge.textContent = passed ? `🎉 ĐẠT YÊU CẦU (> ${passScore10}đ / 10)` : `⚠️ CHƯA ĐẠT (≤ ${passScore10}đ / 10)`;
         badge.className = passed
-          ? 'inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs sm:text-sm font-extrabold bg-brand-100 dark:bg-brand-900/50 text-brand-700 dark:text-brand-300 border border-brand-300 dark:border-brand-700'
+          ? 'inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs sm:text-sm font-extrabold bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700'
           : 'inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs sm:text-sm font-extrabold bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300 border border-rose-300 dark:border-rose-500/40';
 
         document.getElementById('exam-score-text').textContent = `${score10.toFixed(1)} / 10 điểm (${correct}/${total} câu)`;
@@ -2522,10 +2666,10 @@
           if (examState.reviewFilter === 'WRONG' && isOk) return;
 
           const card = document.createElement('div');
-          card.className = `bg-white dark:bg-[#121c17] border-2 rounded-2xl p-5 space-y-3 shadow-sm ${isOk ? 'border-brand-200 dark:border-brand-800/50' : 'border-rose-200 dark:border-rose-500/40'}`;
+          card.className = `bg-white dark:bg-[#121c17] border-2 rounded-2xl p-5 space-y-3 shadow-sm ${isOk ? 'border-emerald-200 dark:border-emerald-800/50' : 'border-rose-200 dark:border-rose-500/40'}`;
           card.innerHTML = `
             <div class="flex items-center justify-between text-xs">
-              <span class="px-2.5 py-1 rounded-lg font-extrabold ${isOk ? 'bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-300' : 'bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300'}">
+              <span class="px-2.5 py-1 rounded-lg font-extrabold ${isOk ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300' : 'bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300'}">
                 Câu ${i + 1} • ${isOk ? 'Chính xác' : (userAns === undefined ? 'Bỏ trống' : 'Chọn sai')}
               </span>
               <span class="font-bold text-slate-400">${escapeHtml(examState.subject)}</span>
@@ -2533,10 +2677,10 @@
             <p class="text-sm sm:text-base font-bold text-slate-900 dark:text-white leading-relaxed select-text" ${hlAttr(q.id, 'q', '')}>${hlRender(q.question, { qid: q.id, field: 'q', subject: q.subject || examState.subject, max: 6 })}</p>
             ${q.image ? `<img src="${escapeHtml(q.image)}" alt="Hình minh họa" class="max-w-full max-h-72 mx-auto rounded-xl border border-slate-200 dark:border-[#2a3b33]" />` : ''}
             <div class="text-xs sm:text-sm space-y-1.5">
-              <div class="${isOk ? 'text-brand-700 dark:text-brand-300' : 'text-rose-600 dark:text-rose-300'}">
+              <div class="${isOk ? 'text-emerald-700 dark:text-emerald-300' : 'text-rose-600 dark:text-rose-300'}">
                 Bạn chọn: <strong>${userAns !== undefined ? letters[userAns] + '. ' + escapeHtml(q.shuffledOptions[userAns]) : '(Chưa trả lời)'}</strong>
               </div>
-              ${!isOk ? `<div class="text-brand-700 dark:text-brand-300">Đáp án đúng: <strong>${letters[q.shuffledCorrectIndex]}. ${escapeHtml(q.shuffledOptions[q.shuffledCorrectIndex])}</strong></div>` : ''}
+              ${!isOk ? `<div class="text-emerald-700 dark:text-emerald-300">Đáp án đúng: <strong>${letters[q.shuffledCorrectIndex]}. ${escapeHtml(q.shuffledOptions[q.shuffledCorrectIndex])}</strong></div>` : ''}
             </div>
             ${q.explanation ? `<div class="rounded-xl border border-amber-300 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/10 text-amber-900 dark:text-amber-100 px-3.5 py-2.5 text-xs sm:text-sm leading-relaxed">${escapeHtml(q.explanation)}</div>` : ''}
           `;
@@ -3850,8 +3994,18 @@ D. 60.0 ms`;
       // --- BIND EVENTS ---
       function bindEvents() {
         bindHighlightEvents();
+        const themeModal = document.getElementById('modal-theme');
+        const closeThemeModal = () => { themeModal.classList.add('hidden'); themeModal.classList.remove('flex'); };
+        document.getElementById('close-theme-modal').addEventListener('click', closeThemeModal);
+        themeModal.addEventListener('click', (e) => { if (e.target === themeModal) closeThemeModal(); });
+        document.querySelectorAll('[data-skin-pick]').forEach(btn => btn.addEventListener('click', () => applySkin(btn.dataset.skinPick)));
+        document.getElementById('mode-light').addEventListener('click', () => applyTheme('light'));
+        document.getElementById('mode-dark').addEventListener('click', () => { if (currentSkin !== 'pink') applyTheme('dark'); });
         document.getElementById('btn-theme-toggle').addEventListener('click', () => {
-          applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+          updateSkinUI();
+          themeModal.classList.remove('hidden');
+          themeModal.classList.add('flex');
+          lucide.createIcons();
           lucide.createIcons();
         });
 
