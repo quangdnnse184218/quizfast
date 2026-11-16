@@ -1027,6 +1027,8 @@
               <button id="auth-pass-toggle" type="button" class="absolute right-1.5 top-1/2 -translate-y-1/2 px-3 min-h-[40px] rounded-xl text-xs font-extrabold text-brand-700 dark:text-brand-300" aria-label="Hiện hoặc ẩn mật khẩu">Hiện</button>
             </div>
             <p id="auth-hint" class="mt-1.5 text-xs text-slate-500 dark:text-slate-400"></p>
+            <button id="auth-forgot" type="button" class="hidden mt-1 min-h-[36px] text-xs font-extrabold text-brand-700 dark:text-brand-300 underline underline-offset-4">Quên mật khẩu?</button>
+            <p id="auth-forgot-msg" class="hidden mt-1 text-sm font-bold text-amber-800 dark:text-amber-200 bg-amber-50 dark:bg-amber-500/10 rounded-xl px-3 py-2">Vui lòng liên hệ với admin để được đặt lại mật khẩu cho bạn.</p>
           </div>
           <p id="auth-error" role="alert" class="hidden text-sm font-bold text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-500/10 rounded-xl px-3 py-2"></p>
           <button id="auth-submit" type="submit" class="w-full min-h-[50px] rounded-2xl bg-gradient-to-r from-brand-700 to-brand-500 hover:from-brand-600 hover:to-brand-400 text-white text-base font-extrabold shadow-lg shadow-brand-700/25 active:scale-[.99] transition-all disabled:opacity-60 disabled:cursor-wait"></button>
@@ -1506,6 +1508,7 @@
       let syncTimer = null, syncing = false, syncAgain = false;
       let adminUsers = null, adminSelectedId = null, adminLoading = false;
 
+      const LOGIN_TO_STUDY = 'Nhập tên và mật khẩu để bắt đầu làm bài. QuizFast sẽ lưu tiến trình ôn bài và luyện tập của bạn.';
       const AUTH_ERRORS = {
         name_length: 'Tên cần từ 3 đến 24 ký tự nhé.',
         name_chars: 'Tên chỉ gồm chữ, số, dấu cách và các ký tự . _ - thôi nhé.',
@@ -1700,7 +1703,10 @@
           : 'Đăng nhập để học tiếp đúng chỗ bạn đã dừng. Câu đã thuộc, điểm từng đề và chuỗi ngày học vẫn đang chờ bạn.';
         document.getElementById('auth-hint').textContent = reg
           ? 'Tên 3 đến 24 ký tự · Mật khẩu từ 6 ký tự'
-          : 'Quên mật khẩu? Nhờ quản trị viên đặt lại giúp bạn.';
+          : '';
+        document.getElementById('auth-pass').setAttribute('placeholder', reg ? 'Ít nhất 6 ký tự' : 'Mật khẩu của bạn');
+        document.getElementById('auth-forgot').classList.toggle('hidden', reg);
+        document.getElementById('auth-forgot-msg').classList.add('hidden');
         document.getElementById('auth-submit').textContent = reg ? 'Tạo tài khoản và vào học' : 'Đăng nhập';
         document.getElementById('auth-pass').setAttribute('autocomplete', reg ? 'new-password' : 'current-password');
         [['auth-tab-register', reg], ['auth-tab-login', !reg]].forEach(([id, on]) => {
@@ -2154,6 +2160,7 @@
         document.getElementById('auth-tab-register').addEventListener('click', () => setAuthMode('register'));
         document.getElementById('auth-tab-login').addEventListener('click', () => setAuthMode('login'));
         document.getElementById('auth-skip').addEventListener('click', () => closeAuth(true));
+        document.getElementById('auth-forgot').addEventListener('click', () => document.getElementById('auth-forgot-msg').classList.remove('hidden'));
         document.getElementById('auth-pass-toggle').addEventListener('click', (e) => {
           const p = document.getElementById('auth-pass');
           const show = p.type === 'password';
@@ -3299,6 +3306,7 @@
 
       function openExamSetupModal(paper, subjName) {
         if (!paper || !paper.questions || paper.questions.length === 0) return;
+        if (!auth) return requireLogin(LOGIN_TO_STUDY, () => openExamSetupModal(paper, subjName));
         const qCount = paper.isShuffle ? paper.size : paper.questions.length;
         pendingExamSetup = { paper, subjName, timed: true };
 
@@ -3404,6 +3412,7 @@
       }
 
       function resumeExamSession(key) {
+        if (!auth) { requireLogin(LOGIN_TO_STUDY, () => resumeExamSession(key)); return false; }
         const sv = loadExamSessions()[key];
         if (!sv || !Array.isArray(sv.questions) || sv.questions.length === 0) { clearExamSession(key); return false; }
         if (examState.timerId) clearInterval(examState.timerId);
@@ -5259,6 +5268,7 @@ D. 60.0 ms`;
 
         // Ôn nhanh 10 câu: ưu tiên câu hay sai, rồi câu đang nhớ, rồi câu chưa làm
         document.getElementById('btn-quick-10').addEventListener('click', () => {
+          if (!auth) return requireLogin(LOGIN_TO_STUDY, () => document.getElementById('btn-quick-10').click());
           const all = getAllQuestionsFlat();
           if (!all.length) return;
           const rank = (q) => { const st = (progressMap[q.id] || {}).status || 'unseen'; return st === 'red' ? 0 : (st === 'yellow' ? 1 : (st === 'unseen' ? 2 : 3)); };
@@ -5269,6 +5279,7 @@ D. 60.0 ms`;
         });
 
         document.getElementById('btn-exam-from-red').addEventListener('click', () => {
+          if (!auth) return requireLogin(LOGIN_TO_STUDY, () => document.getElementById('btn-exam-from-red').click());
           const pool = getAllQuestionsFlat().filter(q => progressMap[q.id] && progressMap[q.id].status === 'red');
           if (pool.length === 0) return alert('Chưa có câu hỏi nào trong mục Hay sai.');
           switchMode('home');
@@ -5277,6 +5288,7 @@ D. 60.0 ms`;
         });
 
         document.getElementById('btn-exam-from-star').addEventListener('click', () => {
+          if (!auth) return requireLogin(LOGIN_TO_STUDY, () => document.getElementById('btn-exam-from-star').click());
           const pool = getAllQuestionsFlat().filter(q => progressMap[q.id] && progressMap[q.id].starred);
           if (pool.length === 0) return alert('Chưa có câu hỏi nào được Gắn sao.');
           switchMode('home');
