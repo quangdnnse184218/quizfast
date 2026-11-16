@@ -214,6 +214,13 @@
     }
     .dark #modal-upload > div { background: linear-gradient(135deg, rgba(28,44,37,.78), rgba(12,20,16,.70)) !important; border-color: rgba(255,255,255,.14) !important; }
     body.exam-active #tabbar { display: none; }
+    @media (max-width: 639px) { body.exam-active > header { display: none; } }
+    /* Thanh dưới cùng đặc hơn một chút để không rối khi đè lên thẻ nhiều màu */
+    #tabbar, #exam-bottom-bar {
+      background: linear-gradient(135deg, rgba(255,255,255,.70), rgba(255,255,255,.52));
+      -webkit-backdrop-filter: blur(26px) saturate(190%); backdrop-filter: blur(26px) saturate(190%);
+    }
+    .dark #tabbar, .dark #exam-bottom-bar { background: linear-gradient(135deg, rgba(30,46,39,.72), rgba(14,24,19,.60)); }
     #tabbar { margin-bottom: env(safe-area-inset-bottom); }
     .tab-item .qf-ico { width: 1.6rem; height: 1.6rem; }
 
@@ -317,7 +324,7 @@
     }
   </style>
 </head>
-<body class="bg-[#f3f6f4] dark:bg-[#0b1210] text-slate-900 dark:text-[#f0f6f2] h-[100dvh] overflow-hidden flex flex-col transition-colors duration-200 selection:bg-brand-500/30">
+<body class="bg-[#f3f6f4] dark:bg-[#0b1210] text-slate-900 dark:text-[#f0f6f2] min-h-[100dvh] lg:h-[100dvh] lg:overflow-hidden flex flex-col transition-colors duration-200 selection:bg-brand-500/30">
   <div class="qf-bg" aria-hidden="true"></div>
 
   <!-- ==================== TOP HEADER ==================== -->
@@ -359,7 +366,7 @@
   </header>
 
   <!-- ==================== MAIN CONTENT ==================== -->
-  <main id="app-main" class="relative z-10 flex-1 min-h-0 max-w-7xl w-full mx-auto px-4 sm:px-6 py-5 sm:py-6 pb-28 sm:pb-6 overflow-y-auto">
+  <main id="app-main" class="relative z-10 flex-1 min-h-0 max-w-7xl w-full mx-auto px-4 sm:px-6 py-5 sm:py-6 pb-28 sm:pb-6 lg:overflow-y-auto">
 
     <!-- ==================== VIEW 1: HOME (SUBJECTS + SMART UPLOAD) ==================== -->
     <section id="view-home" class="flex flex-col gap-6 max-w-6xl mx-auto lg:h-full">
@@ -367,30 +374,30 @@
       <!-- 1A. MÀN HÌNH TỔNG QUAN CÁC MÔN & KHU VỰC UPLOAD ĐỀ -->
       <div id="home-subjects-screen" class="flex flex-col gap-9">
 
-        <!-- Bài đang làm dở -->
-        <div id="resume-banner" class="hidden rounded-2xl border border-amber-300 dark:border-amber-500/40 bg-gradient-to-r from-amber-50 to-brand-50 dark:from-amber-500/10 dark:to-brand-900/30 p-4 flex flex-wrap items-center justify-between gap-3 shadow-sm">
-          <div class="min-w-0">
-            <p class="text-xs font-bold text-brand-700 dark:text-brand-300">Bạn đang làm dở</p>
-            <p id="resume-banner-text" class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white truncate"></p>
+        <!-- Hôm nay: bài đang làm dở + mục tiêu ngày -->
+        <div id="daily-card" class="glass-lite rounded-3xl overflow-hidden">
+          <div id="resume-banner" class="hidden px-4 py-3 sm:px-5 flex items-center justify-between gap-3 bg-gradient-to-r from-amber-100/80 to-transparent dark:from-amber-500/15 border-b border-white/70 dark:border-white/10">
+            <div class="min-w-0">
+              <p class="text-[11px] font-bold text-amber-700 dark:text-amber-300">Đang làm dở</p>
+              <p id="resume-banner-text" class="text-sm font-extrabold text-slate-900 dark:text-white truncate"></p>
+            </div>
+            <button id="btn-resume-banner" type="button" class="shrink-0 px-4 py-2 rounded-xl bg-brand-700 hover:bg-brand-600 text-white text-sm font-extrabold active:scale-95 transition-all">Làm tiếp</button>
           </div>
-          <button id="btn-resume-banner" type="button" class="px-5 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-600 text-white text-sm font-extrabold">Làm tiếp</button>
-        </div>
-
-        <!-- Mục tiêu hôm nay -->
-        <div id="daily-card" class="glass-lite rounded-3xl p-4 sm:p-5 flex items-center gap-4">
-          <div class="relative w-16 h-16 shrink-0">
-            <svg viewBox="0 0 36 36" class="w-16 h-16 -rotate-90" aria-hidden="true">
-              <circle cx="18" cy="18" r="15.5" fill="none" stroke-width="3.5" style="stroke: rgb(var(--s200))"></circle>
-              <circle id="daily-ring" cx="18" cy="18" r="15.5" fill="none" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="97.4" stroke-dashoffset="97.4" style="stroke: rgb(var(--b500)); transition: stroke-dashoffset .6s ease"></circle>
-            </svg>
-            <div id="daily-pct" class="absolute inset-0 flex items-center justify-center text-sm font-extrabold text-slate-800 dark:text-white">0%</div>
+          <div class="p-3.5 sm:p-5 flex items-center gap-3.5">
+            <div class="relative w-12 h-12 sm:w-16 sm:h-16 shrink-0">
+              <svg viewBox="0 0 36 36" class="w-full h-full -rotate-90" aria-hidden="true">
+                <circle cx="18" cy="18" r="15.5" fill="none" stroke-width="3.5" style="stroke: rgb(var(--s200))"></circle>
+                <circle id="daily-ring" cx="18" cy="18" r="15.5" fill="none" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="97.4" stroke-dashoffset="97.4" style="stroke: rgb(var(--b500)); transition: stroke-dashoffset .6s ease"></circle>
+              </svg>
+              <div id="daily-pct" class="absolute inset-0 flex items-center justify-center text-[11px] sm:text-sm font-extrabold text-slate-800 dark:text-white">0%</div>
+            </div>
+            <div class="min-w-0 flex-1">
+              <p class="text-[11px] sm:text-xs font-bold text-slate-500 dark:text-slate-400">Mục tiêu hôm nay</p>
+              <p class="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white"><span id="daily-count">0</span> / <span id="daily-goal">20</span> câu</p>
+              <p id="daily-streak" class="text-[11px] sm:text-xs font-bold leading-snug text-amber-600 dark:text-amber-400"></p>
+            </div>
+            <button id="btn-quick-10" type="button" class="shrink-0 px-3.5 py-2 rounded-xl border-2 border-brand-600 dark:border-brand-400 text-brand-700 dark:text-brand-300 bg-white/30 dark:bg-white/5 text-sm font-extrabold leading-tight text-center active:scale-95 transition-all">Ôn nhanh<br>10 câu</button>
           </div>
-          <div class="min-w-0 flex-1">
-            <p class="text-xs font-bold text-slate-500 dark:text-slate-400">Mục tiêu hôm nay</p>
-            <p class="text-lg font-extrabold text-slate-900 dark:text-white"><span id="daily-count">0</span> / <span id="daily-goal">20</span> câu</p>
-            <p id="daily-streak" class="text-xs font-bold text-amber-600 dark:text-amber-400 truncate"></p>
-          </div>
-          <button id="btn-quick-10" type="button" class="shrink-0 px-4 py-2.5 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 text-white text-sm font-extrabold leading-tight text-center shadow-md shadow-brand-700/25 ring-1 ring-white/30 active:scale-95 transition-all">Ôn nhanh<br>10 câu</button>
         </div>
 
         <!-- Môn mặc định: do quản trị viên thêm vào, người dùng chỉ học -->
@@ -410,11 +417,11 @@
               <p id="user-subjects-sub" class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Môn và đề do chính bạn thêm, lưu ngay trong trình duyệt của bạn.</p>
             </div>
             <div class="flex flex-wrap items-center gap-2">
-              <button id="btn-new-subject" type="button" class="px-3.5 py-2 rounded-xl bg-white dark:bg-[#121c17] hover:bg-slate-50 dark:hover:bg-[#1b2822] border border-slate-200 dark:border-[#2a3b33] text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 shadow-sm transition-all">
-                <i data-lucide="folder-plus" class="w-4 h-4 text-brand-600 dark:text-brand-400"></i>
+              <button id="btn-new-subject" type="button" class="px-3.5 py-2 rounded-xl bg-brand-700 hover:bg-brand-600 text-white text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-sm transition-all active:scale-95">
+                <i data-lucide="folder-plus" class="w-4 h-4"></i>
                 <span>Tạo môn mới</span>
               </button>
-              <button id="btn-hero-paste-text" type="button" class="px-3.5 py-2 rounded-xl bg-brand-700 hover:bg-brand-600 text-white text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-colors active:scale-95">
+              <button id="btn-hero-paste-text" type="button" class="px-3.5 py-2 rounded-xl glass-lite text-brand-700 dark:text-brand-300 text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-colors active:scale-95">
                 <i data-lucide="clipboard-paste" class="w-4 h-4"></i>
                 <span>Thêm đề</span>
               </button>
@@ -482,10 +489,10 @@
       </div>
 
       <!-- 1C. MÀN HÌNH ĐANG LÀM ĐỀ (ACTIVE EXAM WORKSPACE) -->
-      <div id="exam-running" class="hidden !mt-0 lg:h-full flex-col gap-4 pb-24 lg:pb-0">
+      <div id="exam-running" class="hidden !mt-0 lg:h-full flex-col gap-4 pb-28 lg:pb-0">
         <div class="shrink-0 glass-lite rounded-2xl p-3.5 sm:p-4 flex flex-wrap items-center justify-between gap-3">
           <div class="flex items-center gap-3 min-w-0 flex-1">
-            <button id="btn-exit-exam" class="whitespace-nowrap flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#1b2822] hover:bg-slate-200 dark:hover:bg-[#2f4238] text-slate-700 dark:text-slate-200 text-xs sm:text-sm font-bold transition-all">
+            <button id="btn-exit-exam" class="whitespace-nowrap flex items-center justify-center gap-1.5 px-3 py-2 min-h-[44px] min-w-[44px] rounded-xl bg-slate-100 dark:bg-[#1b2822] hover:bg-slate-200 dark:hover:bg-[#2f4238] text-slate-700 dark:text-slate-200 text-xs sm:text-sm font-bold transition-all">
               <i data-lucide="arrow-left" class="w-4 h-4"></i>
               <span class="hidden sm:inline">Thoát đề</span>
             </button>
@@ -1230,7 +1237,8 @@
         const main = document.getElementById('app-main');
         const examEl = document.getElementById('exam-running');
         if (main) {
-          main.classList.toggle('lg:overflow-hidden', locked); // điện thoại luôn cuộn được, máy tính khóa để bảng câu hỏi đứng yên
+          main.classList.toggle('lg:overflow-hidden', locked);
+          main.classList.toggle('lg:overflow-y-auto', !locked); // điện thoại luôn cuộn được, máy tính khóa để bảng câu hỏi đứng yên
           main.classList.toggle('pb-28', !locked);
           main.classList.toggle('py-3', locked);
           main.classList.toggle('sm:py-4', locked);
@@ -1334,7 +1342,7 @@
         document.getElementById('daily-goal').textContent = DAILY_GOAL;
         document.getElementById('daily-streak').textContent = v.streak > 0
           ? `🔥 ${v.streak} ngày học liên tiếp`
-          : 'Làm 1 câu để bắt đầu chuỗi ngày học';
+          : 'Làm 1 câu để bắt đầu 🔥';
       }
 
       // ----- Ghi chú riêng cho từng câu (mẹo nhớ của bạn) -----
@@ -2054,38 +2062,59 @@
 
         const ac = subjectAccent(subj.name);
         const card = document.createElement('div');
-        card.className = 'group glass-lite rounded-3xl overflow-hidden flex flex-col hover:shadow-lg hover:-translate-y-0.5 transition-all cursor-pointer';
+        card.className = 'group glass-lite rounded-3xl overflow-hidden hover:shadow-lg sm:hover:-translate-y-0.5 transition-all cursor-pointer';
+        const delIcon = (cls) => `<button class="btn-del-subj ${cls}" title="Xóa môn học này" aria-label="Xóa môn học này"><i data-lucide="trash-2" class="w-4 h-4"></i></button>`;
         card.innerHTML = `
-          <div class="relative h-20 bg-gradient-to-br ${ac.grad} px-5 pt-4">
-            <div class="absolute inset-0 opacity-25" style="background-image: radial-gradient(circle at 85% 15%, #fff 0, transparent 45%)"></div>
-            <div class="relative flex items-start justify-between gap-2">
-              <span class="px-2.5 py-1 rounded-full text-xs font-extrabold bg-white/25 text-white backdrop-blur-sm">${qs.length} câu</span>
-              ${!subj.isBuiltin ? `<button class="btn-del-subj p-1.5 rounded-lg text-white/80 hover:text-white hover:bg-white/20" title="Xóa môn học này" aria-label="Xóa môn học này"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
+          <!-- Điện thoại: một hàng gọn -->
+          <div class="sm:hidden flex items-center gap-3 p-3.5">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br ${ac.grad} shadow-md flex items-center justify-center shrink-0">
+              <span class="w-10 h-10 rounded-xl bg-white/90 flex items-center justify-center"><i data-lucide="${ac.icon}" class="w-6 h-6"></i></span>
             </div>
-            <div class="absolute -bottom-6 left-5 w-12 h-12 rounded-2xl bg-white dark:bg-[#1b2822] shadow-md ring-4 ring-white dark:ring-[#121c17] flex items-center justify-center">
-              <i data-lucide="${ac.icon}" class="w-7 h-7"></i>
+            <div class="min-w-0 flex-1">
+              <h3 class="text-base font-extrabold text-slate-900 dark:text-white truncate">${escapeHtml(subj.name)}</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 truncate">${papers.length} đề · ${qs.length} câu</p>
+              <div class="mt-2 h-1.5 rounded-full bg-slate-200/70 dark:bg-white/10 overflow-hidden">
+                <div class="h-full rounded-full bg-gradient-to-r ${ac.grad} transition-all duration-300" style="width: ${pct}%"></div>
+              </div>
             </div>
+            <div class="text-right shrink-0">
+              <div class="text-base font-extrabold ${ac.text}">${pct}%</div>
+              <div class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">thuộc</div>
+            </div>
+            ${!subj.isBuiltin ? delIcon('p-2 -mr-1 rounded-lg text-slate-400 hover:text-rose-500') : ''}
           </div>
 
-          <div class="px-5 pt-8 pb-4 flex-1 flex flex-col justify-between gap-3">
-            <div>
-              <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">${escapeHtml(subj.name)}</h3>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-2">${escapeHtml(subj.description)}</p>
-            </div>
-            <div class="space-y-2">
-              <div class="flex items-center justify-between text-xs">
-                <span class="text-slate-500 dark:text-slate-400 font-semibold">${papers.length} đề</span>
-                <span class="font-extrabold ${ac.text}">Thuộc ${pct}%</span>
+          <!-- Máy tính bảng / máy tính: thẻ lớn có dải màu -->
+          <div class="hidden sm:flex flex-col">
+            <div class="relative h-20 bg-gradient-to-br ${ac.grad} px-5 pt-4">
+              <div class="absolute inset-0 opacity-25" style="background-image: radial-gradient(circle at 85% 15%, #fff 0, transparent 45%)"></div>
+              <div class="relative flex items-start justify-between gap-2">
+                <span class="px-2.5 py-1 rounded-full text-xs font-extrabold bg-white/25 text-white backdrop-blur-sm">${qs.length} câu</span>
+                ${!subj.isBuiltin ? delIcon('p-1.5 rounded-lg text-white/80 hover:text-white hover:bg-white/20') : ''}
               </div>
-              <div class="w-full h-2 bg-slate-100 dark:bg-[#1b2822] rounded-full overflow-hidden">
-                <div class="h-full rounded-full bg-gradient-to-r ${ac.grad} transition-all duration-300" style="width: ${pct}%"></div>
+              <div class="absolute -bottom-6 left-5 w-12 h-12 rounded-2xl bg-white dark:bg-[#1b2822] shadow-md ring-4 ring-white dark:ring-[#121c17] flex items-center justify-center">
+                <i data-lucide="${ac.icon}" class="w-7 h-7"></i>
+              </div>
+            </div>
+            <div class="px-5 pt-8 pb-4 flex-1 flex flex-col justify-between gap-3">
+              <div>
+                <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">${escapeHtml(subj.name)}</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-2">${escapeHtml(subj.description)}</p>
+              </div>
+              <div class="space-y-2">
+                <div class="flex items-center justify-between text-xs">
+                  <span class="text-slate-500 dark:text-slate-400 font-semibold">${papers.length} đề</span>
+                  <span class="font-extrabold ${ac.text}">Thuộc ${pct}%</span>
+                </div>
+                <div class="w-full h-2 bg-slate-100 dark:bg-[#1b2822] rounded-full overflow-hidden">
+                  <div class="h-full rounded-full bg-gradient-to-r ${ac.grad} transition-all duration-300" style="width: ${pct}%"></div>
+                </div>
               </div>
             </div>
           </div>
         `;
 
-        const delBtn = card.querySelector('.btn-del-subj');
-        if (delBtn) {
+        card.querySelectorAll('.btn-del-subj').forEach(delBtn => {
           delBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             if (!confirm(`Xóa môn "${subj.name}" và toàn bộ đề đã tải lên thuộc môn này?`)) return;
@@ -2096,7 +2125,7 @@
             sbDeleteSubject(subj.name);
             renderHomeSubjects();
           });
-        }
+        });
 
         card.addEventListener('click', () => {
           renderSubjectDetail(subj.name);
@@ -2501,6 +2530,7 @@
 
       function updateExamTimerDisplay() {
         const el = document.getElementById('exam-timer');
+        if (el.parentElement) el.parentElement.classList.toggle('hidden', examState.totalSeconds <= 0);
         if (examState.totalSeconds <= 0) {
           el.textContent = '∞';
           return;
@@ -2548,14 +2578,14 @@
 
         const starBtn = document.getElementById('btn-star-exam-q');
         starBtn.className = rec.starred
-          ? 'flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-amber-400 bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 text-xs font-extrabold transition-all'
-          : 'flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-[#36493f] bg-slate-50 dark:bg-[#1b2822] text-slate-500 dark:text-slate-300 text-xs font-bold transition-all';
+          ? 'flex items-center justify-center gap-1.5 px-3 py-1.5 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 rounded-xl border border-amber-400 bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 text-xs font-extrabold transition-all'
+          : 'flex items-center justify-center gap-1.5 px-3 py-1.5 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 rounded-xl border border-slate-200 dark:border-[#36493f] bg-slate-50 dark:bg-[#1b2822] text-slate-500 dark:text-slate-300 text-xs font-bold transition-all';
 
         const flagBtn = document.getElementById('btn-flag-exam-q');
         const isFlagged = !!examState.flags[idx];
         flagBtn.className = isFlagged
-          ? 'flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-amber-400 bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 text-xs font-extrabold transition-all'
-          : 'flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-[#36493f] bg-slate-50 dark:bg-[#1b2822] text-slate-500 dark:text-slate-300 text-xs font-bold transition-all';
+          ? 'flex items-center justify-center gap-1.5 px-3 py-1.5 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 rounded-xl border border-amber-400 bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 text-xs font-extrabold transition-all'
+          : 'flex items-center justify-center gap-1.5 px-3 py-1.5 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 rounded-xl border border-slate-200 dark:border-[#36493f] bg-slate-50 dark:bg-[#1b2822] text-slate-500 dark:text-slate-300 text-xs font-bold transition-all';
 
         const qEl = document.getElementById('eq-question');
         qEl.innerHTML = hlRender(q.question, { qid: q.id, field: 'q', subject: q.subject || examState.subject, max: 6 });
@@ -2578,7 +2608,7 @@
           const isSelected = chosen === optIdx;
           const isCorrectOpt = optIdx === q.shuffledCorrectIndex;
 
-          let cardCls = 'w-full text-left p-4 rounded-2xl border-2 transition-all flex items-start gap-3.5 group cursor-pointer active:scale-[0.99] ';
+          let cardCls = 'w-full text-left p-3.5 sm:p-4 rounded-2xl border-2 transition-all flex items-start gap-3.5 group cursor-pointer active:scale-[0.99] ';
           let badgeCls = 'w-7 h-7 rounded-lg flex items-center justify-center text-xs font-extrabold shrink-0 mt-0.5 transition-colors ';
 
           if (examState.instantFeedback && hasAnswered) {
@@ -2676,6 +2706,7 @@
           lastRenderedExamIdx = idx;
           const mainEl = document.getElementById('app-main');
           if (mainEl) mainEl.scrollTop = 0;
+          window.scrollTo(0, 0);
           const cardEl = document.getElementById('exam-q-card');
           if (cardEl) cardEl.scrollTop = 0;
         }
