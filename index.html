@@ -610,7 +610,6 @@
               <textarea id="eq-note" rows="2" maxlength="400" placeholder="Viết mẹo, từ khóa hoặc câu nói giúp bạn nhớ câu này..." class="hidden mt-2 w-full rounded-xl glass-lite p-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"></textarea>
             </div>
             <div id="eq-explain" class="hidden rounded-xl border border-amber-300 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/10 text-amber-900 dark:text-amber-100 px-4 py-3 text-sm leading-relaxed"></div>
-            <p id="hl-hint" class="text-xs text-slate-500 dark:text-slate-400">Highlight thủ công: bôi đen một đoạn chữ để tô màu và lưu lại cho câu này. Bấm vào chữ đã tô để xóa.</p>
           </div>
 
           <!-- Palette -->
@@ -1001,6 +1000,7 @@
             <button id="auth-tab-register" type="button" role="tab" class="px-4 py-2 min-h-[40px] rounded-full text-sm font-extrabold transition-all">Đăng ký</button>
             <button id="auth-tab-login" type="button" role="tab" class="px-4 py-2 min-h-[40px] rounded-full text-sm font-extrabold transition-all">Đăng nhập</button>
           </div>
+          <button id="auth-skip" type="button" aria-label="Đóng" class="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl bg-slate-100 dark:bg-[#1b2822] text-slate-500 shrink-0"><i data-lucide="x" class="w-4 h-4"></i></button>
         </div>
 
         <div class="space-y-1.5">
@@ -1033,8 +1033,6 @@
           <p id="auth-error" role="alert" class="hidden text-sm font-bold text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-500/10 rounded-xl px-3 py-2"></p>
           <button id="auth-submit" type="submit" class="w-full min-h-[50px] rounded-2xl bg-gradient-to-r from-brand-700 to-brand-500 hover:from-brand-600 hover:to-brand-400 text-white text-base font-extrabold shadow-lg shadow-brand-700/25 active:scale-[.99] transition-all disabled:opacity-60 disabled:cursor-wait"></button>
         </form>
-
-        <button id="auth-skip" type="button" class="self-center min-h-[44px] px-3 text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white underline underline-offset-4 decoration-dotted">Để sau, cho tôi học thử trước</button>
       </div>
     </div>
   </div>
@@ -3597,7 +3595,7 @@
 
         // Ghi chú / giải thích hiện sau khi trả lời ở chế độ chấm ngay
         const exEl = document.getElementById('eq-explain');
-        const showEx = examState.instantFeedback && hasAnswered && !!q.explanation;
+        const showEx = false; // đã bỏ các dòng lưu ý/ghi chú trong bài làm
         exEl.classList.toggle('hidden', !showEx);
         exEl.textContent = showEx ? q.explanation : '';
 
@@ -3785,7 +3783,6 @@
               ${!isOk ? `<div class="text-emerald-700 dark:text-emerald-300">Đáp án đúng: <strong>${letters[q.shuffledCorrectIndex]}. ${escapeHtml(q.shuffledOptions[q.shuffledCorrectIndex])}</strong></div>` : ''}
             </div>
             ${getNote(q.id) ? `<div class="rounded-xl glass-lite px-3.5 py-2.5 text-xs sm:text-sm leading-relaxed"><b>Mẹo nhớ của bạn:</b> ${escapeHtml(getNote(q.id))}</div>` : ''}
-            ${q.explanation ? `<div class="rounded-xl border border-amber-300 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/10 text-amber-900 dark:text-amber-100 px-3.5 py-2.5 text-xs sm:text-sm leading-relaxed">${escapeHtml(q.explanation)}</div>` : ''}
           `;
           listEl.appendChild(card);
         });
