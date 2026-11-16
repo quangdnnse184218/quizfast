@@ -329,6 +329,23 @@
     .animate-fade-up {
       animation: fadeUp 0.2s ease-out forwards;
     }
+
+    /* ----- Tài khoản + quản trị ----- */
+    .admin-only { display: none; }
+    body.is-admin .admin-only { display: flex; }
+    .tab-item.admin-only { flex-direction: column; }
+    #admin-detail { display: none; }
+    #admin-detail.admin-open { display: block; position: fixed; inset: 0; z-index: 50; overflow-y: auto; background: rgb(var(--s50)); padding: 4.25rem 1rem 7rem; }
+    html.dark #admin-detail.admin-open { background: #0b1210; }
+    @media (min-width: 1024px) {
+      #admin-detail, #admin-detail.admin-open { display: block; position: sticky; top: 0; inset: auto; z-index: auto; overflow: visible; background: transparent; padding: 0; align-self: start; }
+    }
+    .qf-avatar { background: linear-gradient(135deg, var(--av1, #34d399), var(--av2, #0f7d56)); color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; border-radius: 9999px; flex-shrink: 0; }
+    .qf-bar { display: flex; height: .5rem; border-radius: 9999px; overflow: hidden; background: rgb(var(--s200)); }
+    .qf-bar > span { display: block; height: 100%; }
+    .qf-field { width: 100%; background: rgb(var(--s50)); border: 1px solid rgb(var(--s200)); border-radius: .875rem; padding: .75rem 1rem; font-size: 1rem; font-weight: 600; min-height: 48px; }
+    html.dark .qf-field { background: #0b1210; border-color: #36493f; color: #f0f6f2; }
+    .qf-field:focus { outline: 2px solid rgb(var(--b500)); outline-offset: 1px; }
   </style>
 </head>
 <body class="bg-[#f3f6f4] dark:bg-[#0b1210] text-slate-900 dark:text-[#f0f6f2] min-h-[100dvh] lg:h-[100dvh] lg:overflow-hidden flex flex-col transition-colors duration-200 selection:bg-brand-500/30">
@@ -355,12 +372,20 @@
           <span>Câu hay sai</span>
           <span id="nav-red-count" class="px-1.5 py-0.5 rounded-full text-xs leading-none bg-rose-500 text-white font-extrabold">0</span>
         </button>
+        <button data-mode="admin" class="admin-only nav-tab items-center gap-2 whitespace-nowrap px-4 py-1.5 rounded-full text-sm font-bold transition-all">
+          <i data-lucide="shield-check" class="w-4 h-4"></i>
+          <span>Quản trị</span>
+        </button>
       </nav>
 
       <div class="flex items-center gap-2">
         <button id="btn-open-upload" aria-label="Tải đề lên" class="hidden sm:flex whitespace-nowrap items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-amber-400 to-amber-300 text-brand-950 text-sm font-extrabold shadow-md shadow-amber-500/25 ring-1 ring-white/50 transition-all active:scale-95">
           <i data-lucide="upload-cloud" class="w-4 h-4"></i>
           <span>Tải đề lên</span>
+        </button>
+        <button id="btn-account" type="button" class="h-10 rounded-full glass-lite flex items-center gap-2 pl-1 pr-3 transition-all active:scale-95" aria-label="Tài khoản">
+          <span id="btn-account-avatar" class="qf-avatar w-8 h-8 text-sm" aria-hidden="true"><i data-lucide="user" class="w-4 h-4"></i></span>
+          <span id="btn-account-label" class="hidden sm:inline text-sm font-extrabold max-w-[8rem] truncate">Đăng nhập</span>
         </button>
         <button id="btn-theme-toggle" class="w-10 h-10 rounded-full glass-lite flex items-center justify-center transition-all active:scale-95" title="Đổi giao diện" aria-label="Đổi giao diện">
           <i data-lucide="palette" class="w-5 h-5"></i>
@@ -380,6 +405,9 @@
 
       <!-- 1A. MÀN HÌNH TỔNG QUAN CÁC MÔN & KHU VỰC UPLOAD ĐỀ -->
       <div id="home-subjects-screen" class="flex flex-col gap-9">
+
+        <!-- Lời chào + nhắc đăng nhập -->
+        <div id="home-greeting" class="hidden"></div>
 
         <!-- Hôm nay: bài đang làm dở + mục tiêu ngày -->
         <div id="daily-card" class="glass-lite rounded-3xl overflow-hidden">
@@ -717,6 +745,38 @@
       <div id="notebook-list" class="space-y-3"></div>
     </section>
 
+    <!-- ==================== VIEW 3: QUẢN TRỊ NGƯỜI DÙNG ==================== -->
+    <section id="view-admin" class="hidden max-w-6xl mx-auto space-y-5">
+      <div class="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Quản lý người dùng</h1>
+          <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Xem ai đang học môn nào, đã thuộc bao nhiêu câu, làm xong bao nhiêu đề.</p>
+        </div>
+        <button id="btn-admin-refresh" type="button" class="px-4 py-2.5 min-h-[44px] rounded-xl glass-lite text-brand-700 dark:text-brand-300 text-sm font-extrabold flex items-center gap-2 active:scale-95 transition-all">
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i><span>Làm mới</span>
+        </button>
+      </div>
+
+      <div id="admin-stats" class="grid grid-cols-2 lg:grid-cols-4 gap-3"></div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-5 items-start">
+        <div class="flex flex-col gap-3 min-w-0">
+          <div class="flex gap-2">
+            <input id="admin-search" type="search" placeholder="Tìm theo tên..." aria-label="Tìm người dùng" class="qf-field flex-1 min-w-0 !py-2 !text-sm" />
+            <select id="admin-sort" aria-label="Sắp xếp" class="qf-field !w-auto !py-2 !text-sm">
+              <option value="active">Mới học gần đây</option>
+              <option value="joined">Mới đăng ký</option>
+              <option value="mastered">Thuộc nhiều nhất</option>
+              <option value="name">Tên A → Z</option>
+            </select>
+          </div>
+          <div id="admin-list" class="flex flex-col gap-2.5"></div>
+        </div>
+
+        <aside id="admin-detail" aria-label="Chi tiết người dùng"></aside>
+      </div>
+    </section>
+
   </main>
 
   <!-- ==================== THANH TAB ĐÁY (ĐIỆN THOẠI) ==================== -->
@@ -731,6 +791,10 @@
         <span id="tab-red-count" class="hidden absolute -top-1 -right-3 min-w-[1.1rem] px-1 py-0.5 rounded-full text-[11px] leading-none bg-rose-500 text-white font-extrabold text-center">0</span>
       </span>
       <span>Câu sai</span>
+    </button>
+    <button data-mode="admin" class="admin-only tab-item flex-1 flex-col items-center gap-0.5 py-1.5 rounded-2xl text-xs font-bold transition-all">
+      <i data-lucide="shield-check" class="w-6 h-6"></i>
+      <span>Quản trị</span>
     </button>
     <button id="tab-upload" type="button" class="flex-1 flex flex-col items-center gap-0.5 py-1.5 rounded-2xl text-xs font-bold text-slate-500 dark:text-slate-400 transition-all">
       <i data-lucide="upload-cloud" class="w-6 h-6"></i>
@@ -898,6 +962,140 @@
       <div class="flex justify-end gap-2 pt-2">
         <button id="cancel-new-subj-modal" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-[#1b2822] text-sm font-bold">Hủy</button>
         <button id="btn-confirm-new-subj" class="px-5 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-sm font-extrabold text-white">Tạo môn</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: ĐĂNG NHẬP / ĐĂNG KÝ (dùng chung cho người học và quản trị) ==================== -->
+  <div id="modal-auth" class="fixed inset-0 z-[60] bg-[#0b1210]/70 backdrop-blur-md hidden items-start sm:items-center justify-center p-3 sm:p-6 overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+    <div class="relative w-full max-w-4xl my-auto grid md:grid-cols-[1fr_1.05fr] rounded-[2rem] overflow-hidden shadow-2xl bg-white dark:bg-[#121c17] border border-white/60 dark:border-[#36493f]">
+
+      <!-- Lời giới thiệu (máy tính) -->
+      <div class="hidden md:flex flex-col justify-between gap-8 p-9 text-white bg-gradient-to-br from-brand-800 via-brand-600 to-emerald-400 relative overflow-hidden">
+        <div class="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-white/10 blur-2xl" aria-hidden="true"></div>
+        <div class="absolute -left-10 bottom-0 w-56 h-56 rounded-full bg-amber-300/20 blur-3xl" aria-hidden="true"></div>
+        <div class="relative flex items-center gap-2.5">
+          <span class="w-10 h-10 rounded-xl bg-white/20 ring-1 ring-white/50 flex items-center justify-center"><i data-lucide="zap" class="w-5 h-5"></i></span>
+          <span class="font-display font-extrabold text-xl tracking-tight">QuizFast</span>
+        </div>
+        <div class="relative space-y-5">
+          <h2 class="font-display text-3xl font-extrabold leading-tight">Mỗi câu bạn làm,<br>QuizFast đều ghi nhớ.</h2>
+          <p class="text-white/85 text-sm leading-relaxed">Chỉ một cái tên và một mật khẩu, hành trình ôn thi của bạn sẽ được giữ trọn: câu nào đã thuộc, câu nào hay sai, đề nào đã làm và làm được bao nhiêu điểm.</p>
+          <ul class="space-y-3 text-sm font-bold">
+            <li class="flex items-start gap-3"><span class="mt-0.5 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center shrink-0 text-xs">✓</span><span>Nhớ câu đã thuộc, câu hay sai để lần sau ôn đúng chỗ yếu</span></li>
+            <li class="flex items-start gap-3"><span class="mt-0.5 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center shrink-0 text-xs">✓</span><span>Lưu điểm từng đề, bài làm dở và chuỗi ngày học liên tiếp</span></li>
+            <li class="flex items-start gap-3"><span class="mt-0.5 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center shrink-0 text-xs">✓</span><span>Học trên điện thoại, mở máy tính lên là học tiếp đúng chỗ đã dừng</span></li>
+          </ul>
+        </div>
+        <p class="relative text-xs text-white/70">Không cần email, không cần xác minh. Đăng ký xong là vào học ngay.</p>
+      </div>
+
+      <!-- Biểu mẫu -->
+      <div class="p-6 sm:p-9 flex flex-col gap-5">
+        <div class="flex items-center justify-between gap-3">
+          <div class="md:hidden flex items-center gap-2">
+            <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-400 to-brand-700 text-white flex items-center justify-center"><i data-lucide="zap" class="w-5 h-5"></i></span>
+            <span class="font-display font-extrabold text-lg">QuizFast</span>
+          </div>
+          <div class="inline-flex p-1 rounded-full bg-slate-100 dark:bg-[#1b2822] md:ml-0 ml-auto" role="tablist">
+            <button id="auth-tab-register" type="button" role="tab" class="px-4 py-2 min-h-[40px] rounded-full text-sm font-extrabold transition-all">Đăng ký</button>
+            <button id="auth-tab-login" type="button" role="tab" class="px-4 py-2 min-h-[40px] rounded-full text-sm font-extrabold transition-all">Đăng nhập</button>
+          </div>
+        </div>
+
+        <div class="space-y-1.5">
+          <h3 id="auth-title" class="font-display text-2xl sm:text-[1.7rem] font-extrabold leading-tight text-slate-900 dark:text-white"></h3>
+          <p id="auth-sub" class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed"></p>
+          <p id="auth-reason" class="hidden text-sm font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-500/10 rounded-xl px-3 py-2"></p>
+        </div>
+
+        <ul class="md:hidden grid gap-1.5 text-xs font-bold text-slate-600 dark:text-slate-300">
+          <li>✓ Nhớ câu đã thuộc và câu hay sai</li>
+          <li>✓ Lưu điểm từng đề và bài làm dở</li>
+          <li>✓ Điện thoại hay máy tính đều học tiếp được</li>
+        </ul>
+
+        <form id="auth-form" class="flex flex-col gap-3.5" autocomplete="on" novalidate>
+          <div>
+            <label for="auth-name" class="text-xs font-bold text-slate-600 dark:text-slate-300">Tên của bạn</label>
+            <input id="auth-name" name="username" type="text" inputmode="text" autocomplete="username" autocapitalize="words" spellcheck="false" maxlength="24" placeholder="Ví dụ: Minh Anh" class="qf-field mt-1" />
+          </div>
+          <div>
+            <label for="auth-pass" class="text-xs font-bold text-slate-600 dark:text-slate-300">Mật khẩu</label>
+            <div class="relative mt-1">
+              <input id="auth-pass" name="password" type="password" autocomplete="current-password" maxlength="72" placeholder="Ít nhất 6 ký tự" class="qf-field !pr-14" />
+              <button id="auth-pass-toggle" type="button" class="absolute right-1.5 top-1/2 -translate-y-1/2 px-3 min-h-[40px] rounded-xl text-xs font-extrabold text-brand-700 dark:text-brand-300" aria-label="Hiện hoặc ẩn mật khẩu">Hiện</button>
+            </div>
+            <p id="auth-hint" class="mt-1.5 text-xs text-slate-500 dark:text-slate-400"></p>
+          </div>
+          <p id="auth-error" role="alert" class="hidden text-sm font-bold text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-500/10 rounded-xl px-3 py-2"></p>
+          <button id="auth-submit" type="submit" class="w-full min-h-[50px] rounded-2xl bg-gradient-to-r from-brand-700 to-brand-500 hover:from-brand-600 hover:to-brand-400 text-white text-base font-extrabold shadow-lg shadow-brand-700/25 active:scale-[.99] transition-all disabled:opacity-60 disabled:cursor-wait"></button>
+        </form>
+
+        <button id="auth-skip" type="button" class="self-center min-h-[44px] px-3 text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white underline underline-offset-4 decoration-dotted">Để sau, cho tôi học thử trước</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: CHÀO MỪNG SAU KHI ĐĂNG KÝ ==================== -->
+  <div id="modal-welcome" class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm hidden items-end sm:items-center justify-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+    <div class="w-full sm:max-w-md bg-white dark:bg-[#121c17] border border-slate-200 dark:border-[#36493f] rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl max-h-[92vh] overflow-y-auto" style="padding-bottom: env(safe-area-inset-bottom)">
+      <div class="px-6 pt-7 pb-5 text-white bg-gradient-to-br from-brand-700 via-brand-600 to-emerald-400 relative overflow-hidden">
+        <div class="absolute -right-10 -top-10 w-44 h-44 rounded-full bg-white/15 blur-2xl" aria-hidden="true"></div>
+        <p class="relative text-4xl mb-2" aria-hidden="true">🎉</p>
+        <h3 id="welcome-title" class="relative font-display text-2xl font-extrabold leading-tight"></h3>
+        <p class="relative mt-1.5 text-sm text-white/90 leading-relaxed">Tài khoản của bạn đã sẵn sàng. Từ giờ, mọi câu bạn làm đều được lưu lại để lần sau học tiếp, không phải bắt đầu lại.</p>
+      </div>
+      <div class="p-6 space-y-4">
+        <p class="text-xs font-extrabold uppercase tracking-wide text-slate-500 dark:text-slate-400">Hôm nay mình làm gì nhé?</p>
+        <ol class="space-y-2.5 text-sm">
+          <li class="flex gap-3 items-start"><span class="w-7 h-7 rounded-full bg-brand-100 dark:bg-brand-900/50 text-brand-700 dark:text-brand-200 font-extrabold flex items-center justify-center shrink-0">1</span><span class="pt-0.5"><b>Khởi động 10 câu</b> cho quen tay, câu nào sai thì hiện lại ngay để nhớ.</span></li>
+          <li class="flex gap-3 items-start"><span class="w-7 h-7 rounded-full bg-brand-100 dark:bg-brand-900/50 text-brand-700 dark:text-brand-200 font-extrabold flex items-center justify-center shrink-0">2</span><span class="pt-0.5"><b>Chọn một môn</b> và làm hết một đề (60 câu), chế độ Học chấm đúng sai ngay.</span></li>
+          <li class="flex gap-3 items-start"><span class="w-7 h-7 rounded-full bg-brand-100 dark:bg-brand-900/50 text-brand-700 dark:text-brand-200 font-extrabold flex items-center justify-center shrink-0">3</span><span class="pt-0.5"><b>Chạm mốc 20 câu</b> để giữ chuỗi ngày học liên tiếp đầu tiên 🔥</span></li>
+        </ol>
+        <div class="flex flex-col gap-2 pt-1">
+          <button id="welcome-quick" type="button" class="min-h-[50px] rounded-2xl bg-gradient-to-r from-brand-700 to-brand-500 text-white text-base font-extrabold shadow-lg shadow-brand-700/25 active:scale-[.99] transition-all">Bắt đầu: ôn nhanh 10 câu</button>
+          <button id="welcome-browse" type="button" class="min-h-[48px] rounded-2xl bg-slate-100 dark:bg-[#1b2822] text-slate-800 dark:text-slate-100 text-sm font-extrabold">Xem các môn học trước</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: TÀI KHOẢN ==================== -->
+  <div id="modal-account" class="fixed inset-0 z-50 bg-black/55 backdrop-blur-sm hidden items-end sm:items-center justify-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="account-name">
+    <div class="w-full sm:max-w-md bg-white dark:bg-[#121c17] border border-slate-200 dark:border-[#36493f] rounded-t-3xl sm:rounded-3xl p-5 space-y-4 shadow-2xl max-h-[92vh] overflow-y-auto" style="padding-bottom: calc(1.25rem + env(safe-area-inset-bottom))">
+      <div class="flex items-start justify-between gap-3">
+        <div class="flex items-center gap-3 min-w-0">
+          <span id="account-avatar" class="qf-avatar w-14 h-14 text-xl"></span>
+          <div class="min-w-0">
+            <h3 id="account-name" class="text-lg font-extrabold truncate"></h3>
+            <p id="account-meta" class="text-xs text-slate-500 dark:text-slate-400"></p>
+          </div>
+        </div>
+        <button id="account-close" type="button" aria-label="Đóng" class="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl bg-slate-100 dark:bg-[#1b2822] text-slate-500 shrink-0"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+      <p id="account-sync" class="text-xs font-bold rounded-xl px-3 py-2 bg-brand-50 dark:bg-brand-900/25 text-brand-700 dark:text-brand-200"></p>
+      <div class="space-y-2.5">
+        <p class="text-xs font-extrabold uppercase tracking-wide text-slate-500 dark:text-slate-400">Đổi mật khẩu</p>
+        <input id="account-old" type="password" autocomplete="current-password" placeholder="Mật khẩu hiện tại" class="qf-field" />
+        <input id="account-new" type="password" autocomplete="new-password" placeholder="Mật khẩu mới (từ 6 ký tự)" class="qf-field" />
+        <p id="account-msg" role="status" class="hidden text-sm font-bold rounded-xl px-3 py-2"></p>
+        <button id="account-change" type="button" class="w-full min-h-[46px] rounded-2xl bg-brand-700 hover:bg-brand-600 text-white text-sm font-extrabold">Lưu mật khẩu mới</button>
+      </div>
+      <button id="account-logout" type="button" class="w-full min-h-[48px] rounded-2xl border-2 border-rose-300 dark:border-rose-500/50 text-rose-700 dark:text-rose-300 text-sm font-extrabold">Đăng xuất</button>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: XÁC NHẬN (quản trị) ==================== -->
+  <div id="modal-confirm" class="fixed inset-0 z-[70] bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title">
+    <div class="bg-white dark:bg-[#121c17] border border-slate-200 dark:border-[#36493f] rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+      <h3 id="confirm-title" class="text-lg font-extrabold"></h3>
+      <p id="confirm-body" class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed"></p>
+      <input id="confirm-input" class="qf-field hidden" autocomplete="off" />
+      <p id="confirm-error" role="alert" class="hidden text-sm font-bold text-rose-700 dark:text-rose-300"></p>
+      <div class="flex justify-end gap-2 pt-1">
+        <button id="confirm-cancel" type="button" class="px-4 py-2.5 min-h-[44px] rounded-xl bg-slate-100 dark:bg-[#1b2822] text-sm font-bold">Hủy</button>
+        <button id="confirm-ok" type="button" class="px-5 py-2.5 min-h-[44px] rounded-xl bg-rose-600 hover:bg-rose-700 text-sm font-extrabold text-white"></button>
       </div>
     </div>
   </div>
@@ -1280,10 +1478,10 @@
         applyTheme(savedSkin !== 'jade' ? 'light' : savedTheme);
       }
 
-      function saveProgress() { localStorage.setItem(STORAGE_KEYS.PROGRESS, JSON.stringify(progressMap)); }
-      function savePaperHistory() { localStorage.setItem(STORAGE_KEYS.PAPER_HISTORY, JSON.stringify(paperHistory)); }
-      function saveCustomSubjects() { localStorage.setItem(STORAGE_KEYS.CUSTOM_SUBJECTS, JSON.stringify(customSubjects)); }
-      function saveCustomExams() { localStorage.setItem(STORAGE_KEYS.CUSTOM_EXAMS, JSON.stringify(customExams)); }
+      function saveProgress() { localStorage.setItem(STORAGE_KEYS.PROGRESS, JSON.stringify(progressMap)); scheduleSync(); }
+      function savePaperHistory() { localStorage.setItem(STORAGE_KEYS.PAPER_HISTORY, JSON.stringify(paperHistory)); scheduleSync(); }
+      function saveCustomSubjects() { localStorage.setItem(STORAGE_KEYS.CUSTOM_SUBJECTS, JSON.stringify(customSubjects)); scheduleSync(); }
+      function saveCustomExams() { localStorage.setItem(STORAGE_KEYS.CUSTOM_EXAMS, JSON.stringify(customExams)); scheduleSync(); }
 
       function refreshHomeView() {
         updateGlobalCounters();
@@ -1293,8 +1491,709 @@
         }
       }
 
-      // Dữ liệu môn/đề tự thêm lưu hoàn toàn trong trình duyệt (localStorage), không dùng máy chủ.
-      const requireLogin = (_reason, action) => action();
+      // Môn/đề tự thêm lưu trong trình duyệt; khi đã đăng nhập, mọi tiến trình được đồng bộ lên tài khoản.
+      // ===================== TÀI KHOẢN + ĐỒNG BỘ + QUẢN TRỊ =====================
+      const SB_URL = 'https://bdfvrsttcfwifnppqpkc.supabase.co';
+      const SB_KEY = 'sb_publishable_A-iuO93NniplJdf2e2JLpQ_oAto1gBz';
+      const AUTH_KEY = 'quizfast_auth_v1';
+      const DIRTY_KEY = 'quizfast_sync_dirty_v1';
+      const SKIP_KEY = 'quizfast_auth_skip_v1'; // sessionStorage: đã chọn "học thử" trong phiên này
+      const SESSION_KEY = 'quizfast_exam_session_v1';
+
+      let auth = null; // { token, id, name, role }
+      let authMode = 'register';
+      let pendingAfterLogin = null;
+      let syncTimer = null, syncing = false, syncAgain = false;
+      let adminUsers = null, adminSelectedId = null, adminLoading = false;
+
+      const AUTH_ERRORS = {
+        name_length: 'Tên cần từ 3 đến 24 ký tự nhé.',
+        name_chars: 'Tên chỉ gồm chữ, số, dấu cách và các ký tự . _ - thôi nhé.',
+        password_length: 'Mật khẩu cần từ 6 ký tự trở lên.',
+        name_taken: 'Tên này đã có người dùng rồi. Bạn thử thêm số hoặc họ của mình nhé.',
+        bad_credentials: 'Tên hoặc mật khẩu chưa đúng. Kiểm tra lại giúp mình nhé.',
+        locked: 'Nhập sai nhiều lần nên tài khoản tạm khóa 5 phút. Bạn quay lại sau chút nhé.',
+        network: 'Chưa kết nối được máy chủ. Kiểm tra mạng rồi thử lại nhé.',
+        forbidden: 'Bạn không có quyền thực hiện thao tác này.',
+        self: 'Bạn không thể tự xóa tài khoản đang đăng nhập.',
+        session: 'Phiên đăng nhập đã hết hạn, hãy đăng nhập lại.'
+      };
+      const authErrText = (code) => AUTH_ERRORS[code] || 'Có lỗi xảy ra, bạn thử lại sau nhé.';
+
+      function isAdmin() { return !!auth && auth.role === 'admin'; }
+
+      async function rpc(fn, args, opts) {
+        const body = JSON.stringify(args || {});
+        const res = await fetch(`${SB_URL}/rest/v1/rpc/${fn}`, {
+          method: 'POST',
+          headers: { apikey: SB_KEY, 'Content-Type': 'application/json' },
+          body,
+          keepalive: !!(opts && opts.keepalive && body.length < 60000)
+        });
+        let json = null;
+        try { json = await res.json(); } catch { /* bỏ qua */ }
+        if (!res.ok) throw new Error('network');
+        return json || {};
+      }
+
+      const lsGet = (k) => { try { return localStorage.getItem(k); } catch { return null; } };
+      const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch { /* bỏ qua */ } };
+      const lsDel = (k) => { try { localStorage.removeItem(k); } catch { /* bỏ qua */ } };
+
+      function avatarStyle(name) {
+        let h = 0;
+        for (const ch of String(name)) h = (h * 31 + ch.charCodeAt(0)) % 360;
+        return `--av1:hsl(${h} 72% 56%);--av2:hsl(${(h + 45) % 360} 62% 36%)`;
+      }
+      const initialOf = (name) => (String(name || '?').trim()[0] || '?').toUpperCase();
+
+      // ----- Dữ liệu đồng bộ -----
+      function collectLocal() {
+        return { v: 1, progress: progressMap, history: paperHistory, subjects: customSubjects, exams: customExams, notes: userNotes, daily: loadDaily(), savedAt: Date.now() };
+      }
+
+      function applyData(d) {
+        d = d || {};
+        progressMap = (d.progress && typeof d.progress === 'object') ? d.progress : {};
+        paperHistory = (d.history && typeof d.history === 'object') ? d.history : {};
+        customSubjects = Array.isArray(d.subjects) ? d.subjects : [];
+        customExams = Array.isArray(d.exams) ? d.exams : [];
+        userNotes = (d.notes && typeof d.notes === 'object') ? d.notes : {};
+        lsSet(STORAGE_KEYS.PROGRESS, JSON.stringify(progressMap));
+        lsSet(STORAGE_KEYS.PAPER_HISTORY, JSON.stringify(paperHistory));
+        lsSet(STORAGE_KEYS.CUSTOM_SUBJECTS, JSON.stringify(customSubjects));
+        lsSet(STORAGE_KEYS.CUSTOM_EXAMS, JSON.stringify(customExams));
+        lsSet(NOTES_KEY, JSON.stringify(userNotes));
+        if (d.daily && typeof d.daily === 'object') lsSet(DAILY_KEY, JSON.stringify(d.daily));
+      }
+
+      // Gộp dữ liệu học thử trên máy với dữ liệu trên tài khoản (không làm mất bên nào)
+      function mergeData(local, cloud) {
+        local = local || {}; cloud = cloud || {};
+        const out = {};
+        out.progress = { ...(local.progress || {}), ...(cloud.progress || {}) };
+        out.history = { ...(local.history || {}) };
+        Object.entries(cloud.history || {}).forEach(([k, v]) => {
+          const mine = out.history[k];
+          out.history[k] = (!mine || (v.attempts || 0) >= (mine.attempts || 0)) ? v : mine;
+        });
+        const subj = new Map();
+        [...(local.subjects || []), ...(cloud.subjects || [])].forEach(s => { if (s && s.name && !subj.has(s.name)) subj.set(s.name, s); });
+        out.subjects = [...subj.values()];
+        const exs = new Map();
+        [...(local.exams || []), ...(cloud.exams || [])].forEach(e => { if (e && e.id) exs.set(e.id, e); });
+        out.exams = [...exs.values()];
+        out.notes = { ...(local.notes || {}), ...(cloud.notes || {}) };
+        const dl = local.daily || {}, dc = cloud.daily || {};
+        out.daily = ((dl.last || '') > (dc.last || '') || ((dl.last || '') === (dc.last || '') && (dl.count || 0) > (dc.count || 0))) ? dl : dc;
+        return out;
+      }
+
+      function setSyncLabel(text) {
+        const el = document.getElementById('account-sync');
+        if (el) el.textContent = text;
+      }
+
+      function scheduleSync() {
+        if (!auth) return;
+        lsSet(DIRTY_KEY, '1');
+        clearTimeout(syncTimer);
+        syncTimer = setTimeout(() => pushNow(), 1500);
+      }
+
+      async function pushNow(opts) {
+        if (!auth) return;
+        clearTimeout(syncTimer);
+        if (syncing) { syncAgain = true; return; }
+        syncing = true;
+        setSyncLabel('Đang lưu tiến trình...');
+        try {
+          const r = await rpc('qf_save', { p_token: auth.token, p_data: collectLocal() }, opts);
+          if (r.error === 'session') sessionExpired();
+          else if (!r.error) { lsDel(DIRTY_KEY); setSyncLabel('Tiến trình đã được lưu an toàn trên tài khoản của bạn.'); }
+        } catch {
+          setSyncLabel('Đang ngoại tuyến: tiến trình sẽ tự lưu lên tài khoản khi có mạng lại.');
+        } finally {
+          syncing = false;
+          if (syncAgain) { syncAgain = false; scheduleSync(); }
+        }
+      }
+
+      function refreshAfterDataChange() {
+        updateGlobalCounters();
+        renderDailyCard();
+        if (!examState.active && !examState.finished && currentMode === 'home') {
+          if (activeSubjectName) renderSubjectDetail(activeSubjectName); else renderHomeSubjects();
+        }
+        if (currentMode === 'mistakes') renderNotebook();
+      }
+
+      // ----- Trạng thái đăng nhập trên giao diện -----
+      function updateAccountUI() {
+        const label = document.getElementById('btn-account-label');
+        const av = document.getElementById('btn-account-avatar');
+        if (auth) {
+          label.textContent = auth.name;
+          av.textContent = initialOf(auth.name);
+          av.setAttribute('style', avatarStyle(auth.name));
+          av.className = 'qf-avatar w-8 h-8 text-sm';
+        } else {
+          label.textContent = 'Đăng nhập';
+          av.innerHTML = '<i data-lucide="user" class="w-4 h-4"></i>';
+          av.setAttribute('style', '--av1:rgb(var(--b400));--av2:rgb(var(--b700))');
+          if (window.lucide) lucide.createIcons();
+        }
+        document.getElementById('btn-account').setAttribute('aria-label', auth ? `Tài khoản của ${auth.name}` : 'Đăng nhập hoặc đăng ký');
+        document.body.classList.toggle('is-admin', isAdmin());
+        renderGreeting();
+      }
+
+      function greetingWord() {
+        const h = new Date().getHours();
+        return h < 11 ? 'Chào buổi sáng' : h < 14 ? 'Chào buổi trưa' : h < 18 ? 'Chào buổi chiều' : 'Chào buổi tối';
+      }
+
+      function renderGreeting() {
+        const box = document.getElementById('home-greeting');
+        if (!box) return;
+        box.classList.remove('hidden');
+        if (!auth) {
+          box.innerHTML = `
+            <div class="glass-lite rounded-3xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5">
+              <div class="min-w-0 flex-1">
+                <p class="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white">Đăng nhập để QuizFast nhớ giúp bạn</p>
+                <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Chỉ cần tên và mật khẩu: câu đã thuộc, câu hay sai, điểm từng đề và chuỗi ngày học sẽ được lưu lại, mở máy nào cũng học tiếp được.</p>
+              </div>
+              <button type="button" id="btn-greeting-login" class="shrink-0 min-h-[46px] px-5 rounded-2xl bg-gradient-to-r from-brand-700 to-brand-500 text-white text-sm font-extrabold shadow-md shadow-brand-700/25 active:scale-95 transition-all">Đăng ký / Đăng nhập</button>
+            </div>`;
+          document.getElementById('btn-greeting-login').addEventListener('click', () => openAuth('register'));
+          return;
+        }
+        const v = dailyView();
+        const rest = Math.max(0, DAILY_GOAL - v.count);
+        let line;
+        if (v.count === 0) line = 'Hôm nay mình bắt đầu bằng 10 câu ôn nhanh cho nóng máy nhé?';
+        else if (rest > 0) line = `Hôm nay bạn đã làm ${v.count} câu, còn ${rest} câu nữa là chạm mục tiêu ${DAILY_GOAL} câu.`;
+        else line = `Bạn đã đạt mục tiêu hôm nay (${v.count} câu). Làm thêm chút nữa để nhớ lâu hơn nhé!`;
+        if (v.streak > 1) line += ` 🔥 ${v.streak} ngày liên tiếp, giữ nhịp nhé.`;
+        box.innerHTML = `
+          <div class="px-1">
+            <h2 class="font-display text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white">${greetingWord()}, ${escapeHtml(auth.name)} 👋</h2>
+            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${escapeHtml(line)}</p>
+          </div>`;
+      }
+
+      // ----- Hộp đăng nhập / đăng ký (dùng chung cho người học và quản trị viên) -----
+      function showModal(id, show) {
+        const m = document.getElementById(id);
+        m.classList.toggle('hidden', !show);
+        m.classList.toggle('flex', show);
+      }
+      const modalOpen = (id) => !document.getElementById(id).classList.contains('hidden');
+
+      function setAuthMode(mode) {
+        authMode = mode;
+        const reg = mode === 'register';
+        document.getElementById('auth-title').textContent = reg ? 'Tạo tài khoản, giữ trọn hành trình ôn thi' : 'Chào mừng bạn quay lại';
+        document.getElementById('auth-sub').textContent = reg
+          ? 'Chọn một cái tên và một mật khẩu, chưa đến 10 giây là xong. Đăng ký xong bạn vào học ngay, tiến trình ôn bài và luyện tập được lưu lại từng câu.'
+          : 'Đăng nhập để học tiếp đúng chỗ bạn đã dừng. Câu đã thuộc, điểm từng đề và chuỗi ngày học vẫn đang chờ bạn.';
+        document.getElementById('auth-hint').textContent = reg
+          ? 'Tên 3 đến 24 ký tự · Mật khẩu từ 6 ký tự'
+          : 'Quên mật khẩu? Nhờ quản trị viên đặt lại giúp bạn.';
+        document.getElementById('auth-submit').textContent = reg ? 'Tạo tài khoản và vào học' : 'Đăng nhập';
+        document.getElementById('auth-pass').setAttribute('autocomplete', reg ? 'new-password' : 'current-password');
+        [['auth-tab-register', reg], ['auth-tab-login', !reg]].forEach(([id, on]) => {
+          const b = document.getElementById(id);
+          b.className = 'px-4 py-2 min-h-[40px] rounded-full text-sm font-extrabold transition-all ' + (on
+            ? 'bg-white dark:bg-[#2a3b33] text-brand-700 dark:text-brand-200 shadow-sm'
+            : 'text-slate-500 dark:text-slate-400');
+          b.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+        document.getElementById('auth-error').classList.add('hidden');
+      }
+
+      function openAuth(mode, reason) {
+        setAuthMode(mode || 'register');
+        const r = document.getElementById('auth-reason');
+        r.textContent = reason || '';
+        r.classList.toggle('hidden', !reason);
+        document.getElementById('auth-pass').value = '';
+        showModal('modal-auth', true);
+        setTimeout(() => document.getElementById('auth-name').focus(), 50);
+      }
+
+      function closeAuth(skipped) {
+        showModal('modal-auth', false);
+        if (skipped) { try { sessionStorage.setItem(SKIP_KEY, '1'); } catch { /* bỏ qua */ } }
+        pendingAfterLogin = null;
+      }
+
+      function requireLogin(reason, action) {
+        if (auth) return action();
+        pendingAfterLogin = action;
+        openAuth('register', reason);
+      }
+
+      async function submitAuth(e) {
+        e.preventDefault();
+        const errEl = document.getElementById('auth-error');
+        const btn = document.getElementById('auth-submit');
+        const name = document.getElementById('auth-name').value.trim();
+        const pass = document.getElementById('auth-pass').value;
+        const fail = (msg) => { errEl.textContent = msg; errEl.classList.remove('hidden'); };
+        errEl.classList.add('hidden');
+        if (!name) return fail('Bạn chưa nhập tên.');
+        if (!pass) return fail('Bạn chưa nhập mật khẩu.');
+        if (authMode === 'register') {
+          if (name.length < 3 || name.length > 24) return fail(AUTH_ERRORS.name_length);
+          if (pass.length < 6) return fail(AUTH_ERRORS.password_length);
+        }
+        const label = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Đang xử lý...';
+        try {
+          const res = await rpc(authMode === 'register' ? 'qf_register' : 'qf_login', { p_name: name, p_password: pass });
+          if (res.error) return fail(authErrText(res.error));
+          const after = pendingAfterLogin;
+          showModal('modal-auth', false);
+          pendingAfterLogin = null;
+          onAuthenticated(res, true);
+          if (res.is_new) showWelcome(res.user.name);
+          else if (isAdmin()) switchMode('admin');
+          if (after && !isAdmin()) after();
+        } catch {
+          fail(authErrText('network'));
+        } finally {
+          btn.disabled = false;
+          btn.textContent = label;
+        }
+      }
+
+      function onAuthenticated(res, fresh) {
+        auth = { token: res.token || (auth && auth.token), id: res.user.id, name: res.user.name, role: res.user.role };
+        lsSet(AUTH_KEY, JSON.stringify(auth));
+        const cloud = res.data || {};
+        if (fresh) {
+          // Vừa đăng nhập: giữ cả phần học thử trên máy lẫn phần đã có trên tài khoản
+          applyData(mergeData(collectLocal(), cloud));
+          lsSet(DIRTY_KEY, '1');
+          pushNow();
+        } else if (lsGet(DIRTY_KEY) === '1') {
+          pushNow(); // trên máy có thay đổi chưa kịp lưu: ưu tiên bản trên máy
+        } else {
+          applyData(cloud);
+        }
+        updateAccountUI();
+        refreshAfterDataChange();
+      }
+
+      function sessionExpired() {
+        auth = null;
+        lsDel(AUTH_KEY);
+        updateAccountUI();
+        if (currentMode === 'admin') switchMode('home');
+        openAuth('login', 'Phiên đăng nhập đã hết hạn. Đăng nhập lại để tiếp tục lưu tiến trình nhé.');
+      }
+
+      async function initAuth() {
+        let saved = null;
+        try { saved = JSON.parse(lsGet(AUTH_KEY) || 'null'); } catch { saved = null; }
+        if (saved && saved.token && saved.name) {
+          auth = saved;
+          updateAccountUI();
+          try {
+            const r = await rpc('qf_me', { p_token: auth.token });
+            if (r.error === 'session') return sessionExpired();
+            if (r.user) onAuthenticated({ user: r.user, data: r.data }, false);
+          } catch { /* ngoại tuyến: vẫn học bình thường bằng dữ liệu trên máy */ }
+          return;
+        }
+        updateAccountUI();
+        let skipped = false;
+        try { skipped = sessionStorage.getItem(SKIP_KEY) === '1'; } catch { /* bỏ qua */ }
+        if (!skipped) openAuth('register');
+      }
+
+      function showWelcome(name) {
+        document.getElementById('welcome-title').textContent = `Chào mừng ${name} đến với QuizFast!`;
+        showModal('modal-welcome', true);
+      }
+
+      // ----- Tài khoản: đổi mật khẩu, đăng xuất -----
+      function openAccount() {
+        if (!auth) return openAuth('login');
+        document.getElementById('account-name').textContent = auth.name;
+        const av = document.getElementById('account-avatar');
+        av.textContent = initialOf(auth.name);
+        av.setAttribute('style', avatarStyle(auth.name));
+        document.getElementById('account-meta').textContent = isAdmin() ? 'Quản trị viên' : 'Thành viên QuizFast';
+        setSyncLabel(lsGet(DIRTY_KEY) === '1' ? 'Có thay đổi đang chờ lưu lên tài khoản...' : 'Tiến trình đang được lưu tự động trên tài khoản của bạn.');
+        ['account-old', 'account-new'].forEach(id => { document.getElementById(id).value = ''; });
+        document.getElementById('account-msg').classList.add('hidden');
+        showModal('modal-account', true);
+      }
+
+      async function changePassword() {
+        const msg = document.getElementById('account-msg');
+        const show = (text, ok) => {
+          msg.textContent = text;
+          msg.className = 'text-sm font-bold rounded-xl px-3 py-2 ' + (ok ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300' : 'bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-300');
+        };
+        const oldP = document.getElementById('account-old').value;
+        const newP = document.getElementById('account-new').value;
+        if (!oldP || !newP) return show('Nhập đủ mật khẩu hiện tại và mật khẩu mới nhé.', false);
+        if (newP.length < 6) return show(AUTH_ERRORS.password_length, false);
+        try {
+          const r = await rpc('qf_change_password', { p_token: auth.token, p_old: oldP, p_new: newP });
+          if (r.error) return show(authErrText(r.error), false);
+          document.getElementById('account-old').value = '';
+          document.getElementById('account-new').value = '';
+          show('Đã đổi mật khẩu thành công.', true);
+        } catch { show(authErrText('network'), false); }
+      }
+
+      async function logout() {
+        if (auth) {
+          if (lsGet(DIRTY_KEY) === '1') { try { await pushNow(); } catch { /* bỏ qua */ } }
+          try { await rpc('qf_logout', { p_token: auth.token }); } catch { /* bỏ qua */ }
+        }
+        // Xóa dữ liệu học trên máy này để người dùng sau không thấy tiến trình của bạn (dữ liệu vẫn an toàn trên tài khoản)
+        [STORAGE_KEYS.PROGRESS, STORAGE_KEYS.PAPER_HISTORY, STORAGE_KEYS.CUSTOM_SUBJECTS, STORAGE_KEYS.CUSTOM_EXAMS, STORAGE_KEYS.USER_HL,
+          NOTES_KEY, DAILY_KEY, SESSION_KEY, AUTH_KEY, DIRTY_KEY].forEach(lsDel);
+        try { sessionStorage.removeItem(SKIP_KEY); } catch { /* bỏ qua */ }
+        location.reload();
+      }
+
+      // Hộp xác nhận dùng chung (có thể kèm ô nhập): trả về chuỗi đã nhập, hoặc null nếu hủy
+      function askConfirm({ title, body, okLabel, input }) {
+        return new Promise(resolve => {
+          document.getElementById('confirm-title').textContent = title;
+          document.getElementById('confirm-body').textContent = body;
+          document.getElementById('confirm-ok').textContent = okLabel || 'Đồng ý';
+          const inp = document.getElementById('confirm-input');
+          const err = document.getElementById('confirm-error');
+          err.classList.add('hidden');
+          inp.value = '';
+          inp.classList.toggle('hidden', !input);
+          if (input) inp.setAttribute('placeholder', input.placeholder || '');
+          const ok = document.getElementById('confirm-ok');
+          const cancel = document.getElementById('confirm-cancel');
+          const done = (val) => { showModal('modal-confirm', false); ok.onclick = null; cancel.onclick = null; resolve(val); };
+          ok.onclick = () => {
+            if (input) {
+              const bad = input.validate ? input.validate(inp.value) : '';
+              if (bad) { err.textContent = bad; err.classList.remove('hidden'); return; }
+            }
+            done(inp.value);
+          };
+          cancel.onclick = () => done(null);
+          showModal('modal-confirm', true);
+          if (input) setTimeout(() => inp.focus(), 50);
+        });
+      }
+
+      // ----- Trang quản trị -----
+      function relTime(iso) {
+        if (!iso) return 'chưa có';
+        const s = (Date.now() - new Date(iso).getTime()) / 1000;
+        if (s < 60) return 'vừa xong';
+        if (s < 3600) return `${Math.floor(s / 60)} phút trước`;
+        if (s < 86400) return `${Math.floor(s / 3600)} giờ trước`;
+        if (s < 86400 * 30) return `${Math.floor(s / 86400)} ngày trước`;
+        return fmtDate(iso);
+      }
+      function fmtDate(iso) {
+        if (!iso) return '';
+        const d = new Date(iso);
+        return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+      }
+
+      // Tính từ dữ liệu của một người dùng: học môn nào, thuộc bao nhiêu câu, xong bao nhiêu đề
+      function summarizeUserData(data) {
+        data = data || {};
+        const prog = data.progress || {}, hist = data.history || {};
+        const exams = Array.isArray(data.exams) ? data.exams : [];
+        const defaults = getDefaultSubjectList().map(s => s.name);
+        const specs = defaults.map(name => ({
+          name, custom: false,
+          qs: builtinQuestions.filter(q => q.subject === name),
+          papers: getBuiltinPapers(name).map(p => ({ key: p.key, title: p.shortTitle, group: p.group || '' }))
+        }));
+        [...new Set(exams.map(e => e && e.subject).filter(n => n && !defaults.includes(n)))].forEach(name => {
+          const es = exams.filter(e => e.subject === name);
+          specs.push({ name, custom: true, qs: es.flatMap(e => e.questions || []), papers: es.map(e => ({ key: e.id, title: e.title || 'Đề', group: '' })) });
+        });
+
+        const subjects = specs.map(sp => {
+          const c = { green: 0, yellow: 0, red: 0, unseen: 0 };
+          sp.qs.forEach(q => { const st = (prog[q.id] && prog[q.id].status) || 'unseen'; c[st in c ? st : 'unseen']++; });
+          const done = sp.papers.filter(p => hist[p.key] && hist[p.key].attempts > 0).map(p => {
+            const h = hist[p.key];
+            const best = typeof h.best10 === 'number' ? h.best10 : 0;
+            return { title: p.title, group: p.group, best10: best, attempts: h.attempts || 0, lastTime: h.lastTime || 0, passed: best > PASS_SCORE10 };
+          });
+          const shuffleAttempts = (hist[`${sp.name}_SHUFFLE`] && hist[`${sp.name}_SHUFFLE`].attempts) || 0;
+          const total = sp.qs.length;
+          const seen = total - c.unseen;
+          return {
+            name: sp.name, custom: sp.custom, total, seen, ...c,
+            papersTotal: sp.papers.length, done, shuffleAttempts,
+            started: seen > 0 || done.length > 0 || shuffleAttempts > 0,
+            lastTime: Math.max(0, ...done.map(d => d.lastTime))
+          };
+        });
+
+        const sum = (k) => subjects.reduce((a, s) => a + s[k], 0);
+        const allDone = subjects.flatMap(s => s.done);
+        const starred = Object.values(prog).filter(r => r && r.starred).length;
+        const dl = data.daily || {};
+        const today = localDay(0), yest = localDay(-1);
+        return {
+          subjects,
+          total: sum('total'), seen: sum('seen'), green: sum('green'), yellow: sum('yellow'), red: sum('red'),
+          papersDone: allDone.length, papersTotal: sum('papersTotal'), papersPassed: allDone.filter(d => d.passed).length,
+          avgBest: allDone.length ? allDone.reduce((a, d) => a + d.best10, 0) / allDone.length : 0,
+          startedCount: subjects.filter(s => s.started).length,
+          customSubjects: specs.filter(s => s.custom).length, customExams: exams.length,
+          starred,
+          streak: (dl.last === today || dl.last === yest) ? (dl.streak || 0) : 0,
+          todayCount: dl.day === today ? (dl.count || 0) : 0
+        };
+      }
+
+      async function loadAdminUsers() {
+        if (!isAdmin() || adminLoading) return;
+        adminLoading = true;
+        document.getElementById('admin-list').innerHTML = '<p class="glass-lite rounded-2xl p-5 text-sm font-bold text-slate-500 dark:text-slate-400">Đang tải danh sách người dùng...</p>';
+        try {
+          const r = await rpc('qf_admin_list', { p_token: auth.token });
+          if (r.error === 'session') { adminLoading = false; return sessionExpired(); }
+          if (r.error) throw new Error(r.error);
+          adminUsers = (r.users || []).map(u => ({ ...u, sum: summarizeUserData(u.data) }));
+        } catch (e) {
+          adminUsers = null;
+          document.getElementById('admin-list').innerHTML = `<div class="glass-lite rounded-2xl p-5 space-y-3"><p class="text-sm font-bold text-rose-700 dark:text-rose-300">${escapeHtml(authErrText(e.message === 'network' ? 'network' : e.message))}</p><button type="button" id="btn-admin-retry" class="px-4 py-2 min-h-[44px] rounded-xl bg-brand-700 text-white text-sm font-extrabold">Thử lại</button></div>`;
+          document.getElementById('btn-admin-retry').addEventListener('click', loadAdminUsers);
+          adminLoading = false;
+          return;
+        }
+        adminLoading = false;
+        renderAdmin();
+      }
+
+      function renderAdmin() {
+        if (!adminUsers) return;
+        const now = Date.now();
+        const week = 7 * 86400 * 1000;
+        const active7 = adminUsers.filter(u => u.last_active && now - new Date(u.last_active).getTime() < week).length;
+        const newWeek = adminUsers.filter(u => now - new Date(u.created_at).getTime() < week).length;
+        const todayActive = adminUsers.filter(u => u.last_active && localDay(0) === localDayOf(u.last_active)).length;
+        const tile = (emoji, label, value, note) => `
+          <div class="glass-lite rounded-2xl p-3.5 sm:p-4">
+            <p class="text-xs font-bold text-slate-500 dark:text-slate-400 flex items-center gap-1.5"><span aria-hidden="true">${emoji}</span>${label}</p>
+            <p class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white leading-tight mt-0.5">${value}</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400">${note}</p>
+          </div>`;
+        document.getElementById('admin-stats').innerHTML =
+          tile('👥', 'Người dùng', adminUsers.length, `${newWeek} người mới tuần này`) +
+          tile('⚡', 'Đang hoạt động', active7, `7 ngày qua · hôm nay ${todayActive}`) +
+          tile('🟢', 'Câu đã thuộc', adminUsers.reduce((a, u) => a + u.sum.green, 0).toLocaleString('vi-VN'), 'cộng dồn mọi người dùng') +
+          tile('📝', 'Đề đã hoàn thành', adminUsers.reduce((a, u) => a + u.sum.papersDone, 0).toLocaleString('vi-VN'), 'lượt đề làm xong ít nhất một lần');
+
+        const q = document.getElementById('admin-search').value.trim().toLowerCase();
+        const sort = document.getElementById('admin-sort').value;
+        let rows = adminUsers.filter(u => !q || u.name.toLowerCase().includes(q));
+        const t = (x) => x ? new Date(x).getTime() : 0;
+        rows.sort((a, b) => sort === 'name' ? a.name.localeCompare(b.name, 'vi')
+          : sort === 'joined' ? t(b.created_at) - t(a.created_at)
+          : sort === 'mastered' ? b.sum.green - a.sum.green
+          : t(b.last_active) - t(a.last_active));
+
+        const list = document.getElementById('admin-list');
+        if (!rows.length) {
+          list.innerHTML = '<p class="glass-lite rounded-2xl p-5 text-sm font-bold text-slate-500 dark:text-slate-400">Không có người dùng nào khớp.</p>';
+        } else {
+          list.innerHTML = rows.map(u => {
+            const s = u.sum;
+            const pct = (n) => s.total ? (n / s.total * 100) : 0;
+            const on = u.id === adminSelectedId;
+            return `
+              <button type="button" data-admin-user="${u.id}" class="glass-lite rounded-2xl p-3.5 flex items-center gap-3 text-left w-full min-h-[76px] transition-all active:scale-[.99] ${on ? 'ring-2 ring-brand-500' : ''}">
+                <span class="qf-avatar w-11 h-11 text-lg" style="${avatarStyle(u.name)}">${escapeHtml(initialOf(u.name))}</span>
+                <span class="min-w-0 flex-1">
+                  <span class="flex items-center gap-2">
+                    <span class="font-extrabold text-slate-900 dark:text-white truncate">${escapeHtml(u.name)}</span>
+                    ${u.role === 'admin' ? '<span class="px-2 py-0.5 rounded-full text-[11px] font-extrabold bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-200">Quản trị</span>' : ''}
+                  </span>
+                  <span class="block text-xs text-slate-500 dark:text-slate-400">Học lần cuối ${relTime(u.last_active)} · ${s.startedCount} môn</span>
+                  <span class="qf-bar mt-1.5" aria-hidden="true"><span style="width:${pct(s.green)}%;background:#10b981"></span><span style="width:${pct(s.yellow)}%;background:#f59e0b"></span><span style="width:${pct(s.red)}%;background:#f43f5e"></span></span>
+                  <span class="block text-xs font-bold text-slate-600 dark:text-slate-300 mt-1">${s.green} câu thuộc · ${s.papersDone}/${s.papersTotal} đề</span>
+                </span>
+              </button>`;
+          }).join('');
+        }
+        renderAdminDetail();
+      }
+
+      function localDayOf(iso) {
+        const d = new Date(iso);
+        return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+      }
+
+      function renderAdminDetail() {
+        const box = document.getElementById('admin-detail');
+        const u = adminUsers && adminUsers.find(x => x.id === adminSelectedId);
+        if (!u) {
+          box.classList.remove('admin-open');
+          box.innerHTML = '<div class="hidden lg:flex glass-lite rounded-3xl p-10 text-center flex-col items-center gap-2 text-slate-500 dark:text-slate-400"><span class="text-4xl" aria-hidden="true">👈</span><p class="font-extrabold text-slate-700 dark:text-slate-200">Chọn một người dùng</p><p class="text-sm">Bấm vào một người ở danh sách để xem họ đang học gì và thuộc đến đâu.</p></div>';
+          return;
+        }
+        box.classList.add('admin-open');
+        const s = u.sum;
+        const pctOf = (n, d) => d ? Math.round(n / d * 100) : 0;
+        const stat = (dot, label, n, note) => `
+          <div class="rounded-2xl bg-white/60 dark:bg-white/5 p-3">
+            <p class="text-xs font-bold text-slate-500 dark:text-slate-400 flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full" style="background:${dot}"></span>${label}</p>
+            <p class="font-display text-2xl font-extrabold text-slate-900 dark:text-white leading-tight">${n}</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400">${note}</p>
+          </div>`;
+
+        const started = s.subjects.filter(x => x.started).sort((a, b) => b.lastTime - a.lastTime || b.seen - a.seen);
+        const idle = s.subjects.filter(x => !x.started && !x.custom);
+
+        const subjectCard = (sp) => {
+          const ac = subjectAccent(sp.name);
+          const p = (n) => sp.total ? (n / sp.total * 100) : 0;
+          const chips = sp.done.map(d => `<span class="px-2.5 py-1 rounded-lg text-xs font-bold ${d.passed ? 'bg-emerald-100 dark:bg-emerald-500/15 text-emerald-800 dark:text-emerald-200' : 'bg-rose-100 dark:bg-rose-500/15 text-rose-800 dark:text-rose-200'}">${escapeHtml(d.group ? d.group + ' · ' : '')}${escapeHtml(d.title)}: ${fmtScore(d.best10)}đ${d.attempts > 1 ? ` (${d.attempts} lần)` : ''}</span>`).join('');
+          return `
+            <div class="rounded-2xl bg-white/60 dark:bg-white/5 p-3.5 space-y-2.5 border-l-4" style="border-color:${ac.hex}">
+              <div class="flex items-center justify-between gap-2">
+                <p class="font-extrabold text-slate-900 dark:text-white truncate">${escapeHtml(sp.name)}${sp.custom ? ' <span class="text-xs font-bold text-slate-500">(môn tự tạo)</span>' : ''}</p>
+                <p class="text-sm font-extrabold text-emerald-700 dark:text-emerald-300 shrink-0">${pctOf(sp.green, sp.total)}% thuộc</p>
+              </div>
+              <div class="qf-bar" role="img" aria-label="${sp.green} câu đã thuộc, ${sp.yellow} đang nhớ, ${sp.red} hay sai trên ${sp.total} câu"><span style="width:${p(sp.green)}%;background:#10b981"></span><span style="width:${p(sp.yellow)}%;background:#f59e0b"></span><span style="width:${p(sp.red)}%;background:#f43f5e"></span></div>
+              <p class="text-xs font-bold text-slate-600 dark:text-slate-300">🟢 ${sp.green} thuộc · 🟡 ${sp.yellow} đang nhớ · 🔴 ${sp.red} hay sai · ⚪ ${sp.unseen} chưa làm <span class="text-slate-400">/ ${sp.total} câu</span></p>
+              <p class="text-xs font-bold text-slate-600 dark:text-slate-300">Đề đã làm: <span class="text-slate-900 dark:text-white">${sp.done.length}/${sp.papersTotal}</span>${sp.shuffleAttempts ? ` · Đề xáo trộn ${sp.shuffleAttempts} lần` : ''}${sp.lastTime ? ` · gần nhất ${relTime(new Date(sp.lastTime).toISOString())}` : ''}</p>
+              ${chips ? `<div class="flex flex-wrap gap-1.5">${chips}</div>` : ''}
+            </div>`;
+        };
+
+        const isSelf = auth && u.id === auth.id;
+        box.innerHTML = `
+          <div class="glass-lite rounded-3xl p-4 sm:p-5 flex flex-col gap-4">
+            <button type="button" id="btn-admin-back" class="lg:hidden self-start min-h-[44px] px-3 -ml-1 rounded-xl text-sm font-extrabold text-brand-700 dark:text-brand-300 flex items-center gap-1.5"><i data-lucide="arrow-left" class="w-4 h-4"></i>Danh sách người dùng</button>
+            <div class="flex items-center gap-3.5">
+              <span class="qf-avatar w-16 h-16 text-2xl" style="${avatarStyle(u.name)}">${escapeHtml(initialOf(u.name))}</span>
+              <div class="min-w-0 flex-1">
+                <h2 class="font-display text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white truncate">${escapeHtml(u.name)}</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">${u.role === 'admin' ? 'Quản trị viên · ' : ''}Tham gia ${fmtDate(u.created_at)}<br>Đăng nhập gần nhất ${relTime(u.last_login)} · Học lần cuối ${relTime(u.last_active)}</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              ${stat('#10b981', 'Đã thuộc', s.green, `${pctOf(s.green, s.total)}% ngân hàng câu`)}
+              ${stat('#f59e0b', 'Đang nhớ', s.yellow, 'cần ôn thêm')}
+              ${stat('#f43f5e', 'Hay sai', s.red, 'cần chú ý')}
+              ${stat('#6366f1', 'Đề đã làm', `${s.papersDone}<span class="text-base text-slate-400">/${s.papersTotal}</span>`, `${s.papersPassed} đề đạt${s.papersDone ? ' · TB ' + fmtScore(Math.round(s.avgBest * 10) / 10) + 'đ' : ''}`)}
+            </div>
+            <p class="text-xs font-bold text-slate-600 dark:text-slate-300">🔥 Chuỗi ${s.streak} ngày · Hôm nay ${s.todayCount}/${DAILY_GOAL} câu · ⭐ ${s.starred} câu gắn sao${s.customSubjects ? ` · 📁 ${s.customSubjects} môn tự tạo (${s.customExams} đề)` : ''}</p>
+            <div class="flex flex-wrap gap-2 pt-1 border-t border-slate-200/70 dark:border-white/10">
+              <button type="button" id="btn-admin-reset" class="min-h-[44px] px-4 rounded-xl bg-slate-100 dark:bg-[#1b2822] text-slate-800 dark:text-slate-100 text-sm font-extrabold">Đặt lại mật khẩu</button>
+              ${isSelf ? '' : '<button type="button" id="btn-admin-delete" class="min-h-[44px] px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-extrabold">Xóa người dùng</button>'}
+            </div>
+          </div>
+
+          <div class="glass-lite rounded-3xl p-4 sm:p-5 mt-4 flex flex-col gap-3">
+            <h3 class="font-display text-lg font-extrabold text-slate-900 dark:text-white">Đang học những môn nào</h3>
+            ${started.length ? started.map(subjectCard).join('') : '<p class="text-sm font-bold text-slate-500 dark:text-slate-400 rounded-2xl bg-white/60 dark:bg-white/5 p-4">Người dùng này chưa làm câu nào. Họ mới đăng ký và chưa bắt đầu học.</p>'}
+            ${idle.length && started.length ? `<p class="text-xs text-slate-500 dark:text-slate-400"><b>Chưa bắt đầu:</b> ${idle.map(x => escapeHtml(x.name)).join(', ')}</p>` : ''}
+          </div>`;
+        if (window.lucide) lucide.createIcons();
+
+        const back = document.getElementById('btn-admin-back');
+        if (back) back.addEventListener('click', () => { adminSelectedId = null; renderAdmin(); });
+        document.getElementById('btn-admin-reset').addEventListener('click', () => adminResetPassword(u));
+        const del = document.getElementById('btn-admin-delete');
+        if (del) del.addEventListener('click', () => adminDeleteUser(u));
+      }
+
+      async function adminDeleteUser(u) {
+        const typed = await askConfirm({
+          title: `Xóa người dùng "${u.name}"?`,
+          body: `Tài khoản và toàn bộ tiến trình học của ${u.name} (${u.sum.green} câu đã thuộc, ${u.sum.papersDone} đề đã làm) sẽ bị xóa vĩnh viễn, không thể khôi phục. Gõ lại đúng tên người dùng để xác nhận.`,
+          okLabel: 'Xóa vĩnh viễn',
+          input: { placeholder: u.name, validate: (v) => v.trim().toLowerCase() === u.name.toLowerCase() ? '' : 'Tên chưa khớp.' }
+        });
+        if (typed === null) return;
+        try {
+          const r = await rpc('qf_admin_delete', { p_token: auth.token, p_user: u.id });
+          if (r.error) return alert(authErrText(r.error));
+          adminSelectedId = null;
+          adminUsers = adminUsers.filter(x => x.id !== u.id);
+          renderAdmin();
+        } catch { alert(authErrText('network')); }
+      }
+
+      async function adminResetPassword(u) {
+        const pw = await askConfirm({
+          title: `Đặt lại mật khẩu cho "${u.name}"`,
+          body: 'Nhập mật khẩu mới (từ 6 ký tự). Người dùng sẽ bị đăng xuất khỏi mọi thiết bị và cần dùng mật khẩu này để đăng nhập lại.',
+          okLabel: 'Đặt lại',
+          input: { placeholder: 'Mật khẩu mới', validate: (v) => v.length >= 6 ? '' : AUTH_ERRORS.password_length }
+        });
+        if (pw === null) return;
+        try {
+          const r = await rpc('qf_admin_reset_password', { p_token: auth.token, p_user: u.id, p_new: pw });
+          if (r.error) return alert(authErrText(r.error));
+          alert(`Đã đặt lại mật khẩu cho ${u.name}.`);
+        } catch { alert(authErrText('network')); }
+      }
+
+      function bindAuthEvents() {
+        document.getElementById('auth-form').addEventListener('submit', submitAuth);
+        document.getElementById('auth-tab-register').addEventListener('click', () => setAuthMode('register'));
+        document.getElementById('auth-tab-login').addEventListener('click', () => setAuthMode('login'));
+        document.getElementById('auth-skip').addEventListener('click', () => closeAuth(true));
+        document.getElementById('auth-pass-toggle').addEventListener('click', (e) => {
+          const p = document.getElementById('auth-pass');
+          const show = p.type === 'password';
+          p.type = show ? 'text' : 'password';
+          e.currentTarget.textContent = show ? 'Ẩn' : 'Hiện';
+        });
+        document.getElementById('btn-account').addEventListener('click', openAccount);
+        document.getElementById('account-close').addEventListener('click', () => showModal('modal-account', false));
+        document.getElementById('account-change').addEventListener('click', changePassword);
+        document.getElementById('account-logout').addEventListener('click', logout);
+        document.getElementById('welcome-quick').addEventListener('click', () => { showModal('modal-welcome', false); document.getElementById('btn-quick-10').click(); });
+        document.getElementById('welcome-browse').addEventListener('click', () => {
+          showModal('modal-welcome', false);
+          const g = document.getElementById('default-subjects-grid');
+          if (g) g.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+        document.getElementById('btn-admin-refresh').addEventListener('click', loadAdminUsers);
+        document.getElementById('admin-search').addEventListener('input', renderAdmin);
+        document.getElementById('admin-sort').addEventListener('change', renderAdmin);
+        document.getElementById('admin-list').addEventListener('click', (e) => {
+          const b = e.target.closest('[data-admin-user]');
+          if (!b) return;
+          adminSelectedId = b.dataset.adminUser;
+          renderAdmin();
+          if (window.innerWidth < 1024) document.getElementById('admin-detail').scrollTop = 0;
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.key !== 'Escape') return;
+          if (modalOpen('modal-confirm')) document.getElementById('confirm-cancel').click();
+          else if (modalOpen('modal-auth')) closeAuth(true);
+          else if (modalOpen('modal-account')) showModal('modal-account', false);
+          else if (modalOpen('modal-welcome')) showModal('modal-welcome', false);
+          else if (currentMode === 'admin' && adminSelectedId && window.innerWidth < 1024) { adminSelectedId = null; renderAdmin(); }
+        });
+        // Rời trang: đẩy nốt tiến trình chưa lưu
+        const flush = () => { if (auth && lsGet(DIRTY_KEY) === '1') pushNow({ keepalive: true }); };
+        document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flush(); });
+        window.addEventListener('pagehide', flush);
+      }
+
       const sbUpsertSubject = () => Promise.resolve();
       const sbDeleteSubject = () => Promise.resolve();
       const sbUpsertExams = () => Promise.resolve();
@@ -1330,6 +2229,7 @@
         d.count++;
         d.last = today;
         try { localStorage.setItem(DAILY_KEY, JSON.stringify(d)); } catch { /* bỏ qua */ }
+        scheduleSync();
       }
       function dailyView() {
         const d = loadDaily();
@@ -1337,6 +2237,7 @@
         return { count: d.day === localDay(0) ? d.count : 0, streak: alive ? (d.streak || 0) : 0 };
       }
       function renderDailyCard() {
+        renderGreeting();
         const v = dailyView();
         const pct = Math.min(1, v.count / DAILY_GOAL);
         const done = v.count >= DAILY_GOAL;
@@ -1361,6 +2262,7 @@
         const t = String(text || '').trim();
         if (t) userNotes[id] = String(text).slice(0, 400); else delete userNotes[id];
         try { localStorage.setItem(NOTES_KEY, JSON.stringify(userNotes)); } catch { /* bỏ qua */ }
+        scheduleSync();
       }
 
       function recordAnswer(id, isCorrect) {
@@ -1457,7 +2359,8 @@
         return getAllSubjects().some(s => s.name.toLowerCase() === key);
       }
 
-      function getPapersForSubject(subjName) {
+      // Các đề có sẵn của một môn (chỉ phụ thuộc ngân hàng câu hỏi, dùng chung cho người học và trang quản trị)
+      function getBuiltinPapers(subjName) {
         const papers = [];
 
         // 1. Bộ đề có sẵn: gom toàn bộ câu của môn, chia mỗi đề 60 câu (đề cuối có thể ít hơn, không trùng câu)
@@ -1506,6 +2409,12 @@
             isShuffle: false
           });
         }
+
+        return papers;
+      }
+
+      function getPapersForSubject(subjName) {
+        const papers = getBuiltinPapers(subjName);
 
         // 2. Đề tự tải lên của môn này
         customPapersOf(subjName).forEach(p => papers.push(p));
@@ -2017,12 +2926,21 @@
       // --- NAVIGATION ---
       function switchMode(mode) {
         currentMode = mode;
-        ['home', 'mistakes'].forEach(m => {
+        if (mode === 'admin' && !isAdmin()) mode = 'home';
+        currentMode = mode;
+        ['home', 'mistakes', 'admin'].forEach(m => {
           document.getElementById(`view-${m}`).classList.toggle('hidden', m !== mode);
         });
         document.querySelectorAll('[data-mode]').forEach(btn => {
           const active = btn.dataset.mode === mode;
-          if (btn.classList.contains('tab-item')) {
+          if (btn.dataset.mode === 'admin') {
+            // nút quản trị chỉ hiện với admin (lớp admin-only), không thêm lớp flex để còn ẩn được
+            btn.className = 'admin-only ' + (btn.classList.contains('tab-item')
+              ? 'tab-item flex-1 items-center gap-0.5 py-1.5 rounded-2xl text-xs transition-all '
+              : 'nav-tab items-center gap-2 whitespace-nowrap px-4 py-1.5 rounded-full text-sm transition-all ') + (active
+              ? (btn.classList.contains('tab-item') ? 'bg-brand-100/90 dark:bg-brand-900/50 text-brand-700 dark:text-brand-200 font-extrabold shadow-inner' : 'bg-brand-600 text-white font-extrabold shadow-sm')
+              : (btn.classList.contains('tab-item') ? 'text-slate-500 dark:text-slate-400 font-bold' : 'text-slate-600 dark:text-slate-300 font-bold hover:bg-white/60 dark:hover:bg-white/10'));
+          } else if (btn.classList.contains('tab-item')) {
             btn.className = 'tab-item flex-1 flex flex-col items-center gap-0.5 py-1.5 rounded-2xl text-xs transition-all ' + (active
               ? 'bg-brand-100/90 dark:bg-brand-900/50 text-brand-700 dark:text-brand-200 font-extrabold shadow-inner'
               : 'text-slate-500 dark:text-slate-400 font-bold');
@@ -2039,6 +2957,7 @@
           else renderHomeSubjects();
         }
         if (mode === 'mistakes') { setExamScrollLock(false); renderNotebook(); }
+        if (mode === 'admin') { setExamScrollLock(false); loadAdminUsers(); }
       }
 
       // --- RENDER HOME (SUBJECTS) ---
@@ -4413,8 +5332,10 @@ D. 60.0 ms`;
         loadStorage();
         buildBuiltinBank();
         bindEvents();
+        bindAuthEvents();
         switchMode('home');
         lucide.createIcons();
+        initAuth();
       }
 
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

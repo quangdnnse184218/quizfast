@@ -4,7 +4,10 @@ Web luyện đề trắc nghiệm cho sinh viên (môn FE GDC, FE AGU, và đề
 
 ## Cấu trúc
 - `index.html`: toàn bộ giao diện và logic (Tailwind CDN, không có bước build).
-- **Không còn máy chủ, không đăng nhập.** Supabase project `appquiz` bị tạm dừng (hết hạn mức Free 2 project) nên đã gỡ toàn bộ đăng nhập, trang admin và đồng bộ cloud. Web chạy hoàn toàn trên trình duyệt. (Lịch sử git trước commit gỡ có bản đăng nhập + admin + SQL Supabase nếu cần lấy lại.)
+- **Tài khoản = Tên + Mật khẩu** (không email), tự viết bằng hàm RPC trên Supabase project **`fastnote-dev`** (ref `bdfvrsttcfwifnppqpkc`, dùng tạm vì `appquiz` bị tạm dừng do hết hạn mức Free 2 project; bảng đều tiền tố `qf_`). Không dùng Supabase Auth. Bảng `qf_users` (mật khẩu băm bcrypt bằng pgcrypto, `role` user/admin, khóa 5 phút sau 6 lần sai), `qf_sessions` (token ngẫu nhiên, 60 ngày), `qf_data` (một jsonb tiến trình mỗi người). RLS bật, **anon không đọc/ghi bảng trực tiếp**, chỉ gọi các hàm `security definer`: `qf_register`, `qf_login`, `qf_me`, `qf_logout`, `qf_save`, `qf_change_password`, và 3 hàm admin `qf_admin_list`, `qf_admin_delete`, `qf_admin_reset_password` (kiểm tra role bên trong hàm). Khóa publishable để trong `index.html` (được phép). Migration đã áp dụng qua MCP, tên `quizfast_accounts` và `quizfast_accounts_fix_lockout` (chưa có file SQL trong repo; muốn dựng lại thì lấy từ lịch sử migration của project).
+- **Đăng nhập là tùy chọn**: lần đầu vào web hiện cửa đăng ký/đăng nhập, có nút "Để sau, cho tôi học thử" (không có tài khoản thì chỉ lưu trong trình duyệt). Đăng ký xong vào thẳng trang, hiện hộp chào mừng + gợi ý "hôm nay làm gì"; trang chủ có lời chào theo giờ. Tạo môn/đề (Studio) yêu cầu đăng nhập (`requireLogin`).
+- **Đồng bộ**: dữ liệu `localStorage` (tiến độ, điểm đề, môn/đề tự tạo, mẹo nhớ, mục tiêu ngày) đẩy lên `qf_data` sau 1,5 giây mỗi lần thay đổi (cờ `quizfast_sync_dirty_v1`, đẩy nốt khi rời trang). Đăng nhập mới thì **gộp** dữ liệu học thử trên máy với dữ liệu trên tài khoản; mở lại trang thì ưu tiên bản trên tài khoản trừ khi có thay đổi chưa lưu. **Đăng xuất xóa dữ liệu học trên máy đó** (dữ liệu vẫn ở tài khoản) để người sau không thấy.
+- **Admin dùng chung cửa đăng nhập**: không còn `admin.html`. Tài khoản có `role = 'admin'` (hiện có `admin`) thấy thêm tab **Quản trị** (`#view-admin` trong `index.html`): thống kê tổng, danh sách người dùng (tìm, sắp xếp), chi tiết từng người (đã thuộc/đang nhớ/hay sai, số đề đã làm, từng môn đang học và điểm từng đề, chuỗi ngày), đặt lại mật khẩu, xóa người dùng (phải gõ lại tên). Số liệu tính ở trình duyệt từ `qf_data` bằng `summarizeUserData` + `getBuiltinPapers`. Muốn thêm admin: `update qf_users set role='admin' where name_key='...'`. Chưa có cách tự đổi mật khẩu khi quên: admin đặt lại giúp.
 - `data-tthcm-349.js` (môn `TTHCM 349 câu`) và `data-tthcm-chuong.js` (môn `TTHCM theo chương`, 6 chương, bỏ 3 câu không có đáp án đúng và 13 câu trùng hẳn): sinh từ 2 file Word nguồn bằng script bóc tách riêng (không lưu trong repo). Ảnh minh họa nằm ở `images/`.
 - `data-*.js`: ngân hàng câu hỏi có sẵn, **nguồn duy nhất** của các môn mặc định. Thêm môn mặc định = thêm file `data-xxx.js` (mảng câu hỏi, `subject` là tên môn) và nạp bằng thẻ `<script>` + `buildBuiltinBank()` trong `index.html`.
 - Chạy thử: `python -m http.server 8765 --bind 127.0.0.1` rồi mở http://127.0.0.1:8765/index.html (đã có cấu hình `.claude/launch.json`, tên `quizfast`).
@@ -20,8 +23,8 @@ Web luyện đề trắc nghiệm cho sinh viên (môn FE GDC, FE AGU, và đề
 - Câu hỏi có thể có `image` (đường dẫn trong `images/`) và `explanation` (ghi chú, hiện sau khi trả lời ở chế độ "Học" và trong phần xem lại).
 
 ## Môn mặc định và môn học của bạn
-- Trang chủ chia hai phần: **Môn mặc định** (do admin thêm, người dùng chỉ học, không thêm/xóa đề) và **Môn học của bạn** (do chính người dùng tạo, lưu trên cloud).
-- Môn mặc định = mọi môn có trong các file `data-*.js`. Môn của bạn (tạo bằng Studio) lưu trong `localStorage` của trình duyệt đó, không đồng bộ giữa các máy.
+- Trang chủ chia hai phần: **Môn mặc định** (do admin thêm, người dùng chỉ học, không thêm/xóa đề) và **Môn học của bạn** (do chính người dùng tạo).
+- Môn mặc định = mọi môn có trong các file `data-*.js`. Môn của bạn (tạo bằng Studio) lưu trong `localStorage` và, khi đã đăng nhập, được đồng bộ lên tài khoản.
 - Tên môn của người dùng không được trùng tên môn mặc định (không phân biệt hoa thường).
 
 ## Thêm đề (Studio) và bóc tách câu hỏi
@@ -54,16 +57,16 @@ Web luyện đề trắc nghiệm cho sinh viên (môn FE GDC, FE AGU, và đề
 - "Đề Xáo Trộn" luôn nằm cuối danh sách đề của mỗi môn.
 
 ## Dữ liệu
-- Không dùng cơ sở dữ liệu. Câu hỏi nằm trong `data-*.js`; tiến độ, điểm, môn/đề tự thêm nằm trong `localStorage`. Giữ nguyên ID câu hỏi cũ (ví dụ `GDC_M34_Q1`) vì tiến độ người học gắn theo ID.
-- Nếu sau này cần lưu trên máy chủ/đăng nhập: dùng lại bản trong lịch sử git (Supabase) hoặc chọn nền tảng khác.
+- Câu hỏi nằm trong `data-*.js` (không nằm trong DB); tiến độ, điểm, môn/đề tự thêm nằm trong `localStorage` và được sao lên `qf_data` khi đã đăng nhập. Giữ nguyên ID câu hỏi cũ (ví dụ `GDC_M34_Q1`) vì tiến độ người học gắn theo ID.
 
 ## Làm việc với git
 - Mỗi việc làm trong nhánh/worktree riêng tách từ `main` mới nhất. **Luôn `git fetch` trước**, vì `main` có thể đã có commit từ nơi khác.
 - Chỉ đẩy lên `main` khi người dùng nói rõ. Ưu tiên fast-forward, không `--force`. Nếu `main` đã đi xa hơn, báo người dùng rồi mới gộp.
-- Không commit khóa bí mật (chỉ khóa publishable của Supabase được để trong mã).
+- Không commit khóa bí mật (chỉ khóa publishable của Supabase được để trong mã). Không ghi mật khẩu admin vào repo.
 
 ## Chưa làm (có thể giao tiếp)
-- Đồng bộ môn/đề giữa các máy (cần máy chủ).
+- Chuyển tài khoản sang project Supabase riêng của QuizFast (khôi phục `appquiz` khi dọn bớt project); khi đó chỉ cần đổi `SB_URL`/`SB_KEY` trong `index.html` và chạy lại migration.
+- Tự đặt lại mật khẩu khi quên (hiện nhờ admin).
 
 ## Khóa localStorage đang dùng
-`quizfast_progress_v1` (tiến độ từng câu), `quizfast_paper_history_v1` (điểm từng đề), `quizfast_subjects_v1`, `quizfast_custom_exams_v1`, `quizfast_theme_v1`, `quizfast_exam_session_v1`, `quizfast_setup_preset_v1`, `quizfast_hl_prefs_v1`, `quizfast_user_hl_v1`.
+`quizfast_progress_v1` (tiến độ từng câu), `quizfast_paper_history_v1` (điểm từng đề), `quizfast_subjects_v1`, `quizfast_custom_exams_v1`, `quizfast_theme_v1`, `quizfast_exam_session_v1`, `quizfast_setup_preset_v1`, `quizfast_hl_prefs_v1`, `quizfast_user_hl_v1`, `quizfast_auth_v1` (token đăng nhập), `quizfast_sync_dirty_v1` (có thay đổi chưa lưu lên tài khoản), `quizfast_daily_v1`, `quizfast_notes_v1`, `quizfast_skin_v1`; `sessionStorage`: `quizfast_auth_skip_v1`.
