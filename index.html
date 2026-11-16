@@ -107,17 +107,13 @@
     html[data-skin="blue"] body { background-color: #f1f6ff !important; }
     html[data-skin="violet"] body { background-color: #f6f3ff !important; }
     html[data-skin="blue"] .qf-bg { background:
-        radial-gradient(55% 38% at 8% 0%, rgba(59,130,246,.30), transparent 70%),
-        radial-gradient(48% 36% at 100% 18%, rgba(56,189,248,.26), transparent 70%),
-        radial-gradient(60% 46% at 28% 100%, rgba(129,140,248,.26), transparent 70%); }
+        radial-gradient(55% 38% at 8% 0%, rgba(59,130,246,.50), transparent 70%),
+        radial-gradient(48% 36% at 100% 18%, rgba(56,189,248,.42), transparent 70%),
+        radial-gradient(60% 46% at 28% 100%, rgba(129,140,248,.42), transparent 70%); }
     html[data-skin="violet"] .qf-bg { background:
-        radial-gradient(55% 38% at 8% 0%, rgba(139,92,246,.30), transparent 70%),
-        radial-gradient(48% 36% at 100% 18%, rgba(232,121,249,.26), transparent 70%),
-        radial-gradient(60% 46% at 28% 100%, rgba(99,102,241,.24), transparent 70%); }
-    html[data-skin="blue"] .glass, html[data-skin="blue"] .glass-bar { box-shadow: 0 12px 32px -10px rgba(37,99,235,.30), inset 0 1.5px 1px rgba(255,255,255,.95), inset 0 -1px 1px rgba(255,255,255,.25); }
-    html[data-skin="violet"] .glass, html[data-skin="violet"] .glass-bar { box-shadow: 0 12px 32px -10px rgba(109,40,217,.30), inset 0 1.5px 1px rgba(255,255,255,.95), inset 0 -1px 1px rgba(255,255,255,.25); }
-    html[data-skin="blue"] .glass-lite { box-shadow: 0 8px 22px -12px rgba(37,99,235,.30), inset 0 1px 0 rgba(255,255,255,.95); }
-    html[data-skin="violet"] .glass-lite { box-shadow: 0 8px 22px -12px rgba(109,40,217,.30), inset 0 1px 0 rgba(255,255,255,.95); }
+        radial-gradient(55% 38% at 8% 0%, rgba(139,92,246,.50), transparent 70%),
+        radial-gradient(48% 36% at 100% 18%, rgba(232,121,249,.42), transparent 70%),
+        radial-gradient(60% 46% at 28% 100%, rgba(99,102,241,.40), transparent 70%); }
     html[data-skin="blue"] #btn-open-upload, html[data-skin="violet"] #btn-open-upload { color: #fff; background: rgb(var(--b600)); }
 
     /* ===== Giao diện hồng pastel (chỉ chế độ sáng) ===== */
@@ -139,62 +135,84 @@
     /* ===== Kính lỏng (liquid glass): nền mờ + viền sáng + vệt sáng bên trong ===== */
     .qf-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none;
       background:
-        radial-gradient(55% 38% at 8% 0%, rgba(52,211,153,.38), transparent 70%),
-        radial-gradient(48% 36% at 100% 18%, rgba(251,191,36,.26), transparent 70%),
-        radial-gradient(60% 46% at 28% 100%, rgba(45,212,191,.30), transparent 70%); }
+        radial-gradient(55% 38% at 8% 0%, rgba(52,211,153,.60), transparent 70%),
+        radial-gradient(48% 36% at 100% 18%, rgba(251,191,36,.42), transparent 70%),
+        radial-gradient(42% 30% at 72% 58%, rgba(56,189,248,.26), transparent 70%),
+        radial-gradient(60% 46% at 28% 100%, rgba(45,212,191,.50), transparent 70%); }
     .dark .qf-bg { background:
-        radial-gradient(55% 38% at 8% 0%, rgba(16,185,129,.28), transparent 70%),
-        radial-gradient(48% 36% at 100% 18%, rgba(245,158,11,.12), transparent 70%),
-        radial-gradient(60% 46% at 28% 100%, rgba(13,148,136,.24), transparent 70%); }
+        radial-gradient(55% 38% at 8% 0%, rgba(16,185,129,.42), transparent 70%),
+        radial-gradient(48% 36% at 100% 18%, rgba(245,158,11,.20), transparent 70%),
+        radial-gradient(60% 46% at 28% 100%, rgba(13,148,136,.38), transparent 70%); }
     html[data-skin="pink"] .qf-bg { background:
-        radial-gradient(55% 38% at 8% 0%, rgba(244,114,182,.38), transparent 70%),
-        radial-gradient(48% 36% at 100% 18%, rgba(192,132,252,.32), transparent 70%),
-        radial-gradient(60% 46% at 28% 100%, rgba(253,186,116,.30), transparent 70%); }
+        radial-gradient(55% 38% at 8% 0%, rgba(244,114,182,.58), transparent 70%),
+        radial-gradient(48% 36% at 100% 18%, rgba(192,132,252,.48), transparent 70%),
+        radial-gradient(60% 46% at 28% 100%, rgba(253,186,116,.46), transparent 70%); }
 
     .glass, .glass-bar, .glass-lite { border-style: solid; border-width: 1px; }
+    /* Kính trong: nền gần như trong suốt, mờ mạnh phía sau, vệt sáng ở góc và viền sáng bên trong */
     .glass, .glass-bar {
-      background: linear-gradient(135deg, rgba(255,255,255,.66), rgba(255,255,255,.40));
-      -webkit-backdrop-filter: blur(22px) saturate(180%); backdrop-filter: blur(22px) saturate(180%);
-      border-color: rgba(255,255,255,.75);
-      box-shadow: 0 12px 32px -10px rgba(10,60,45,.28), inset 0 1.5px 1px rgba(255,255,255,.95), inset 0 -1px 1px rgba(255,255,255,.25);
+      background:
+        radial-gradient(130% 90% at 0% 0%, rgba(255,255,255,.55), rgba(255,255,255,0) 58%),
+        linear-gradient(135deg, rgba(255,255,255,.30), rgba(255,255,255,.10));
+      -webkit-backdrop-filter: blur(16px) saturate(200%) brightness(1.06); backdrop-filter: blur(16px) saturate(200%) brightness(1.06);
+      border-color: rgba(255,255,255,.62);
+      box-shadow: 0 14px 34px -12px rgba(10,60,45,.30), inset 0 1.5px 0 rgba(255,255,255,.95), inset 1px 0 0 rgba(255,255,255,.45), inset 0 -1px 0 rgba(255,255,255,.22), inset 0 0 18px rgba(255,255,255,.18);
     }
-    .glass-bar { border-width: 0 0 1px 0; border-radius: 0; box-shadow: 0 8px 28px -14px rgba(10,60,45,.35), inset 0 -1px 0 rgba(255,255,255,.5); }
+    .glass-bar { border-width: 0 0 1px 0; border-radius: 0; background: linear-gradient(180deg, rgba(255,255,255,.50), rgba(255,255,255,.18)); box-shadow: 0 8px 28px -16px rgba(10,60,45,.35), inset 0 -1px 0 rgba(255,255,255,.6); }
     .glass-lite {
-      background: linear-gradient(135deg, rgba(255,255,255,.80), rgba(255,255,255,.58));
-      border-color: rgba(255,255,255,.85);
-      box-shadow: 0 8px 22px -12px rgba(10,60,45,.28), inset 0 1px 0 rgba(255,255,255,.95);
+      background:
+        radial-gradient(120% 90% at 0% 0%, rgba(255,255,255,.55), rgba(255,255,255,0) 60%),
+        linear-gradient(135deg, rgba(255,255,255,.46), rgba(255,255,255,.24));
+      border-color: rgba(255,255,255,.72);
+      box-shadow: 0 10px 24px -14px rgba(10,60,45,.30), inset 0 1.5px 0 rgba(255,255,255,.95), inset 0 0 14px rgba(255,255,255,.2);
     }
     .dark .glass, .dark .glass-bar {
-      background: linear-gradient(135deg, rgba(34,54,45,.62), rgba(14,24,19,.44));
-      border-color: rgba(255,255,255,.13);
-      box-shadow: 0 12px 32px -10px rgba(0,0,0,.65), inset 0 1.5px 1px rgba(255,255,255,.16), inset 0 -1px 1px rgba(255,255,255,.04);
+      background:
+        radial-gradient(130% 90% at 0% 0%, rgba(255,255,255,.17), rgba(255,255,255,0) 58%),
+        linear-gradient(135deg, rgba(255,255,255,.09), rgba(255,255,255,.03));
+      border-color: rgba(255,255,255,.16);
+      box-shadow: 0 14px 34px -12px rgba(0,0,0,.65), inset 0 1.5px 0 rgba(255,255,255,.30), inset 1px 0 0 rgba(255,255,255,.10), inset 0 -1px 0 rgba(255,255,255,.05);
     }
-    .dark .glass-bar { box-shadow: 0 8px 28px -14px rgba(0,0,0,.7), inset 0 -1px 0 rgba(255,255,255,.08); }
+    .dark .glass-bar { background: linear-gradient(180deg, rgba(255,255,255,.11), rgba(255,255,255,.03)); box-shadow: 0 8px 28px -16px rgba(0,0,0,.7), inset 0 -1px 0 rgba(255,255,255,.10); }
     .dark .glass-lite {
-      background: linear-gradient(135deg, rgba(30,48,40,.72), rgba(18,30,24,.55));
-      border-color: rgba(255,255,255,.10);
-      box-shadow: 0 8px 22px -12px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.10);
+      background:
+        radial-gradient(120% 90% at 0% 0%, rgba(255,255,255,.12), rgba(255,255,255,0) 60%),
+        linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      border-color: rgba(255,255,255,.13);
+      box-shadow: 0 10px 24px -14px rgba(0,0,0,.6), inset 0 1.5px 0 rgba(255,255,255,.22);
     }
-    html[data-skin="pink"] .glass, html[data-skin="pink"] .glass-bar {
-      background: linear-gradient(135deg, rgba(255,255,255,.72), rgba(255,226,240,.48));
-      box-shadow: 0 12px 32px -10px rgba(236,79,147,.30), inset 0 1.5px 1px rgba(255,255,255,.95), inset 0 -1px 1px rgba(255,255,255,.3);
+    html[data-skin="pink"] .glass { background: radial-gradient(130% 90% at 0% 0%, rgba(255,255,255,.58), rgba(255,255,255,0) 58%), linear-gradient(135deg, rgba(255,206,230,.34), rgba(255,255,255,.10)); box-shadow: 0 14px 34px -12px rgba(236,79,147,.34), inset 0 1.5px 0 rgba(255,255,255,.95), inset 1px 0 0 rgba(255,255,255,.45), inset 0 -1px 0 rgba(255,255,255,.22), inset 0 0 18px rgba(255,255,255,.18); }
+    html[data-skin="pink"] .glass-bar { background: linear-gradient(180deg, rgba(255,206,230,.50), rgba(255,255,255,.20)); box-shadow: 0 8px 28px -16px rgba(236,79,147,.40), inset 0 -1px 0 rgba(255,255,255,.6); }
+    html[data-skin="pink"] .glass-lite { background: radial-gradient(120% 90% at 0% 0%, rgba(255,255,255,.58), rgba(255,255,255,0) 60%), linear-gradient(135deg, rgba(255,206,230,.30), rgba(255,255,255,.18)); box-shadow: 0 10px 24px -14px rgba(236,79,147,.36), inset 0 1.5px 0 rgba(255,255,255,.95), inset 0 0 14px rgba(255,255,255,.2); }
+    html[data-skin="pink"] #modal-theme > div, html[data-skin="pink"] #modal-exam-setup > div, html[data-skin="pink"] #modal-new-subject > div, html[data-skin="pink"] #modal-shortcuts > div, html[data-skin="pink"] #exam-palette-card.sheet-open { background: radial-gradient(130% 90% at 0% 0%, rgba(255,255,255,.62), rgba(255,255,255,0) 58%), linear-gradient(135deg, rgba(255,206,230,.46), rgba(255,255,255,.34)) !important; }
+    html[data-skin="blue"] .glass { background: radial-gradient(130% 90% at 0% 0%, rgba(255,255,255,.58), rgba(255,255,255,0) 58%), linear-gradient(135deg, rgba(200,222,255,.34), rgba(255,255,255,.10)); box-shadow: 0 14px 34px -12px rgba(37,99,235,.34), inset 0 1.5px 0 rgba(255,255,255,.95), inset 1px 0 0 rgba(255,255,255,.45), inset 0 -1px 0 rgba(255,255,255,.22), inset 0 0 18px rgba(255,255,255,.18); }
+    html[data-skin="blue"] .glass-bar { background: linear-gradient(180deg, rgba(200,222,255,.50), rgba(255,255,255,.20)); box-shadow: 0 8px 28px -16px rgba(37,99,235,.40), inset 0 -1px 0 rgba(255,255,255,.6); }
+    html[data-skin="blue"] .glass-lite { background: radial-gradient(120% 90% at 0% 0%, rgba(255,255,255,.58), rgba(255,255,255,0) 60%), linear-gradient(135deg, rgba(200,222,255,.30), rgba(255,255,255,.18)); box-shadow: 0 10px 24px -14px rgba(37,99,235,.36), inset 0 1.5px 0 rgba(255,255,255,.95), inset 0 0 14px rgba(255,255,255,.2); }
+    html[data-skin="blue"] #modal-theme > div, html[data-skin="blue"] #modal-exam-setup > div, html[data-skin="blue"] #modal-new-subject > div, html[data-skin="blue"] #modal-shortcuts > div, html[data-skin="blue"] #exam-palette-card.sheet-open { background: radial-gradient(130% 90% at 0% 0%, rgba(255,255,255,.62), rgba(255,255,255,0) 58%), linear-gradient(135deg, rgba(200,222,255,.46), rgba(255,255,255,.34)) !important; }
+    html[data-skin="violet"] .glass { background: radial-gradient(130% 90% at 0% 0%, rgba(255,255,255,.58), rgba(255,255,255,0) 58%), linear-gradient(135deg, rgba(226,214,255,.34), rgba(255,255,255,.10)); box-shadow: 0 14px 34px -12px rgba(109,40,217,.34), inset 0 1.5px 0 rgba(255,255,255,.95), inset 1px 0 0 rgba(255,255,255,.45), inset 0 -1px 0 rgba(255,255,255,.22), inset 0 0 18px rgba(255,255,255,.18); }
+    html[data-skin="violet"] .glass-bar { background: linear-gradient(180deg, rgba(226,214,255,.50), rgba(255,255,255,.20)); box-shadow: 0 8px 28px -16px rgba(109,40,217,.40), inset 0 -1px 0 rgba(255,255,255,.6); }
+    html[data-skin="violet"] .glass-lite { background: radial-gradient(120% 90% at 0% 0%, rgba(255,255,255,.58), rgba(255,255,255,0) 60%), linear-gradient(135deg, rgba(226,214,255,.30), rgba(255,255,255,.18)); box-shadow: 0 10px 24px -14px rgba(109,40,217,.36), inset 0 1.5px 0 rgba(255,255,255,.95), inset 0 0 14px rgba(255,255,255,.2); }
+    html[data-skin="violet"] #modal-theme > div, html[data-skin="violet"] #modal-exam-setup > div, html[data-skin="violet"] #modal-new-subject > div, html[data-skin="violet"] #modal-shortcuts > div, html[data-skin="violet"] #exam-palette-card.sheet-open { background: radial-gradient(130% 90% at 0% 0%, rgba(255,255,255,.62), rgba(255,255,255,0) 58%), linear-gradient(135deg, rgba(226,214,255,.46), rgba(255,255,255,.34)) !important; }
+    /* Hộp thoại và ngăn kéo: kính trong nhưng đủ đọc được chữ */
+    #modal-theme > div, #modal-exam-setup > div, #modal-new-subject > div, #modal-shortcuts > div, #exam-palette-card.sheet-open {
+      background:
+        radial-gradient(130% 90% at 0% 0%, rgba(255,255,255,.60), rgba(255,255,255,0) 58%),
+        linear-gradient(135deg, rgba(255,255,255,.62), rgba(255,255,255,.40)) !important;
+      -webkit-backdrop-filter: blur(28px) saturate(200%); backdrop-filter: blur(28px) saturate(200%);
+      border-color: rgba(255,255,255,.75) !important;
     }
-    html[data-skin="pink"] .glass-lite {
-      background: linear-gradient(135deg, rgba(255,255,255,.82), rgba(255,238,246,.62));
-      box-shadow: 0 8px 22px -12px rgba(236,79,147,.32), inset 0 1px 0 rgba(255,255,255,.95);
+    #modal-upload > div {
+      background: linear-gradient(135deg, rgba(255,255,255,.78), rgba(255,255,255,.62)) !important;
+      -webkit-backdrop-filter: blur(28px) saturate(200%); backdrop-filter: blur(28px) saturate(200%);
+      border-color: rgba(255,255,255,.75) !important;
     }
-    /* Hộp thoại và ngăn kéo cũng là kính (đậm hơn một chút để dễ đọc) */
-    #modal-theme > div, #modal-exam-setup > div, #modal-upload > div, #modal-new-subject > div, #modal-shortcuts > div, #exam-palette-card.sheet-open {
-      background: linear-gradient(135deg, rgba(255,255,255,.86), rgba(255,255,255,.70)) !important;
-      -webkit-backdrop-filter: blur(26px) saturate(180%); backdrop-filter: blur(26px) saturate(180%);
-      border-color: rgba(255,255,255,.8) !important;
+    .dark #modal-theme > div, .dark #modal-exam-setup > div, .dark #modal-new-subject > div, .dark #modal-shortcuts > div, .dark #exam-palette-card.sheet-open {
+      background:
+        radial-gradient(130% 90% at 0% 0%, rgba(255,255,255,.14), rgba(255,255,255,0) 58%),
+        linear-gradient(135deg, rgba(30,46,39,.60), rgba(12,20,16,.52)) !important;
+      border-color: rgba(255,255,255,.16) !important;
     }
-    .dark #modal-theme > div, .dark #modal-exam-setup > div, .dark #modal-upload > div, .dark #modal-new-subject > div, .dark #modal-shortcuts > div, .dark #exam-palette-card.sheet-open {
-      background: linear-gradient(135deg, rgba(28,44,37,.86), rgba(14,24,19,.78)) !important; border-color: rgba(255,255,255,.12) !important;
-    }
-    html[data-skin="pink"] #modal-theme > div, html[data-skin="pink"] #modal-exam-setup > div, html[data-skin="pink"] #modal-upload > div, html[data-skin="pink"] #modal-new-subject > div, html[data-skin="pink"] #modal-shortcuts > div, html[data-skin="pink"] #exam-palette-card.sheet-open {
-      background: linear-gradient(135deg, rgba(255,255,255,.88), rgba(255,236,246,.76)) !important;
-    }
+    .dark #modal-upload > div { background: linear-gradient(135deg, rgba(28,44,37,.78), rgba(12,20,16,.70)) !important; border-color: rgba(255,255,255,.14) !important; }
     body.exam-active #tabbar { display: none; }
     #tabbar { margin-bottom: env(safe-area-inset-bottom); }
     .tab-item .qf-ico { width: 1.6rem; height: 1.6rem; }
